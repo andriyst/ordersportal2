@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:xsd1="http://complaints" xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12bind="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://complaints" name="complaints" targetNamespace="http://complaints" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xs:schema xmlns:xs1="http://complaints" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://complaints" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="issues_data">
+        <xs:sequence>
+          <xs:element name="GUID" type="xs:string" />
+          <xs:element name="Name" type="xs:string" />
+          <xs:element name="ParentName" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="issues_list">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="data_list" type="xs1:issues_data" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="check_kontr_order">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="OrderNumber" type="xs:string" />
+            <xs:element name="KontrKod" type="xs:string" />
+            <xs:element name="BeginDate" type="xs:dateTime" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="check_kontr_orderResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getComplaintIssuesList">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getComplaintIssuesListResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:issues_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getComplaintSolutionsListByIssue">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="issueId" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getComplaintSolutionsListByIssueResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:issues_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getComplaintSeries">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="OrderNumber" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getComplaintSeriesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:issues_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </types>
+  <message name="check_kontr_orderRequestMessage">
+    <part name="parameters" element="tns:check_kontr_order" />
+  </message>
+  <message name="check_kontr_orderResponseMessage">
+    <part name="parameters" element="tns:check_kontr_orderResponse" />
+  </message>
+  <message name="getComplaintIssuesListRequestMessage">
+    <part name="parameters" element="tns:getComplaintIssuesList" />
+  </message>
+  <message name="getComplaintIssuesListResponseMessage">
+    <part name="parameters" element="tns:getComplaintIssuesListResponse" />
+  </message>
+  <message name="getComplaintSolutionsListByIssueRequestMessage">
+    <part name="parameters" element="tns:getComplaintSolutionsListByIssue" />
+  </message>
+  <message name="getComplaintSolutionsListByIssueResponseMessage">
+    <part name="parameters" element="tns:getComplaintSolutionsListByIssueResponse" />
+  </message>
+  <message name="getComplaintSeriesRequestMessage">
+    <part name="parameters" element="tns:getComplaintSeries" />
+  </message>
+  <message name="getComplaintSeriesResponseMessage">
+    <part name="parameters" element="tns:getComplaintSeriesResponse" />
+  </message>
+  <portType name="complaintsPortType">
+    <operation name="check_kontr_order">
+      <input message="tns:check_kontr_orderRequestMessage" />
+      <output message="tns:check_kontr_orderResponseMessage" />
+    </operation>
+    <operation name="getComplaintIssuesList">
+      <input message="tns:getComplaintIssuesListRequestMessage" />
+      <output message="tns:getComplaintIssuesListResponseMessage" />
+    </operation>
+    <operation name="getComplaintSolutionsListByIssue">
+      <input message="tns:getComplaintSolutionsListByIssueRequestMessage" />
+      <output message="tns:getComplaintSolutionsListByIssueResponseMessage" />
+    </operation>
+    <operation name="getComplaintSeries">
+      <input message="tns:getComplaintSeriesRequestMessage" />
+      <output message="tns:getComplaintSeriesResponseMessage" />
+    </operation>
+  </portType>
+  <binding name="complaintsSoapBinding" type="tns:complaintsPortType">
+    <soapbind:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="check_kontr_order">
+      <soapbind:operation soapAction="http://complaints#complaints:check_kontr_order" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getComplaintIssuesList">
+      <soapbind:operation soapAction="http://complaints#complaints:getComplaintIssuesList" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getComplaintSolutionsListByIssue">
+      <soapbind:operation soapAction="http://complaints#complaints:getComplaintSolutionsListByIssue" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getComplaintSeries">
+      <soapbind:operation soapAction="http://complaints#complaints:getComplaintSeries" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <binding name="complaintsSoap12Binding" type="tns:complaintsPortType">
+    <soap12bind:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="check_kontr_order">
+      <soap12bind:operation soapAction="http://complaints#complaints:check_kontr_order" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getComplaintIssuesList">
+      <soap12bind:operation soapAction="http://complaints#complaints:getComplaintIssuesList" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getComplaintSolutionsListByIssue">
+      <soap12bind:operation soapAction="http://complaints#complaints:getComplaintSolutionsListByIssue" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getComplaintSeries">
+      <soap12bind:operation soapAction="http://complaints#complaints:getComplaintSeries" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="complaints">
+    <port name="complaintsSoap" binding="tns:complaintsSoapBinding">
+      <documentation>
+        <wsi:Claim xmlns:wsi="http://ws-i.org/schemas/conformanceClaim/" conformsTo="http://ws-i.org/profiles/basic/1.1" />
+      </documentation>
+      <soapbind:address location="http://192.168.1.10/oknastyle/ws/ws_complaints.1cws" />
+    </port>
+    <port name="complaintsSoap12" binding="tns:complaintsSoap12Binding">
+      <soap12bind:address location="http://192.168.1.10/oknastyle/ws/ws_complaints.1cws" />
+    </port>
+  </service>
+</definitions>

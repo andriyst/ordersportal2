@@ -1,0 +1,197 @@
+﻿@model List<OrdersPortal.Domain.Entities.Db1SOrderNumbers>
+@{
+
+	int orderId = ViewBag.OrderId;
+
+}
+
+
+<div class="modal" id="OrderDetail">
+	<div class="modal-dialog modal-dialog-centered-top modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Деталі замовлення:</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true"></span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<table id="table-detailed" class="table table-striped table-hover">
+						<thead>
+							<tr>
+								<th>Номер</th>
+								<th>Статус</th>
+								<th>Файл</th>
+								<th alt="К-сть конструкцій">К.К.</th>
+								<th>Дата Створення</th>
+								<th>Підтвердження</th>
+								<th>Оплата</th>
+								<th>Дата Оплати</th>
+							</tr>
+						</thead>
+						@foreach (var t in Model)
+						{
+							if (t.OrderId == Convert.ToInt32(orderId))
+							{
+								<tr>
+									<td>@t.Db1SOrderNumber</td>
+									<td>@t.Db1SOrderStatus</td>
+									<td>
+										@if (t.OrderImage != null)
+										{
+											@*@Html.Raw("<object style='width:80px; height:60px;' > <a target=\"blank\" alt=\"Відкрити в новому вікні\" href=\"data:application/pdf;base64,"
+													  + Convert.ToBase64String(t.OrderImage) + "\">order.pdf</a> </object>")*@
+											@*<a href="#" onclick="DownloadFile('@t.Db1SOrderNumber')">order.pdf</a>*@
+											<a href="/Orders/DownloadOrderFile?db1cOrderNumber=@t.Db1SOrderNumber">order.pdf</a>
+										}
+
+										else
+										{
+											<TEXT>
+											Немає
+											</TEXT>
+										}
+									</td>
+									<td>@t.Db1SOrderNumberConstr</td>
+									<td>@t.Db1SOrderDateCreate.ToString("dd.MM.yy HH:mm")</td>
+									<td>
+										@if (t.Db1SOrderConfirm == true)
+										{<img src="/Images/YES.png">}
+
+										else if (t.Db1SOrderConfirm != true && User.IsInRole("customer") && t.Db1SOrderStatus != "Відмова" && t.Db1SOrderStatus != "Відмова до запуску в роботу (не оплачено)" && t.Db1SOrderStatus != "Відмова до запуску в роботу (не підтверджено)" && t.Db1SOrderStatus != "Відмова до запуску в роботу (не підтверджено)")
+										{
+											@Html.ActionLink("Підтвердити", "ConfirmOrder", "Orders", new { Db1cOrderId = t.Db1SOrderNumberId }, htmlAttributes: new { @class = "btn btn-success" })
+										}
+										else
+										{
+											<img src="/Images/NO.png">
+										}
+									</td>
+									<td class="image-center">
+										@if (t.Db1SOrderPayed == true)
+										{<img src="/Images/YES.png">}
+										else
+										{<img src="/Images/NO.png">}
+									</td>
+									<td>@(t.Db1SOrderDatePayed.HasValue ? t.Db1SOrderDatePayed.Value.ToString("dd.MM.yy HH:mm") : "")</td>
+								</tr>
+							}
+						}
+					</table>
+				</div>
+			</div>
+			<div class="modal-footer">
+
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	var $table = $('#table-detailed');
+
+	$(function() {
+		$table.bootstrapTable();
+			
+	});
+
+	function DownloadFile(orderNumber) {
+
+		var url = "/Orders/DownloadOrderFile";
+		$.ajax({
+			url: url,
+			type: "GET",
+			data: {
+				db1cOrderNumber: orderNumber
+			},
+			success: function (data) {
+				OrderLoad(id, 'Отримано');
+				var link = document.createElement('a');
+				link.href = data;
+				link.download = '';
+				document.body.appendChild(link);
+				link.click();
+
+			},
+			error: function() {
+				alert('Файл не знайдено!');
+			}
+		});
+	};
+	
+</script>
+
+
+@*//////////////////////////////////////////////////////////////////////////////////////////*@
+@*<div class="modal fade" id="OrderDetail">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<table id="table-detailed" class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th>Номер</th>
+							<th>Статус</th>
+							<th>Файл</th>
+							<th alt="К-сть конструкцій">К.К.</th>
+							<th>Дата Створення</th>
+							<th>Підтвердження</th>
+							<th>Оплата</th>
+							<th>Дата Оплати</th>
+						</tr>
+					</thead>
+					@foreach (var t in Model)
+					{
+						if (t.OrderId == Convert.ToInt32(orderId))
+						{
+							<tr>
+								<td>@t.Db1SOrderNumber</td>
+								<td>@t.Db1SOrderStatus</td>
+								<td>
+									@if (t.OrderImage != null)
+									{
+										@Html.Raw("<object style='width:80px; height:60px;' > <a target=\"blank\" alt=\"Відкрити в новому вікні\" href=\"data:application/pdf;base64,"
+													+ Convert.ToBase64String(t.OrderImage) + "\">order.pdf</a> </object>")
+									}
+
+									else
+									{
+										<TEXT>
+										Немає
+										</TEXT>
+									}
+								</td>
+								<td>@t.Db1SOrderNumberConstr</td>
+								<td>@t.Db1SOrderDateCreate.ToString("dd.MM.yy HH:mm")</td>
+								<td>
+									@if (t.Db1SOrderConfirm == true)
+									{<img src="/Images/YES.png">}
+
+									else if (t.Db1SOrderConfirm != true && User.IsInRole("customer") && t.Db1SOrderStatus != "Відмова" && t.Db1SOrderStatus != "Відмова до запуску в роботу (не оплачено)" && t.Db1SOrderStatus != "Відмова до запуску в роботу (не підтверджено)" && t.Db1SOrderStatus != "Відмова до запуску в роботу (не підтверджено)")
+									{
+										@Html.ActionLink("Підтвердити", "ConfirmOrder", "Orders", new { Db1cOrderId = t.Db1SOrderNumberId }, htmlAttributes: new { @class = "btn btn-success" })
+									}
+									else
+									{
+										<img src="/Images/NO.png">
+									}
+								</td>
+								<td class="image-center">
+									@if (t.Db1SOrderPayed == true)
+									{<img src="/Images/YES.png">}
+									else
+									{<img src="/Images/NO.png">}
+								</td>
+								<td>@(t.Db1SOrderDatePayed.HasValue ? t.Db1SOrderDatePayed.Value.ToString("dd.MM.yy HH:mm"):"")</td>
+							</tr>
+						}
+					}
+				</table>
+			</div>
+		</div>
+	</div>*@
+
+
+

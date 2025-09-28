@@ -1,0 +1,85 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+	if (User.IsInRole("admin"))
+	{
+
+		<li class="nav-item dropdown col-3 col-md-auto">
+			<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+				<i class="fa fa-cogs fa-lg"></i>
+				
+			</a>
+
+			<div class="dropdown-menu">
+
+				@Html.ActionLink("Користувачі", "UsersList", "Account", null, new { @class = "dropdown-item", id = "UsersListLink" })
+				<div class="dropdown-divider"></div>
+				@Html.ActionLink("Організації", "List", "Organization", null, new { @class = "dropdown-item", id = "OrganizationListLink" })
+				@Html.ActionLink("Регіони", "List", "Regions", null, new { @class = "dropdown-item", id = "RegionsListLink" })
+				<div class="dropdown-divider"></div>
+				@Html.ActionLink("Налаштування S.O.S.", "Configure", "HelpService", null, new { @class = "dropdown-item", id = "QueriesListLink" })
+				<div class="dropdown-divider"></div>
+				@Html.ActionLink("Оновлення 1с Менеджерів", "Update1cManagers", "Account", null, new { @class = "dropdown-item", id = "Update1cManagersLink" })
+			</div>
+		</li>
+		<li class="nav-item col-3 col-md-auto">
+			<a class="nav-link" href="/Account/Manage" id="UserListMenu">
+				<i class="fa fa-user fa-lg" type="button" data-bs-toggle="tooltip" data-bs-placement="left" title="@User.Identity.GetUserName()"></i>
+				<span class="sr-only"></span>
+			</a>
+		</li>
+		<li class="nav-item col-3 col-md-auto">
+			@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "" }))
+			{
+			@Html.AntiForgeryToken()
+			<a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">
+				<div class="d-none d-sm-inline d-md-inline d-lg-none d-xxl-inline"></div>
+				<i class="fas fa-sign-out-alt fa-lg icon-gray"></i>
+
+			</a>
+			}
+		</li>
+
+
+	}
+	else
+	{
+
+		<li class="nav-item col-3 col-md-auto">
+			<a class="nav-link" href="/Account/Manage" id="UserListMenu">
+				<i class="fa fa-user fa-lg" type="button" data-bs-toggle="tooltip" data-bs-placement="left" title="@User.Identity.GetUserName()"></i>
+				@User.Identity.GetUserName()
+				<span class="sr-only"></span>
+			</a>
+
+		</li>
+		<li class="nav-item col-3 col-md-auto">
+			@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "" }))
+			{
+				@Html.AntiForgeryToken()
+
+				<a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">
+				<div class="d-none d-sm-inline d-md-inline d-lg-none d-xxl-inline"></div>
+				<i class="fas fa-sign-out-alt fa-lg icon-gray"></i>
+			</a>
+			}
+		</li>
+
+
+	}
+
+}
+else
+{
+
+	<li class="nav-item col-12 col-md-auto ">
+		<a class="nav-link" href="/Account/Login" id="UserLoginMenu">
+			<i class="fas fa-sign-out-alt fa-lg"></i>
+			[Увійти]
+			<span class="sr-only"></span>
+		</a>
+	</li>
+
+}
+
+

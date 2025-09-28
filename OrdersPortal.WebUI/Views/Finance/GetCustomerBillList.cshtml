@@ -1,0 +1,135 @@
+﻿
+@model OrdersPortal.Application.Models.ViewModels.CustomerBillListViewModel
+@{
+	ViewBag.Title = "Рахунки в 1с";
+}
+<h2>@ViewBag.Title</h2>
+
+
+<div class="row">
+	<div id="spinner-overlay">
+		<div class="col-sm-1 text-center" style="margin-left: 46%">
+			<div class="spinner"></div>
+		</div>
+	</div>
+</div>
+
+@using (Html.BeginForm("GetCustomerBillList", "Finance", FormMethod.Post, new { id = "financeCustomerBillListForm" }))
+{
+	@Html.AntiForgeryToken()
+
+	<hr />
+	@Html.ValidationSummary()
+
+
+
+	<div class="row" style="padding-left: 10px;">
+
+
+		<div class="row col-12 col-md-auto">
+			<div class="col-12 col-md-auto pb-2" style="padding-right: 25px;">
+				@Html.TextBoxFor(m => m.StartDate, new { @class = "btn btn-darkblue", id = "StartDate", Name = "startDate" })
+			</div>
+
+			<div class="col-12 col-md-auto pb-2">
+				@Html.TextBoxFor(m => m.EndDate, new { @class = "btn btn-darkblue", id = "EndDate", Name = "endDate" })
+			</div>
+		</div>
+		@if (!User.IsInRole("customer"))
+		{
+
+
+			<div class="col-12 col-md-auto pb-2">
+				@Html.DropDownListFor(m => m.ContrAgentCode,
+					Model.ContrAgentCodeList.Select(h => new SelectListItem { Text = h.Text, Value = h.Value }), new { data_live_search = true, @class = "selectpicker", id = "ContrAgentCode" })
+			</div>
+
+		}
+		else
+		{
+			@Html.HiddenFor(m => m.ContrAgentCode)
+		}
+
+
+		<div class="col-12 col-md-auto pb-2">
+			<input type="submit" class="btn btn-success" value="Пошук" />
+
+		</div>
+	</div>
+
+
+	<hr />
+}
+
+@if (User.IsInRole("customer"))
+{
+	<div class="row" style="padding-left: 10px;">
+		<div class="pt-2 pb-4">
+			<a href="/Finance/CreateCustomerBill" class="btn btn-warning">Створити рахунок</a>
+		</div>
+	</div>
+}
+
+
+<div class="col-12 table-align-center">
+	<div class="container-fluid col-12">
+
+
+		<table class="table table-striped" data-search="true" id="listFinanceReconciliationTable1">
+			<thead>
+				<tr>
+					<th> Дата</th>
+					<th> Номер</th>
+					<th class="text-right">Сума</th>
+					<th class="text-right"></th>
+
+				</tr>
+			</thead>
+
+			<tbody>
+				@if (Model.CustomerBillList != null && Model.CustomerBillList.Count > 0)
+				{
+					foreach (var item in Model.CustomerBillList.OrderByDescending(x => x.Date))
+					{
+						<tr>
+							<td>@item.Date</td>
+							<td>@item.Number</td>
+							<td class="text-right">
+								@item.Suma.ToString("F2")
+							</td>
+
+							<td class="text-right">
+								@Html.ActionLink("Відкрити", "DownloadCustomerBillByGuid", "Finance", new { guid = item.Guid }, new { target = "_blank" })
+							</td>
+
+						</tr>
+					}
+
+				}
+
+			</tbody>
+
+		</table>
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function () {
+
+
+
+		$('#StartDate').datepicker({
+
+			format: "dd.mm.yyyy"
+		});
+		$('#EndDate').datepicker({
+			format: "dd.mm.yyyy"
+		});
+		$('#StartDate').val("@Model.StartDate.ToShortDateString()");
+		$('#EndDate').val("@Model.EndDate.ToShortDateString()");
+
+
+
+	});
+
+
+</script>

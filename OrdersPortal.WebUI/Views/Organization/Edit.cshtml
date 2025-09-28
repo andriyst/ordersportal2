@@ -1,0 +1,38 @@
+﻿@model OrdersPortal.Domain.Entities.Organization
+@{
+	ViewBag.Title = "Редагування Організації";
+}
+
+<h2>@ViewBag.Title.</h2>
+@using (Html.BeginForm("Edit", "Organization", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+	@Html.AntiForgeryToken()
+
+	<hr />
+	@Html.ValidationSummary()
+	<div class="form-group">
+		@Html.LabelFor(m => m.OrganizationName, new { @class = "col-2 control-label" })
+		<div class="col-12">
+			@Html.TextBoxFor(m => m.OrganizationName, new { @class = "form-control" })
+		</div>
+	</div>
+	<div class="form-group col-12 pt-4">
+		<div class="col-3 d-inline-block">
+			<input id="addButton" type="submit" class="btn btn-success" value="Зберегти" />
+		</div>
+
+		<div class="col-3 d-inline-block">
+			<input id="cancelButton" type="button" class="btn btn-secondary" onclick="CancelButtonClick()" value="Відмінити" />
+		</div>
+	</div>
+
+}
+<script>
+	function CancelButtonClick() {
+
+		location.href = "/Organization/List";
+	}
+</script>
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}

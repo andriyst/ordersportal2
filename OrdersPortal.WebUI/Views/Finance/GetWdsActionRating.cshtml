@@ -1,0 +1,40 @@
+﻿@model List<OrdersPortal.Application.Models.ViewModels.WdsActionRatingListViewModel>
+@{
+	ViewBag.Title = "Рейтинг по акції 'Бонус дня'";
+	int n = 1;
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="col-11 table-align-center pt-5">
+	<div class="container-fluid col-11">
+
+		<table class="table table-striped" data-search="true" id="listFinanceWdsActionRatingTable1">
+
+			<tbody>
+				@if (Model.Count > 1)
+				{
+				<thead>
+					<tr class="table-bg-color-header">
+						<td>Місце</td>
+						<td>Контрагент</td>
+						<td>К-сть</td>
+					</tr>
+				</thead>
+				foreach (var b in Model)
+				{
+
+					<tr >
+						<td>@n</td>
+						<td>@b.CustomerName</td>
+						<td>@b.RatingSum</td>
+					</tr>
+					n++;
+				}
+			}
+				</tbody>
+
+			</table>
+
+		</div>
+	</div>

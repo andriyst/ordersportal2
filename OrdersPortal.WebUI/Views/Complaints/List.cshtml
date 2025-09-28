@@ -1,0 +1,289 @@
+﻿@{
+	ViewBag.Title = "Список завантажених рекламацій";
+	string status = "notwork";
+}
+
+
+<div style="display:inline;">
+	<h1><span id="totalOrders"></span> Рекламацій</h1>
+</div>
+<div style="display:inline;">
+
+	@if (User.IsInRole("customer"))
+	{
+
+		<div class="clearfix pb-3 pt-1">
+			<a href="/Complaints/AddComplaint" class="btn btn-success float-start">
+				Додати Рекламацію
+			</a>
+			<a href="~/Files/Правила_прийому_рекламацій_06_05_2025.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-warning float-end">Правила прийому рекламацій</a>
+		</div>
+
+		@*<div class="float-left">
+				<a href="/Complaints/AddComplaint" class="btn btn-success">Додати Рекламацію</a>
+			</div>
+
+			<div class="float-end">
+				<a href="~/Files/Правила_прийому_рекламацій_06_05_2025.pdf" class="btn btn-warning">Правила подання рекламації</a>
+			</div>*@
+	}
+
+</div>
+
+<div style="margin-top: 15px; display:inline;">
+	<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+
+		<input type="radio" class="btn-check" name="orders-sort" id="orders-all-radio" autocomplete="off" checked="checked" value="0">
+		<label class="status-choice btn btn-outline-info" for="orders-all-radio">Всі</label>
+
+		<input type="radio" class="btn-check" name="orders-sort" id="orders-uploaded-radio" autocomplete="off" value="1">
+		<label class="status-choice btn btn-outline-info" for="orders-uploaded-radio">Завантажені</label>
+
+
+		<input type="radio" class="btn-check" name="orders-sort" id="orders-inorder-radio" autocomplete="off" value="2">
+		<label class="status-choice btn btn-outline-info" for="orders-inorder-radio">Обробка</label>
+
+		<input type="radio" class="btn-check" name="orders-sort" id="orders-onstock-radio" autocomplete="off" value="3">
+		<label class="status-choice btn btn-outline-info" for="orders-onstock-radio">На складі</label>
+
+
+		<input type="radio" class="btn-check" name="orders-sort" id="orders-inprod-radio" autocomplete="off" value="4">
+		<label class="status-choice btn btn-outline-info" for="orders-inprod-radio">Виробництво</label>
+
+
+		<input type="radio" class="btn-check" name="orders-sort" id="orders-solved-radio" autocomplete="off" value="5">
+		<label class="status-choice btn btn-outline-info" for="orders-solved-radio">Вирішено</label>
+
+		<input type="radio" class="btn-check" name="orders-sort" id="orders-canceled-radio" autocomplete="off" value="6">
+		<label class="status-choice btn btn-outline-info" for="orders-canceled-radio">Відмова</label>
+
+
+	</div>
+</div>
+
+
+
+<div id="complaints-table">
+</div>
+
+<div>
+	<table id="listComplaintsTable1"></table>
+</div>
+<div id="ShowComplaintDetail">
+</div>
+
+<script type="text/javascript">
+
+	 $(document).ready(function () {
+
+        $('#listComplaintsTable1').bootstrapTable({
+            locale: 'uk-UA',
+            columns: [
+				{
+					title: 'Номер',
+	                width: '80px',
+	                sortable: true,
+					field: 'ComplaintId'
+                },{
+					field: 'ComplaintOrderNumber',
+					title: 'Номер 1C',
+                    width: '80px',
+                    sortable: true
+                },{
+					field: 'ComplaintDate',
+					title: 'Дата',
+					width: '80px',
+					sortable: true
+				},{
+					field: 'ComplaintDescription',
+					title: 'Коментар',
+					width: '240px',
+                    sortable: false
+				}, {
+		            visible: @(!User.IsInRole("customer") ?"true":"false"),
+		            field: 'CustomerName',
+					title: 'Контрагент',
+					width: '100px',
+					formatter: customerFormatter
+	            },{
+					field: 'ComplaintSolution',
+                    title: 'Вирішення',
+                    width: '240px',
+                    sortable: true
+
+				},{
+
+                    field: 'StatusName',
+					title: ' Статус',
+                    width: '100px'
+				}
+            ],
+            onClickRow: function (row, $element) {
+                // row: the record corresponding to the clicked row,
+                // $element: the tr element.
+                //  alert('SingleClick');
+            },
+            onDblClickRow: function (row, $element) {
+                // row: the record corresponding to the clicked row,
+                // $element: the tr element.
+               // window.location.href = '/Orders/Edit/' + row['Id'];
+                //alert(row['ComplaintId']);
+				ShowComplaintDetail(row['ComplaintId']);
+            },
+            onLoadSuccess: function () {
+				OrderColours();
+
+				$('.orderDetailLink').on('click', function () {
+					ShowOrderDetail(this.id);
+				});
+
+				$('.orderFileLink').on('click', function () {
+					GetOrderFileLink(this.id);
+				});
+
+			},
+            rowStyle :  function(row, index) {
+	            return {
+		            classes: 'newPointer'
+				};
+			},
+
+            sidePagination: 'server',
+            pagination: true,
+            showPaginationSwitch: false,
+            striped: true,
+            pageList: [10, 25, 50, 'All'],
+            showToggle: false,
+            showColumns: false,
+            showRefresh: false,
+            detailView: false,
+            cardView: false,
+            clickToSelect: false,
+            singleSelect: false,
+			search: true,
+            loadingFontSize : '18px',
+            url: '@Html.Raw(Url.Action("TableDataGetComplaints", "Complaints"))'
+		 });
+
+
+
+	 });
+
+
+    function operateFormatter(value, row, index) {
+		$('#listComplaintsTable1').addClass('table-striped');
+
+        return ['<span style="float:left;margin:3px;" class="row-edit"><a href="javascript:void(0)"><i class="fa fa-pencil fa-lg" title="Редагувати"></i></a></span>'
+            , '<span style="float:left;margin:3px;" class="row-remove"><a href="javascript:void(0)"><i class="fa fa-times fa-lg" title="Видалити" style="color:red;"></i></span>'
+        ].join('');
+    }
+	function customerFormatter(value, row, index) {
+
+		return '<div>' + row['CustomerName'] + '</div> <div class="text-success">' + row['OrganizationName'] + '</div>';
+	}
+	 function messageFormatter(value, row, index) {
+
+		 return ['<div style="display:inline-block"><span style="float:left;">[' + row['LastMessageTime'] + ']::</span>', '<span style="float:left;"><b> ' + row['LastMessageWriter'] + '</b></span></div>',
+			 '<div style="text-align:right;width:100%">' + row['LastMessage'] + '</div>',
+			 '<br> <a href="#"> <div class="table-comment-add" onclick="javascript:ShowAllMessages(' + row['OrderId'] + ')">[Додати коментар]</div></a>']
+			 .join('');
+	 }
+
+    //---------------------------
+    window.operateEvents = {
+        'click .row-edit': function (e, value, row, index) {
+            window.location.href = '/Complaint/Edit/' + row['Id'];
+        },
+
+		'click .row-comments': function (e, value, row, index) {
+            ShowDocumentMessages(row['ComplaintId']);
+            $(e.currentTarget).removeClass('unread-messages');
+		}
+	};
+
+
+
+	$('input:radio[name="orders-sort"]').change(function () {
+
+		$('#listComplaintsTable1').bootstrapTable("refreshOptions", { url: '/Complaints/TableDataGetComplaints?status=' + $(this).val() });
+    });
+
+
+	 function OrderColours() {
+		 var countRows = $('#listComplaintsTable1').bootstrapTable('getOptions').totalRows;
+
+		 $('#totalOrders').text(countRows);
+
+		 $("td:contains('Завантажено')").each(function () {
+			 $(this).addClass("btn-upload1 disabled");
+		 });
+		 $("td:contains('Відмова')").each(function () {
+			 $(this).addClass("btn-refuse1 disabled");
+		 });
+		 $("td:contains('Очікує підтвердження')").each(function () {
+			 $(this).addClass("btn-approve1 disabled");
+		 });
+		 $("td:contains('Очікує оплати')").each(function () {
+			 $(this).addClass("btn-pay1 disabled");
+		 });
+		 $("td:contains('Виробництво')").each(function () {
+			 $(this).addClass("btn-success disabled");
+		 });
+		 $("td:contains('Розглянуто')").each(function () {
+			 $(this).addClass("btn-warning disabled");
+		 });
+		 $("td:contains('До розгляду')").each(function () {
+			 $(this).addClass("btn-warning disabled");
+		 });
+		 $("td:contains('Обробка')").each(function () {
+			 $(this).addClass("btn-warning disabled");
+		 });
+		 $("td:contains('Отримано')").each(function () {
+			 $(this).addClass("btn-warning disabled");
+		 });
+		 $("td:contains('В роботі')").each(function () {
+			 $(this).addClass("btn-danger disabled");
+		 });
+		 $("td:contains('Відвантажено')").each(function () {
+			 $(this).addClass("btn-success disabled");
+		 });
+		 $("td:contains('На складі')").each(function () {
+			 $(this).addClass("btn-storage1 disabled");
+		 });
+	 }
+	 function ShowComplaintDetail(complaintId) {
+		 var url = "/Complaints/ShowComplaintDetail";
+		 $.ajax({
+			 url: url,
+			 contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+			 type: "GET",
+			 data: {
+				 complaintid: complaintId
+			 },
+			 success: function (data) {
+				 $("#ShowComplaintDetail").html(data);
+				 $('#ComplaintDetail').modal('show');
+
+			 }
+		 });
+	};
+
+
+
+		 //function ShowPhoto(PhotoId) {
+			// var url = "/Complaints/ShowPhoto";
+			// $.ajax({
+			//	 url: url,
+			//	 contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+			//	 type: "POST",
+			//	 data: {
+			//		 photoid: PhotoId
+			//	 },
+			//	 success: function (data) {
+			//		 var w = window.open();
+			//		 $(w.document.body).html(data);
+			//	 }
+
+			// });
+		 //};
+</script>

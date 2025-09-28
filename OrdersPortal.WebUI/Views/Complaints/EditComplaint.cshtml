@@ -1,0 +1,320 @@
+﻿@model OrdersPortal.Application.Models.ViewModels.EditComplaintViewModel
+@{
+    ViewBag.Title = "Редагувати рекламацію";
+    var index = 0;
+    //var Photos = Model.File;
+    //List<ComplaintDetailPhotoViewModel> PhotosThubnail = new List<ComplaintDetailPhotoViewModel>();
+    //foreach (var a in Photos)
+    //{
+    //  //  PhotosThubnail.Add(a.)
+        
+    //}
+	}
+<input type="hidden" name="order" value="false">
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("EditComplaint", "Complaints", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <hr />
+    @Html.ValidationSummary()
+    
+    @Html.HiddenFor(m => m.ComplaintOrderNumber)
+    @Html.HiddenFor(m => m.ComplaintId)
+    @Html.HiddenFor(m => m.CustomerName)
+    @Html.HiddenFor(m => m.ManagerName)
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ComplaintOrderNumber, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Model.ComplaintOrderNumber
+        </div>
+    </div>
+
+    foreach (var item in Model.ComplaintsOrderSeries)
+    {
+        <div class="form-group">
+            <div class="col-md-2 control-label"></div>
+            <div class="col-md-10">
+
+                <input type="hidden" name="ComplaintsOrderSeries[@index].SerieName" id="@item.SerieName" autocomplete="off" value="@item.SerieName" />
+                <input type="hidden" name="ComplaintsOrderSeries[@index].SerieGuid" id="@item.SerieGuid" autocomplete="off" value="@item.SerieGuid" />
+                <input type="checkbox" data-val="true" value="true" name="ComplaintsOrderSeries[@index].Checked" id="ComplaintsOrderSeries[@index]" @(item.Checked ? "checked=checked  value=true": "" ) autocomplete="off"  />
+
+                <div class="btn-group">
+                    <label for="ComplaintsOrderSeries[@index]" class="btn btn-standart">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        <span> </span>
+                    </label>
+                    <label for="ComplaintsOrderSeries[@index]" class="btn btn-default active">
+
+                        @item.SerieName
+
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        index++;
+
+    }
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ComplaintOrderDeliverDate, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+          @Model.ComplaintOrderDeliverDate.ToShortDateString()
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ComplaintOrderDefineDate, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Model.ComplaintOrderDefineDate.ToShortDateString()
+        </div>
+    </div>
+
+    //-------------------------------------------------------------------
+    <div class="form-group">
+        <table class="table table-striped table-hover" data-toggle="table" id="decisiontable" onclick="OrderColours()">
+            <thead>
+            <tr>
+
+                <th data-sortable="true" class="table-width40">№</th>
+                <th data-sortable="true" class="table-width80">Дата</th>
+                <th data-sortable="true" class="table-width150">Причина</th>
+	            <th data-sortable="true" class="table-width150">Вирішення</th>
+	            <th data-sortable="true" class="table-width150">Опис</th>
+
+                <th data-sortable="true" class="normal-wrap table-width80">Узг. Дилером</th>
+                <th data-sortable="true" class="normal-wrap table-width80">Узг. Менеджером</th>
+
+
+
+            </tr>
+            </thead>
+
+            <tbody>
+
+            @foreach (var b in Model.ComplaintDecisions)
+            {
+                <tr class='clickable-row' data-href='javascript:ShowComplaintDetail(@b.ComplaintId)'>
+                    <td>@b.ComplaintId</td>
+                    <td>@b.CreateDate</td>
+                    <td>@b.ComplaintIssue.IssueText</td>
+                    <td>@b.ComplaintSolution.SolutionText</td>
+                    <td>@b.Description</td>
+                    <td>
+                        @if (b.CustomerApprove)
+                        {<img src="/Images/sm_YES.png">}
+                        else
+                        {<img src="/Images/sm_NO.png">}
+                    </td>
+                    <td>
+                        @if (b.ManagerApprove)
+                        {<img src="/Images/sm_YES.png">}
+                        else
+                        {<img src="/Images/sm_NO.png">}
+                    </td>
+                </tr>
+            }
+
+            </tbody>
+
+        </table>
+    </div>
+    //----------------------------------------------------------------------------
+
+    @Html.HiddenFor(m => m.CustomerName, new { Value = ViewBag.CustName })
+
+    
+
+    <div class="form-group" id="choice-role">
+        @Html.LabelFor(m => m.ComplaintIssues, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <div class="controls">
+                @Html.DropDownListFor(m => m.ComplaintIssue, Model.ComplaintIssues,
+                    new { @class = "form-control", style="min-width:600px;" ,id = "select-issue", onchange = "SolutionLoader();" })
+	            @Html.ValidationMessageFor(m=>m.ComplaintIssue)
+            </div>
+        </div>
+    </div>
+
+	
+    <div class="form-group" id="choice-role">
+        @Html.LabelFor(m => m.ComplaintSolutions, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <div class="controls">
+                @Html.DropDownListFor(m => m.ComplaintSolution, Model.ComplaintSolutions,
+                    new { @class = "form-control", style = "min-width:600px;", id = "select-solution" })
+	            @Html.ValidationMessageFor(m=>m.ComplaintSolution)
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ComplaintDescription, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(m => m.ComplaintDescription, new { @class = "form-control", @style = "max-width:600px; height:200px;" })
+        </div>
+    </div>
+
+    
+
+    //---------------
+    
+    <div class="col-md-12" style="padding-top:10px;">
+                    <div style="font-size:12px; font-weight:300; padding:3px;"> Фото рекламації:</div>
+                    @if (@Model.ComplaintPhotoThubmnails.Count > 0)
+                    {
+                        foreach (var b in @Model.ComplaintPhotoThubmnails)
+                        {
+                            if (b.ComplaintPhotoThumbnail != null)
+                            {
+                                <span style="padding:3px;">
+                                    @Html.Raw("<img style='width:80px; height:60px;' onclick='javascript:ShowPhoto(" + b.ComplaintPhotoId + ")' src=\"data:image/jpeg;base64,"
+                                + Convert.ToBase64String(b.ComplaintPhotoThumbnail) + "\" />")
+                                </span>
+                            }
+                            else
+                            {
+                                <div>
+                                    Немає фото
+                                </div>
+                            }
+                        }
+                    }
+                    
+                </div>
+    
+    //-------------------------------------
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="file" id="File" name="File" class="multi-photo with-preview" />
+        </div>
+    </div>
+
+    //------------------------------------------------
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-3">
+            <input id="addButton" type="submit"  class="btn btn-default" value="Змінити" />
+        </div>
+
+        <div class="col-md-offset-2 col-md-3">
+            <input id="cancelButton" type="button" class="btn btn-default" onclick="CancelButtonClick()" value="Відмінити" />
+        </div>
+    </div>
+
+}
+
+
+<script type="text/javascript">
+
+	jQuery.validator.methods["date"] = function (value, element) { return true; }
+
+
+    function CancelButtonClick() {
+
+        location.href = "/Complaints/ShowComplaintsList";
+    }
+
+</script>
+
+<script src="/Scripts/extra/jquery.MultiFile.js" type="text/javascript" language="javascript"></script>
+
+
+<script type="text/javascript">
+
+	
+
+
+    function CheckContrOrder() {
+        var url = "/Complaints/CheckOrder";
+        OrderNum = document.getElementById('orderNum').value;
+        $.ajax({
+            url: url,
+            contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+            type: "GET",
+            data: {
+                ordernum: OrderNum
+            },
+            success: function (data) {
+                $(".checkorderbox").html(data);
+                if ($("#checkOrder").hasClass("checkorderyes")) {
+                    $("#addButton").removeAttr("disabled");
+                } else {
+
+                    $("#addButton").prop('disabled', true);
+
+                }
+            }
+        });
+    };
+
+    function SolutionLoader() {
+
+        var issue = $("#select-issue").val();
+        var $dropdown = $("#select-solution");
+
+        $dropdown.empty();
+
+        if (issue != "") {
+            $.ajax({
+                url: "/Complaints/GetSolutions",
+                contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+                type: "GET",
+                data: {
+                    id: issue
+                },
+                success: function (data) {
+
+                    $.each(data, function () {
+                        $dropdown.append($("<option />").val(this.Value).text(this.Text));
+                    });
+                }
+            });
+        }
+    }
+</script>
+
+
+<script type="text/javascript">
+    // When the document is ready
+    $(document).ready(function () {
+
+        // RoleChecker();
+        //  $("#enable-checkbox").bootstrapSwitch();
+        $('#dp1').datepicker({
+            format: "dd.mm.yyyy"
+        });
+        $('#dp2').datepicker({
+            format: "dd.mm.yyyy"
+        });
+
+
+        $(function () {
+            $('.multi-photo').MultiFile({
+                accept: 'gif|jpg|jpeg|png',
+                max: 10,
+                STRING: {
+                    remove: 'X',
+                    selected: 'Обрано: $file',
+                    denied: 'Заборонено завантажувати даний тип фалів $ext!',
+                    duplicate: 'Дублікат:\n$file!'
+                }
+            });
+		});
+
+	    var issue = $("#select-issue").val();
+	    if (issue != null && issue > 0) {
+		    SolutionLoader();
+	    }
+    });
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

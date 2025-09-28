@@ -1,0 +1,366 @@
+﻿@model OrdersPortal.Application.Models.ViewModels.FinanceOrdersListViewModel
+@using Resources
+@{
+	ViewBag.Title = @Resources.Finance.Orders;
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("", "", new { id = "financeOrderForm" }))
+{
+	@Html.AntiForgeryToken()
+
+	<hr />
+	@Html.ValidationSummary()
+
+
+	<div class="btn-group btn-group-justified">
+
+		<div>
+			@Html.TextBoxFor(m => m.StartDate, new { @class = "btn btn-darkblue", id = "StartDate", Name = "startDateHs" })
+			@Html.TextBoxFor(m => m.EndDate, new { @class = "btn btn-darkblue", id = "EndDate", Name = "endDateHs" })
+			@*<div style="margin-left: 30px; display: inline;">
+					<button type="submit" class="btn btn-success">Оновити</button>
+				</div>*@
+			@if (!User.IsInRole("customer"))
+			{
+
+
+				@Html.DropDownListFor(m => m.ContrAgentCode,
+					Model.ContrAgentCodeList.Select(h => new SelectListItem { Text = h.Text, Value = h.Value }), new { data_live_search = true, @class = "selectpicker", id= "ContrAgentCode" })
+
+			}
+			else
+			{
+				@Html.HiddenFor(m => m.ContrAgentCode)
+			}
+
+			<div style="margin-left: auto; display: inline;">
+				<input type="button" class="btn btn-success" onclick="SubmitFinanceForm();" value="Пошук" />
+
+			</div>
+		</div>
+	</div>
+	<hr />
+}
+
+
+<input type="hidden" id="sumQuantity" value="">
+<input type="hidden" id="sumTotalValue" value="">
+<input type="hidden" id="sumAdvanceValue" value="">
+<input type="hidden" id="sumBalanceValue" value="">
+
+<div>
+	<table id="listFinanceOrdersTable1"></table>
+</div>
+<script type="text/javascript">
+	// When the document is ready
+	$(document).ready(function () {
+
+
+
+		$('#StartDate').datepicker({
+
+			format: "dd.mm.yyyy"
+		});
+		$('#EndDate').datepicker({
+			format: "dd.mm.yyyy"
+		});
+		$('#StartDate').val("@Model.StartDate.ToShortDateString()");
+		$('#EndDate').val("@Model.EndDate.ToShortDateString()");
+
+
+	});
+</script>
+<script type="text/javascript">
+
+	function MyFunc() {
+		alert(1);
+	}
+
+	function provideFeedbacksList(params) {
+		var tableData = params.data;
+
+		var serverCall = {};
+
+		// add limits and offset provided by bootstrap table
+		serverCall["Offset"] = tableData.offset;
+		serverCall["Limit"] = tableData.limit;
+		serverCall["Order"] = tableData.order;
+		serverCall["Search"] = tableData.search;
+		serverCall["Sort"] = tableData.sort;
+		serverCall["ContrAgentCode"] = tableData.ContrAgentCode;
+		//serverCall["StartDate"] = tableData.StartDate;
+
+		var pattern = /(\d{2})\.(\d{2})\.(\d{4})/;
+		serverCall["StartDate"] = new Date(tableData.StartDate.replace(pattern, '$3-$2-$1')).toDateString();
+		serverCall["EndDate"] = new Date(tableData.EndDate.replace(pattern, '$3-$2-$1')).toDateString();
+
+
+	//	var json = JSON.stringify(serverCall); //for POST query
+
+
+		$.ajax({
+			url: '@(Html.Raw(Url.Action("TableDataGetFinanceOrders", "Finance")))',
+			type: "GET",
+			dataType: "json",
+			contentType: "application/json; charset=utf-8",
+			data: serverCall,
+			success: function (response) {
+				params.success(response);
+
+				$('#footer_Quantity').text(response.SumQuantityConstructions);
+				$('#footer_TotalValue').text(parseFloat(response.SumTotalValue).toFixed(2));
+				$('#footer_AdvanceValue').text(parseFloat(response.SumAdvanceValue).toFixed(2));
+				$('#footer_BalanceValue').text(parseFloat(response.SumBalanceValue).toFixed(2));
+
+
+			},
+			error: function (er) {
+				params.error(er);
+			}
+		});
+	}
+	function SubmitFinanceForm() {
+
+
+		if (!$('#listFinanceOrdersTable1').html()) {
+
+			$('#listFinanceOrdersTable1').bootstrapTable({
+				locale: 'uk-UA',
+				columns: [
+					{
+						field: 'ShipmentDate',
+						visible: false
+					},
+					{
+						field: 'Number',
+						title: '@Finance.OrderNumber',
+						sortable: true,
+						width: '10',
+						widthUnit: '%',
+						//formatter: rightFormatter,
+						footerFormatter: ShowFooterFormatterString()
+					},
+					{
+						field: 'StartDate',
+						title: '@Finance.CreateDate',
+						width: '10',
+						widthUnit: '%',
+						formatter: dateFormatter,
+						sortable: true
+					},
+					{
+						field: 'ReadyDate',
+						title: '@Finance.ReadyDate',
+						width: '10',
+						widthUnit: '%',
+						formatter: rightFormatter,
+						sortable: true
+					},
+					{
+						field: 'DelayDate',
+						title: '@Finance.DelayDate',
+						width: '10',
+						widthUnit: '%',
+						formatter: rightFormatter,
+						sortable: true
+					},
+					{
+						field: 'QuantityConstructions',
+						title: ' @Finance.Quantity',
+						sortable: true,
+						width: '9',
+						widthUnit: '%',
+						formatter: rightFormatter,
+						footerFormatter: ShowFooterDigitalFormatterValue('Quantity')
+					},
+					{
+						field: 'TotalValue',
+						title: '@Finance.OrderAmount',
+						width: '11',
+						widthUnit: '%',
+						sortable: true,
+						formatter: digitalFormatter,
+						footerFormatter: ShowFooterDigitalFormatterValue('TotalValue')
+
+					},
+					{
+						field: 'AdvanceValue',
+						title: '@Finance.Advance',
+						sortable: true,
+						width: '10',
+						widthUnit: '%',
+						formatter: digitalFormatter,
+						footerFormatter: ShowFooterDigitalFormatterValue('AdvanceValue')
+
+					},
+					{
+						field: 'BalanceValue',
+						title: '@Finance.Balance',
+						sortable: true,
+						width: '10',
+						widthUnit: '%',
+						formatter: digitalFormatter,
+						footerFormatter: ShowFooterDigitalFormatterValue('BalanceValue')
+
+					},
+					{
+						field: 'ShipmentDate',
+						title: '@Finance.DeliveryDate',
+						width: '10',
+						widthUnit: '%',
+						formatter: rightFormatter,
+						sortable: true
+					},
+					{
+						field: 'Status',
+						title: '@Finance.Status',
+						formatter: statusFormatter,
+						cellStyle: statusCellStyle,
+						sortable: true
+					}
+				],
+				onClickRow: function(row, $element) {
+					// row: the record corresponding to the clicked row,
+					// $element: the tr element.
+					//  alert('SingleClick');
+				},
+				onDblClickRow: function(row, $element) {
+					// row: the record corresponding to the clicked row,
+					// $element: the tr element.
+					//window.location.href = '/Orders/Edit/' + row['Id'];
+				},
+				onLoadSuccess: function() {
+					$('#listFinanceOrdersTable1 thead tr th .th-inner').addClass('pull-right');
+
+				},
+				sidePagination: 'server',
+				pagination: true,
+				showPaginationSwitch: false,
+				striped: true,
+				pageSize: 25,
+				pageList: [25, 50, 'All'],
+				//showToggle: true,
+				showColumns: false,
+				showRefresh: false,
+				//detailView: false,
+				showFooter: true,
+				//cardView: false,
+				icons: { toggle: 'fa fa-id-card-o' },
+				//height: 615,
+				clickToSelect: true,
+				singleSelect: false,
+				search: true,
+				searchAlign: 'right',
+				loadingFontSize : '18px',
+			
+
+				queryParams: function(params) {
+					return {
+						ContrAgentCode: $('#ContrAgentCode').val(),
+						StartDate: $('#StartDate').val(),
+						EndDate: $('#EndDate').val(),
+						limit: params.limit,
+						offset: params.offset,
+						order: params.order,
+						search: params.search,
+						sort: params.sort
+					};
+				},
+				ajax: provideFeedbacksList,
+				//url: '@(Html.Raw(Url.Action("TableDataGetFinanceOrders", "Finance")))'
+			});
+
+		} else {
+			$('#listFinanceOrdersTable1').bootstrapTable('refresh');
+		}
+	};
+
+	function ShowFooterDigitalFormatterValue(name) {
+		var idValue = '<div class="pull-right" id="footer_' + name + '" ></div>';
+		return idValue;
+	}
+function ShowFooterCenterFormatterValue(name) {
+	var idValue = '<div class="text-center" id="footer_' + name + '" ></div>';
+		return idValue;
+	}
+
+	function ShowFooterFormatterString() {
+		return '<b>'+'@Finance.Total'+'</b>';
+	}
+	function digitalFormatter(value, row, index) {
+
+		return '<div class="pull-right">' + parseFloat(value).toFixed(2) + '</div>';
+	}
+	function centerFormatter(value, row, index) {
+
+		return '<div class="text-center">' + value + '</div>';
+	}
+	function rightFormatter(value, row, index) {
+
+		return '<div class="pull-right">' + value + '</div>';
+	}
+function statusFormatter(value, row, index) {
+		var result;
+		if (value == 1) {
+			result = '<div class="pull-right" style="text-align:right">'+ ' @Finance.InWork '+'</div>';
+		}
+		else if (value == 2) {
+			result = '<div class="pull-right" style="text-align:right">' + ' @Finance.InStock ' +'</div>';
+		}
+		else {
+			result = '<div class="pull-right" style="text-align:right">' + ' @Finance.Shipped ' + row.ShipmentDate +'</div>';
+		}
+
+		return result;
+	}
+	function statusCellStyle(value, row, index, field) {
+		if (value == 1) {
+			var result = {
+				css: { "background-color": "#d84435" }
+			};
+			if (isOdd(index)) {
+
+				result = {
+					css: { "background-color": "#d9534f" }
+				};
+			}
+		} else if (value == 2) {
+			var result = {
+				css: { "background-color": "#e2a500" }
+			};
+			if (isOdd(index)) {
+
+				result = {
+					css: { "background-color": "#ffba00" }
+				};
+			}
+		} else {
+			var result = {
+				css: { "background-color": "seagreen" }
+			};
+			if (isOdd(index)) {
+
+				result = {
+					css: { "background-color": "#449d44" }
+				};
+			}
+		}
+
+
+
+		return result;
+	}
+	function isOdd(n) {
+		return Math.abs(n % 2) == 1;
+	}
+	function dateFormatter(value, row, index) {
+
+		var result = moment(value).format('DD.MM.YYYY');
+		return '<div class="pull-right">' + result + '</div>';
+	}
+
+
+
+</script>

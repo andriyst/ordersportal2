@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{90A74C50-5071-42C2-9E8B-B5793CE36F30}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OrdersPortal.Services</RootNamespace>
+    <AssemblyName>OrdersPortal.Services</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=5.11.6.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.9\lib\net47\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.10.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.9\lib\net47\Unity.Container.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="Connected Services\WebOrder1cService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\WebPortal1cService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\WebPortalComplaints1cService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\WebPortalOrderBillService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ComplaintWeb1cService.cs" />
+    <Compile Include="Services\WebOrderServices.cs" />
+    <Compile Include="Services\CustomersServices.cs" />
+    <Compile Include="Services\VstWeb1cService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OrdersPortal.Domain\OrdersPortal.Domain.csproj">
+      <Project>{96ab6c29-ca83-4059-8ef5-2321fcf944ab}</Project>
+      <Name>OrdersPortal.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OrdersPortal.Infrastructure\OrdersPortal.Infrastructure.csproj">
+      <Project>{f1123bc8-097d-434c-b2b2-a6302f8fc95a}</Project>
+      <Name>OrdersPortal.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WebOrder1cService\OrdersPortal.Services.WebOrder1cService.complectations_list.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebOrder1cService\OrdersPortal.Services.WebOrder1cService.ContractSumm.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebOrder1cService\OrdersPortal.Services.WebOrder1cService.CreatePaymentDocumentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebOrder1cService\OrdersPortal.Services.WebOrder1cService.fin_sectionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebOrder1cService\OrdersPortal.Services.WebOrder1cService.GetAdvanceContractSummResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebOrder1cService\OrdersPortal.Services.WebOrder1cService.GetComplectationPriceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebOrder1cService\OrdersPortal.Services.WebOrder1cService.GetComplectationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebOrder1cService\OrdersPortal.Services.WebOrder1cService.GetLaminaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebOrder1cService\OrdersPortal.Services.WebOrder1cService.GetLaminaVSColorResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebOrder1cService\OrdersPortal.Services.WebOrder1cService.GetNomenklaturaGroupResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebOrder1cService\OrdersPortal.Services.WebOrder1cService.GetNomenklaturaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebOrder1cService\OrdersPortal.Services.WebOrder1cService.GetNomVSCompResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebOrder1cService\OrdersPortal.Services.WebOrder1cService.group_list.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebOrder1cService\OrdersPortal.Services.WebOrder1cService.nom_list.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebOrder1cService\OrdersPortal.Services.WebOrder1cService.nom_vs_comp_list.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebOrder1cService\WebOrder1.wsdl" />
+    <None Include="Connected Services\WebPortal1cService\cportal_vs.wsdl" />
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.debt_list.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.debt_movement_L.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.debt_movement_L_2019.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.diag_list.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.GetManagersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.GetManagers_by_organizationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.GetRegionalManagersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.GetRegionalManagers_by_organizationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.get_debt_movement2019Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.get_debt_movementResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.get_diag_uni2Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.get_diag_uniResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.get_kontr_debtResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.get_kontr_debt_detailedResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.get_kontr_listResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.get_kontr_list_by_organizationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.get_manager_kontr_listResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.get_money_movementResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.get_orders_dynamicsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.get_order_listResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.get_order_list_by_organizationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.get_organization_listResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.get_personal_ratingResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.get_rating1Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.get_rating2024Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.get_short_order_listResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.get_wdsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.kontr_list.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.list_WDS.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.managers_list.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.money_movement_L.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.orders_dynamics_list.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.order_list.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.organization_list.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.rating1_list.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.set_orderparts_stateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.set_order_state_wait_for_payResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.set_order_state_wait_for_pay_by_orgResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortal1cService\OrdersPortal.Services.WebPortal1cService.short_order_list.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortalComplaints1cService\complaints1.wsdl" />
+    <None Include="Connected Services\WebPortalComplaints1cService\OrdersPortal.Services.WebPortalComplaints1cService.check_kontr_orderResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortalComplaints1cService\OrdersPortal.Services.WebPortalComplaints1cService.getComplaintIssuesListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortalComplaints1cService\OrdersPortal.Services.WebPortalComplaints1cService.getComplaintSeriesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortalComplaints1cService\OrdersPortal.Services.WebPortalComplaints1cService.getComplaintSolutionsListByIssueResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortalComplaints1cService\OrdersPortal.Services.WebPortalComplaints1cService.issues_list.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortalOrderBillService\cportal_bill_vs11.wsdl" />
+    <None Include="Connected Services\WebPortalOrderBillService\OrdersPortal.Services.WebPortalOrderBillService.bill_listDATA.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortalOrderBillService\OrdersPortal.Services.WebPortalOrderBillService.CustomerOrderDATA.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortalOrderBillService\OrdersPortal.Services.WebPortalOrderBillService.get_customer_bill_infoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WebPortalOrderBillService\OrdersPortal.Services.WebPortalOrderBillService.get_customer_bill_listResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\WebOrder1cService\" />
+    <WCFMetadataStorage Include="Connected Services\WebPortal1cService\" />
+    <WCFMetadataStorage Include="Connected Services\WebPortalComplaints1cService\" />
+    <WCFMetadataStorage Include="Connected Services\WebPortalOrderBillService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebPortalComplaints1cService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebPortalComplaints1cService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebPortalComplaints1cService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebPortal1cService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebPortal1cService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebPortal1cService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebOrder1cService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebOrder1cService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebOrder1cService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebPortalOrderBillService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebPortalOrderBillService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebPortalOrderBillService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

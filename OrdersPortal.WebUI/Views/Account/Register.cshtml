@@ -1,0 +1,411 @@
+﻿@model OrdersPortal.Application.Models.RegisterUserViewModel
+@{
+	/**/
+
+	ViewBag.Title = "Реєстрація користувача";
+}
+
+<div class="row">
+	<div class="col-12 col-md-9 col-lg-6 col-xl-4">
+
+		@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+		{
+			@Html.AntiForgeryToken()
+			<h4>@ViewBag.Title</h4>
+			<hr />
+			@Html.ValidationSummary()
+
+			<div class="form-group">
+				@Html.LabelFor(m => m.UserName, new { @class = "col-8 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+				</div>
+			</div>
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.Password, new { @class = "col-8 control-label" })
+				<div class="col-12">
+					@Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+				</div>
+			</div>
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-8 control-label" })
+				<div class="col-12">
+					@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+				</div>
+			</div>
+
+			<div class="form-group pt-2" id="choice-role">
+				@Html.LabelFor(m => m.Role, new { @class = "col-8 control-label" })
+				<div class="col-12">
+					<div>
+						@Html.DropDownListFor(m => m.Role, Model.RolesList.Select(x=>new SelectListItem
+						{
+							Text = x.DisplayUserRole,
+							Value =  x.UserRole
+						}), new { @class = "form-select", @id = "select-role", @onchange = "RoleChecker();" })
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group pt-2 field-customerorganiztion border-danger">
+				@Html.LabelFor(m => m.OrganizationSelectedList, new { @class = "col-11 control-label" })
+				<div class="col-12">
+					@Html.DropDownListFor(m => m.OrganizationSelectedList, Model.OrganizationList.Select(x => new SelectListItem
+					{
+						Text = x.OrganizationName,
+						Value = x.OrganizationId.ToString()
+					}), new { @class = "form-select", @id = "select-customerorganiztion", @onchange = "OrganizationLoad();" })
+				</div>
+			</div>
+
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.FullUserName, new { @class = "col-8 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.FullUserName, new { @class = "form-control" })
+				</div>
+			</div>
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.Tel, new { @class = "col-8 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.Tel, new { @class = "form-control" })
+				</div>
+			</div>
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.EMail, new { @class = "col-8 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.EMail, new { @class = "form-control" })
+				</div>
+			</div>
+
+
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.RegionId, new { @class = "control-label" })
+				<div class="col-12">
+					<div>
+						@Html.DropDownListFor(m => m.RegionId, Model.RegionList.Select(x=>new SelectListItem
+						{
+							Text = x.RegionName,
+							Value = x.RegionId.ToString()
+						}), new { @class = "form-select", @id = "select-role", @onchange = "RoleChecker();" })
+					</div>
+				</div>
+			</div>
+
+
+
+			<div id="regionManagersUpload">
+			</div>
+			<div id="regionManagersGuidsUpload">
+			</div>
+
+
+			<div id="managersUpload">
+			</div>
+			<div id="managersGuidsUpload">
+			</div>
+
+			<div id="contrCodesUpload">
+			</div>
+
+
+
+			<div class="form-group  pt-2 field-permitfinance">
+				@Html.LabelFor(m => m.PermitFinanceInfo, new { @class = "col-11 control-label" })
+				<div class="col-12">
+
+					@Html.CheckBoxFor(m => m.PermitFinanceInfo, new { @id = "permitfinance-checkbox", @checked = "checked" })
+
+
+				</div>
+			</div>
+
+			<div class="form-group  pt-2 field-autoconfirm">
+				@Html.LabelFor(m => m.AutoConfirmOrder, new { @class = "col-11 control-label" })
+				<div class="col-12">
+
+					@Html.CheckBoxFor(m => m.AutoConfirmOrder, new { @id = "autoconfirm-checkbox", @checked = "checked" })
+
+
+				</div>
+			</div>
+
+			<div class="form-group  pt-2">
+				@Html.LabelFor(m => m.Enable, new { @class = "col-11 control-label" })
+				<div class="col-12">
+
+					@Html.CheckBoxFor(m => m.Enable, new { @id = "enable-checkbox", @checked = "checked" })
+
+
+				</div>
+			</div>
+			<div class="form-group  pt-2">
+				@Html.LabelFor(m => m.ExpireDate, new { @class = "col-8 control-label" })
+				<div class="col-12">
+
+					@Html.TextBoxFor(m => m.ExpireDate, new { @class = "btn btn-secondary", id = "ExpireDate", Name = "ExpireDate" })
+				</div>
+			</div>
+
+			<div class="form-group pt-2 field-photo">
+				@Html.LabelFor(m => m.Photo, new { @class = "col-2 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.Photo, new { @class = "uploadfiletext form-control", type = "file" })
+				</div>
+
+			</div>
+
+
+			//------------------------------------------------------------------
+
+
+			<div class="row justify-content-between pt-4">
+
+				<div class="col-6">
+					<input id="addButton" type="submit" class="btn btn-success" value="Зареєструвати" />
+				</div>
+
+				<div class="col-6">
+					<input id="cancelButton" type="button" class="btn btn-secondary float-right" onclick="CancelButtonClick()" value="Відмінити" />
+				</div>
+
+			</div>
+
+		}
+	</div>
+</div>
+
+<script type="text/javascript">
+
+	jQuery.validator.methods["date"] = function (value, element) { return true; }
+
+</script>
+
+
+
+<script type="text/javascript">
+	// When the document is ready
+	$(document).ready(function () {
+
+		RoleChecker();
+		$("#enable-checkbox").bootstrapSwitch();
+		$("#autoconfirm-checkbox").bootstrapSwitch();
+		$("#permitfinance-checkbox").bootstrapSwitch();
+
+		$('#ExpireDate').datepicker({
+			format: "dd.mm.yyyy"
+		});
+		$('#ExpireDate').val("@Model.ExpireDate.ToShortDateString()");
+	});
+</script>
+
+
+<script type="text/javascript">
+	function OrganizationCustomerLoad() {
+
+		if ($('#select-customerorganiztion').val() > 0 && $("#select-role").val() == 'customer') {
+			var url = "/Account/LoadCustomerCodesByOrg";
+			var orgID = $('#select-customerorganiztion').val();
+			$.ajax({
+				url: url,
+				contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+				type: "GET",
+				data: {
+					orgId: orgID
+				},
+				success: function (data) {
+					$("#contrCodesUpload").html(data);
+
+				}
+			});
+		}
+	}
+	function ManagerLoad() {
+		var url = "/Account/LoadManagersByOrg";
+		var orgID = $('#select-customerorganiztion').val();
+		$.ajax({
+			url: url,
+			contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+			type: "GET",
+			data: {
+				orgId: orgID
+			},
+			success: function (data) {
+				$("#managersUpload").html(data);
+
+			}
+		});
+
+	}
+
+	function RegionManagerLoad() {
+		var url = "/Account/LoadRegionManagersByOrg";
+		var orgID = $('#select-customerorganiztion').val();
+		$.ajax({
+			url: url,
+			contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+			type: "GET",
+			data: {
+				orgId: orgID
+			},
+			success: function (data) {
+				$("#regionManagersUpload").html(data);
+
+			}
+		});
+
+	}
+
+	function ManagerGuidsLoad() {
+		var url = "/Account/LoadManagers1cGuidsByOrg";
+		var orgID = $('#select-customerorganiztion').val();
+		$.ajax({
+			url: url,
+			contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+			type: "GET",
+			data: {
+				orgId: orgID
+			},
+			success: function (data) {
+				$("#managersGuidsUpload").html(data);
+
+			}
+		});
+
+	}
+
+	function RegionManagerGuidsLoad() {
+		var url = "/Account/LoadRegionManagers1cGuidsByOrg";
+		var orgID = $('#select-customerorganiztion').val();
+		$.ajax({
+			url: url,
+			contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+			type: "GET",
+			data: {
+				orgId: orgID
+			},
+			success: function (data) {
+				$("#regionManagersGuidsUpload").html(data);
+
+			}
+		});
+
+	}
+	function OrganizationLoad() {
+
+		if ($("#select-role").val() == 'customer') {
+
+			OrganizationCustomerLoad()
+			ManagerLoad();
+			RegionManagerLoad();
+
+		} else if ($("#select-role").val() == 'manager') {
+
+			RegionManagerLoad();
+			ManagerGuidsLoad($('#select-customerorganiztion').val());
+
+		} else if ($("#select-role").val() == 'regionmanager') {
+
+			RegionManagerGuidsLoad($('#select-customerorganiztion').val());
+		}
+	}
+	function RoleChecker() {
+
+		if ($("#select-role").val() == 'customer') {
+
+			ManagerLoad();
+			RegionManagerLoad();
+
+			//$(".field-regionmanager").toggle(true);
+			//$(".field-manager").toggle(true);
+			$(".field-region").toggle(true);
+			//$(".field-customercode").toggle(true);
+			$(".field-customerorganiztion").toggle(true);
+			$(".field-regionmanagerguid").toggle(false);
+			$(".field-managerguid").toggle(false);
+			$(".field-photo").toggle(false);
+			$(".field-permitfinance").toggle(true);
+			$(".field-autoconfirm").toggle(true);
+
+			$('#select-customerorganiztion').val('0').trigger('change');
+
+
+		} else if ($("#select-role").val() == 'manager') {
+
+			RegionManagerLoad();
+
+			ManagerGuidsLoad($('#select-customerorganiztion').val());
+
+			$(".field-regionmanager").toggle(false);
+			$(".field-customercode").toggle(false);
+			$(".field-region").toggle(false);
+			$(".field-manager").toggle(false);
+			$(".field-regionmanagerguid").toggle(false);
+			$(".field-managerguid").toggle(true);
+			$(".field-photo").toggle(true);
+			$(".field-permitfinance").toggle(false);
+			$(".field-autoconfirm").toggle(false);
+			$(".field-customerorganiztion").toggle(true);
+
+			$('#select-customerorganiztion').val('0').trigger('change');
+
+
+		} else if ($("#select-role").val() == 'regionmanager') {
+
+
+			RegionManagerGuidsLoad($('#select-customerorganiztion').val());
+
+			$(".field-regionmanager").toggle(false);
+			$(".field-customercode").toggle(false);
+			$(".field-region").toggle(true);
+			$(".field-manager").toggle(false);
+			$(".field-regionmanagerguid").toggle(true);
+			$(".field-managerguid").toggle(false);
+			$(".field-photo").toggle(true);
+			$(".field-permitfinance").toggle(false);
+			$(".field-autoconfirm").toggle(false);
+			$(".field-customerorganiztion").toggle(true);
+
+
+			$('#select-customerorganiztion').val('0').trigger('change');
+
+		} else if ($("#select-role").val() == 'operator') {
+
+			$(".field-regionmanager").toggle(false);
+			$(".field-customercode").toggle(false);
+			$(".field-region").toggle(false);
+			$(".field-manager").toggle(false);
+			$(".field-regionmanagerguid").toggle(false);
+			$(".field-managerguid").toggle(false);
+			$(".field-photo").toggle(true);
+			$(".field-permitfinance").toggle(false);
+			$(".field-autoconfirm").toggle(false);
+			$(".field-customerorganiztion").toggle(true);
+		}
+		else {
+			$(".field-regionmanager").toggle(false);
+			$(".field-customercode").toggle(false);
+			$(".field-region").toggle(false);
+			$(".field-manager").toggle(false);
+			$(".field-regionmanagerguid").toggle(false);
+			$(".field-managerguid").toggle(false);
+			$(".field-photo").toggle(false);
+			$(".field-permitfinance").toggle(false);
+			$(".field-autoconfirm").toggle(false);
+			$(".field-customerorganiztion").toggle(true);
+
+		};
+	};
+
+	function CancelButtonClick() {
+
+		location.href = "/Account/UsersList";
+	}
+</script>
+
+
+
+
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}

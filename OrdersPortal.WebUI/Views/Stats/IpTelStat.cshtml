@@ -1,0 +1,244 @@
+﻿@using OrdersPortal.Application.Models
+@model OrdersPortal.Application.Models.ViewModels.IpTelStatViewModel
+@{
+    ViewBag.Title = "Статистика телефонних дзвінків";
+    int n = 0;
+    List<IpTelStatSummary> statistic = ViewBag.Stat;
+    int sum = statistic.Sum(x => x.TotalСalls());
+
+    double percents = 0;
+    double percentsbar = 0;
+
+}
+
+@*<script type="text/javascript" src="@Url.Content("/Scripts/extra/jquery.radios-to-slider.js")"></script>
+    <link href="@Url.Content("~/Content/extra/radios-to-slider.css")"
+          rel="stylesheet" type="text/css" />*@
+
+@using (Html.BeginForm("IpTelStat", "Stats", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+    <fieldset class="horizont-fieldset">
+        <legend>Оберіть період </legend>
+
+        <div class="form-group">
+
+            <div class="col-lg-10" id="time-radio">
+                <div class="radio-telstat">
+                    <label>
+                        <input class="RadioClass" name="opDate" id="opRadioDay" value="day" type="radio" checked="checked">
+                        Цей день
+                    </label>
+                </div>
+                <div class="radio-telstat">
+                    <label>
+                        <input class="RadioClass" name="opDate" id="opRadioWeek" value="week" type="radio">
+                        Цей тиждень
+                    </label>
+                </div>
+                <div class="radio-telstat">
+                    <label>
+                        <input class="RadioClass" name="opDate" id="opRadioMounth" value="mounth" type="radio">
+                        Цей місяць
+                    </label>
+                </div>
+                <div class="radio-telstat">
+                    <label>
+                        <input class="RadioClass" name="opDate" id="opRadioYear" value="year" type="radio">
+                        Цей рік
+                    </label>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="btn-group btn-group-justified">
+
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.DateStart, new { @class = "btn btn-default", id = "dp1" })
+                @Html.TextBoxFor(model => model.DateEnd, new { @class = "btn btn-default", id = "dp2" })
+                <div style="margin-left:30px;display:inline;">
+                    <button type="submit" class="btn btn-success">Обрати</button>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+}
+
+<div style="display:inline-block;">
+    <h2>Всього за період з @ViewBag.fromDate по @ViewBag.toDate: @sum дзвінків</h2>
+</div>
+
+
+@*@foreach (var a in statistic.GroupBy(x => x.UserName).Select(a => new { a.Key, CallsCount = a.Count() }).OrderByDescending(x => x.CallsCount))*@
+@foreach (var a in statistic.OrderByDescending(x => x.TotalСalls()))
+{
+    n++;
+
+    <div>
+
+
+        @{ percentsbar = Math.Round(((double)a.TotalСalls()) / sum * 100, 0); }
+        @{ percents = Math.Round(((double)a.TotalСalls()) / sum * 100, 2); }
+
+
+        @a.UserName : @a.TotalСalls() дзвінків<a href='javascript:ShowIpTelDetail("@a.TelNumber", "@ViewBag.fromDate", "@ViewBag.toDate","ANSWERED")'> <span class="alert-success">[ Отримані <b> @a.AnsweredCalls </b> ]</span></a><a href='javascript:ShowIpTelDetail("@a.TelNumber", "@ViewBag.fromDate", "@ViewBag.toDate","NO ANSWER")'><span class="alert-danger">[ Пропущені  <b>@a.NoAnsweredCalls</b> ]</span></a><a href='javascript:ShowIpTelDetail("@a.TelNumber", "@ViewBag.fromDate", "@ViewBag.toDate","DIALED")'><span class="alert-info">[ Набрані <b>@a.DialedCalls</b> ]</span></a>
+
+</div>
+    <div class="progress">
+        @if (n == 1)
+        {
+            <div class="progress-bar progress-bar-success" style="width: @percentsbar%"></div>
+        }
+        else
+        {
+            <div class="progress-bar progress-bar-warning" style="width: @percentsbar%"></div>
+        }
+    </div>
+
+
+            }
+
+
+
+<div id="ShowIpTelDetail">
+</div>
+<script type="text/javascript">
+    // When the document is ready
+    $(document).ready(function () {
+
+
+        $("#enable-checkbox").bootstrapSwitch();
+        $('#dp1').datepicker({
+
+            format: "dd.mm.yyyy"
+        });
+        $('#dp2').datepicker({
+            format: "dd.mm.yyyy"
+        });
+        $('#dp1').val("@ViewBag.fromDate");
+        $('#dp2').val("@ViewBag.toDate");
+
+
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".RadioClass").change(function () {
+            var elems = document.getElementsByTagName('input');
+            for (i = 0; i < elems.length; i++) {
+                if (elems[i].type == 'radio') {
+                    if (elems[i].checked) {
+                        if (elems[i].value == "day") {
+                            var myDate = new Date();
+                            var NewStartDate = myDate.getDate() + "." + (myDate.getMonth() + 1) + "." + myDate.getFullYear();
+                            var month = myDate.getMonth();
+
+                            myDate.setMonth(month);
+
+                            var nextday = new Date();
+                            nextday.setDate(nextday.getDate() + 1);
+
+                            var NewEndDate = (nextday.getDate()) + "." + (nextday.getMonth() + 1) + "." + nextday.getFullYear();
+
+                            document.all.DateStart.value = NewStartDate;
+
+                            document.all.DateEnd.value = NewEndDate;
+
+                        } else if (elems[i].value == "week") {
+                            var myDate = new Date();
+
+                            var nextday = new Date();
+                            nextday.setDate(nextday.getDate() + 1);
+
+                            var NewEndDate = (nextday.getDate()) + "." + (nextday.getMonth() + 1) + "." + nextday.getFullYear();
+
+
+                            myDate = getMonday(Date.now());
+
+                            var NewStartDate = myDate.getDate() + "." + (myDate.getMonth() + 1) + "." + myDate.getFullYear();
+                            var month = myDate.getMonth();
+
+                            myDate.setMonth(month);
+
+
+
+                            document.all.DateStart.value = NewStartDate;
+
+                            document.all.DateEnd.value = NewEndDate;
+
+                        } else if (elems[i].value == "mounth") {
+                            var myDate = new Date();
+
+                            var NewStartDate = "01." + (myDate.getMonth() + 1) + "." + myDate.getFullYear();
+                            var month = myDate.getMonth();
+
+                            myDate.setMonth(month);
+
+                            var nextday = new Date();
+                            nextday.setDate(nextday.getDate() + 1);
+
+                            var NewEndDate = (nextday.getDate()) + "." + (nextday.getMonth() + 1) + "." + nextday.getFullYear();
+
+                            document.all.DateStart.value = NewStartDate;
+
+                            document.all.DateEnd.value = NewEndDate;
+
+                        } else if (elems[i].value == "year") {
+                            var myDate = new Date();
+
+                            var NewStartDate = "01.1." + myDate.getFullYear();
+                            var month = myDate.getMonth();
+
+                            myDate.setMonth(month);
+
+                            var nextday = new Date();
+                            nextday.setDate(nextday.getDate() + 1);
+
+                            var NewEndDate = (nextday.getDate()) + "." + (nextday.getMonth() + 1) + "." + nextday.getFullYear();
+
+                            document.all.DateStart.value = NewStartDate;
+
+                            document.all.DateEnd.value = NewEndDate;
+
+                        }
+                    }
+                }
+            }
+
+        });
+    });
+</script>
+<script type="text/javascript">
+    function getMonday(d) {
+        d = new Date(d);
+        var day = d.getDay(),
+            diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+        return new Date(d.setDate(diff));
+    }
+</script>
+<script type="text/javascript">
+    function ShowIpTelDetail(Tel, FromDate, ToDate, Disposition) {
+        var url = "/Stats/ShowIpTelDetail";
+        $.ajax({
+            url: url,
+            contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+            type: "GET",
+            data: {
+                tel: Tel,
+                fromdate: FromDate,
+                todate: ToDate,
+                disposition: Disposition
+            },
+            success: function (data) {
+                $("#ShowIpTelDetail").html(data);
+                $('#IpTelDetail').modal('toggle');
+
+            }
+        });
+    };
+
+</script>

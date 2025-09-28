@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F401DDF1-7951-427C-816B-EB63F83CA6D1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OrdersPortal.Application</RootNamespace>
+    <AssemblyName>OrdersPortal.Application</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.3\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.1.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.1.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.7.6\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=5.11.6.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.9\lib\net47\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.10.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.9\lib\net47\Unity.Container.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Context\ApplicationContext.cs" />
+    <Compile Include="Context\ApplicationContextLifetimeManager.cs" />
+    <Compile Include="Context\HttpContextLifetimeManager.cs" />
+    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ComplaintObject.cs" />
+    <Compile Include="Models\CustomerCodesListModels.cs" />
+    <Compile Include="Models\Filters\OrderViewModelFilter.cs" />
+    <Compile Include="Models\FinanceReconciliationList.cs" />
+    <Compile Include="Models\IpTelStats.cs" />
+    <Compile Include="Models\JsonAnalyticsDataTableModel.cs" />
+    <Compile Include="Models\JsonFinanceDataTableModel.cs" />
+    <Compile Include="Models\Managers1cGuidsViewModel.cs" />
+    <Compile Include="Models\ManagersViewModel.cs" />
+    <Compile Include="Models\OrderPayment.cs" />
+    <Compile Include="Models\OrdersPortalDBInitializer.cs" />
+    <Compile Include="Models\RegionManagers1cGuidsViewModel.cs" />
+    <Compile Include="Models\RegionManagersViewModel.cs" />
+    <Compile Include="Models\UserListModel.cs" />
+    <Compile Include="Models\ViewModels\AddOrderPartsViewModel.cs" />
+    <Compile Include="Models\ViewModels\OrganizationAddViewModel.cs" />
+    <Compile Include="Models\ViewModels\OrganizationCustomerCodesViewModel.cs" />
+    <Compile Include="Models\ViewModels\OrganizationSelectedListViewModel.cs" />
+    <Compile Include="Models\ViewModels\OrderAnalyticsListViewModel.cs" />
+    <Compile Include="Models\ViewModels\ComplaintDetailPhotoViewModel.cs" />
+    <Compile Include="Models\ViewModels\ComplaintDetailsViewModel.cs" />
+    <Compile Include="Models\ViewModels\ComplaintListViewModel.cs" />
+    <Compile Include="Models\ViewModels\ComplaintPhotosAddViewModel.cs" />
+    <Compile Include="Models\ViewModels\ComplaintsOrderSerieViewModel.cs" />
+    <Compile Include="Models\ViewModels\Create1cOrderViewModel.cs" />
+    <Compile Include="Models\ViewModels\CustomerBillListViewModel.cs" />
+    <Compile Include="Models\ViewModels\CustomerBillViewModel.cs" />
+    <Compile Include="Models\ViewModels\EditComplaintViewModel.cs" />
+    <Compile Include="Models\ViewModels\AnalyticsBaseViewModel.cs" />
+    <Compile Include="Models\ViewModels\FinanceBaseViewModel.cs" />
+    <Compile Include="Models\ViewModels\FinanceCashFlowViewModel.cs" />
+    <Compile Include="Models\ViewModels\FinanceOrdersListViewModel.cs" />
+    <Compile Include="Models\ViewModels\FinanceReconciliationViewModel.cs" />
+    <Compile Include="Models\ViewModels\HelpServiceConfigureViewModel.cs" />
+    <Compile Include="Models\ViewModels\HelpServiceStatsViewModel.cs" />
+    <Compile Include="Models\ViewModels\IpTelStatViewModel.cs" />
+    <Compile Include="Models\ViewModels\ManagerCommentViewModel.cs" />
+    <Compile Include="Models\ViewModels\OrderPartsListViewModel.cs" />
+    <Compile Include="Models\ViewModels\OrderListViewModel.cs" />
+    <Compile Include="Models\ViewModels\OrderMessageListViewModel.cs" />
+    <Compile Include="Models\ViewModels\OrderMessageViewModel.cs" />
+    <Compile Include="Models\ViewModels\OrdersPaymentsViewModel.cs" />
+    <Compile Include="Models\ViewModels\OrdersStatViewModel.cs" />
+    <Compile Include="Models\ViewModels\RegionAddViewModel.cs" />
+    <Compile Include="Models\ViewModels\UploadComplaintsListViewModel.cs" />
+    <Compile Include="Models\ViewModels\UploadComplaintViewModel.cs" />
+    <Compile Include="Models\ViewModels\UploadFilesListViewModel.cs" />
+    <Compile Include="Models\ViewModels\UploadFileViewModel.cs" />
+    <Compile Include="Models\ViewModels\UploadOrdersListViewModel.cs" />
+    <Compile Include="Models\ViewModels\UploadOrderViewModel.cs" />
+    <Compile Include="Models\ViewModels\UserManagersViewModel.cs" />
+    <Compile Include="Models\ViewModels\UsersListViewModel.cs" />
+    <Compile Include="Models\ViewModels\WdsActionCodesViewModel.cs" />
+    <Compile Include="Models\ViewModels\WdsActionRatingListViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AccountService.cs" />
+    <Compile Include="Services\AnalyticsService.cs" />
+    <Compile Include="Services\ComplaintsService.cs" />
+    <Compile Include="Services\EmailService.cs" />
+    <Compile Include="Services\FilesService.cs" />
+    <Compile Include="Services\FinanceService.cs" />
+    <Compile Include="Services\HelpServiceService.cs" />
+    <Compile Include="Services\IAccountService.cs" />
+    <Compile Include="Services\IAnalyticsService.cs" />
+    <Compile Include="Services\IComplaintsService.cs" />
+    <Compile Include="Services\IFilesService.cs" />
+    <Compile Include="Services\IFinanceService.cs" />
+    <Compile Include="Services\IHelpServiceService.cs" />
+    <Compile Include="Services\IMessageService.cs" />
+    <Compile Include="Services\IOrderPartsService.cs" />
+    <Compile Include="Services\IOrderService.cs" />
+    <Compile Include="Services\IOrganizationService.cs" />
+    <Compile Include="Services\IpTelService.cs" />
+    <Compile Include="Services\IVideoContentService.cs" />
+    <Compile Include="Services\IRegionService.cs" />
+    <Compile Include="Services\IStatService.cs" />
+    <Compile Include="Services\MessageService.cs" />
+    <Compile Include="Services\OrderPartsService.cs" />
+    <Compile Include="Services\OrderService.cs" />
+    <Compile Include="Services\OrganizationService.cs" />
+    <Compile Include="Services\VideoContentService.cs" />
+    <Compile Include="Services\RegionService.cs" />
+    <Compile Include="Services\ShowComplaintsService.cs" />
+    <Compile Include="Services\ShowOrdersSerivice.cs" />
+    <Compile Include="Services\StatService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OrdersPortal.Domain\OrdersPortal.Domain.csproj">
+      <Project>{96ab6c29-ca83-4059-8ef5-2321fcf944ab}</Project>
+      <Name>OrdersPortal.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OrdersPortal.Infrastructure\OrdersPortal.Infrastructure.csproj">
+      <Project>{f1123bc8-097d-434c-b2b2-a6302f8fc95a}</Project>
+      <Name>OrdersPortal.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OrdersPortal.Services\OrdersPortal.Services.csproj">
+      <Project>{90a74c50-5071-42c2-9e8b-b5793ce36f30}</Project>
+      <Name>OrdersPortal.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\Helpers\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+</Project>

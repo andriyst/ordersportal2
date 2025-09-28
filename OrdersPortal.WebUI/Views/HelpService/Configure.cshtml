@@ -1,0 +1,124 @@
+﻿@model OrdersPortal.Application.Models.ViewModels.HelpServiceConfigureViewModel
+<div>
+	@using (Html.BeginForm("Configure", "HelpService", FormMethod.Post, new { @class = "form-horizontal", role = "form"}))
+	{
+		@Html.AntiForgeryToken()
+		@Html.ValidationSummary()
+
+		<div id="SalesContact">
+			<h4>Налаштування Контакту відділу продажів</h4>
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.SalesContactName, new { @class = "col-2 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.SalesContactName, new { @class = "form-control" })
+
+				</div>
+			</div>
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.SalesPhone, new { @class = "col-2 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.SalesPhone, new { @class = "form-control" })
+
+				</div>
+			</div>
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.SalesEmail, new { @class = "col-2 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.SalesEmail, new { @class = "form-control" })
+
+				</div>
+			</div>
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.SalesTelegramId, new { @class = "col-2 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.SalesTelegramId, new { @class = "form-control" })
+
+				</div>
+			</div>
+		</div>
+
+		<hr />
+		<div id="ServiceContact">
+			<h4>Налаштування Контакту відділу сервісу</h4>
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.ServiceContactName, new { @class = "col-2 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.ServiceContactName, new { @class = "form-control" })
+
+				</div>
+			</div>
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.ServicePhone, new { @class = "col-2 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.ServicePhone, new { @class = "form-control" })
+
+				</div>
+			</div>
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.ServiceEmail, new { @class = "col-2 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.ServiceEmail, new { @class = "form-control" })
+
+				</div>
+			</div>
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.ServiceTelegramId, new { @class = "col-2 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.ServiceTelegramId, new { @class = "form-control" })
+
+				</div>
+			</div>
+		</div>
+		<hr />
+		<div id="LogisticContact">
+			<h4>Налаштування Контакту відділу логістики</h4>
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.LogisticContactName, new { @class = "col-2 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.LogisticContactName, new { @class = "form-control" })
+
+				</div>
+			</div>
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.LogisticPhone, new { @class = "col-2 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.LogisticPhone, new { @class = "form-control" })
+
+				</div>
+			</div>
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.LogisticEmail, new { @class = "col-2 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.LogisticEmail, new { @class = "form-control" })
+
+				</div>
+			</div>
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.LogisticTelegramId, new { @class = "col-2 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.LogisticTelegramId, new { @class = "form-control" })
+
+				</div>
+			</div>
+		</div>
+
+
+		<div class="form-group col-12 pt-4">
+			<div class="col-3 d-inline-block">
+				<input id="addButton" type="submit" class="btn btn-success" value="Зберегти" />
+			</div>
+
+			<div class="col-3 d-inline-block">
+				<input id="cancelButton" type="button" class="btn btn-secondary" onclick="CancelButtonClick()" value="Відмінити" />
+			</div>
+		</div>
+
+	}
+</div>
+
+<script>
+	function CancelButtonClick() {
+
+		location.href = "/HelpService/Configure";
+	}
+</script>

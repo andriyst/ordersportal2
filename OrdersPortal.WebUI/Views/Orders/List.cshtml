@@ -1,0 +1,440 @@
+﻿@model PagedList.IPagedList<OrdersPortal.Application.Models.ViewModels.OrderListViewModel>
+@using PagedList.Mvc;
+@{
+	ViewBag.Title = "Список завантажених замовлень";
+
+}
+
+<div style="display:inline;">
+	<h1><span id="totalOrders"></span> Замовленнь</h1>
+</div>
+@if (User.IsInRole("customer"))
+{
+	<div>
+		<a href="/Orders/AddOrder" class="btn btn-success">Додати Замовлення</a>
+	</div>
+}
+
+<div style="margin-top: 15px;">
+	<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+
+		<input type="radio" class="btn-check" name="orders-sort" id="orders-all-radio" autocomplete="off" checked="checked" value="0">
+		<label class="status-choice btn btn-outline-info" for="orders-all-radio">Всі</label>
+
+		<input type="radio" class="btn-check" name="orders-sort" id="orders-uploaded-radio" autocomplete="off" value="1">
+		<label class="status-choice btn btn-outline-info" for="orders-uploaded-radio">Завантажені</label>
+
+
+		<input type="radio" class="btn-check" name="orders-sort" id="orders-inproccess-radio" autocomplete="off"  value="2">
+		<label class="status-choice btn btn-outline-info" for="orders-inproccess-radio">В обробці</label>
+
+		<input type="radio" class="btn-check" name="orders-sort" id="orders-notconfirmed-radio" autocomplete="off"  value="3">
+		<label class="status-choice btn btn-outline-info" for="orders-notconfirmed-radio">Не підтвердженні</label>
+
+
+		<input type="radio" class="btn-check" name="orders-sort" id="orders-notpayed-radio" autocomplete="off"  value="4">
+		<label class="status-choice btn btn-outline-info" for="orders-notpayed-radio">Очікується оплата</label>
+
+
+		<input type="radio" class="btn-check" name="orders-sort" id="orders-work-radio" autocomplete="off"  value="5">
+		<label class="status-choice btn btn-outline-info" for="orders-work-radio">В роботі</label>
+
+		<input type="radio" class="btn-check" name="orders-sort" id="orders-canceled-radio" autocomplete="off"  value="6">
+		<label class="status-choice btn btn-outline-info" for="orders-canceled-radio">Відмова</label>
+		
+
+	</div>
+</div>
+
+
+<div>
+	<table id="listOrdersTable1"></table>
+</div>
+
+
+<div id="allmessages">
+
+</div>
+<div id="changemanager">
+
+</div>
+
+<div id="ShowOrderDetail">
+</div>
+
+<script type="text/javascript">
+	function OrderLoad(orderId, status) {
+		var url = "/Orders/ChangeOrderStatus";
+		$.ajax({
+			url: url,
+			contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+			type: "POST",
+			data: {
+				orderId: orderId,
+				statusName: status
+			},
+			success: function () {
+			}
+		});
+	};
+
+</script>
+
+<script type="text/javascript">
+	function ShowAllMessages(orderId) {
+		var url = "/Orders/ShowAllMessages";
+		$.ajax({
+			url: url,
+			contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+			type: "POST",
+			data: {
+				orderId: orderId
+			},
+			success: function (data) {
+				$("#allmessages").html(data);
+				$('#ModalAllMessages').modal('show');
+
+			}
+		});
+	};
+
+</script>
+
+
+
+<script type="text/javascript">
+	function ChangeManager(orderId) {
+		var url = "/Orders/ChangeManager";
+		$.ajax({
+			url: url,
+			contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+			type: "GET",
+			data: {
+				orderId: orderId
+			},
+			success: function (data) {
+				$("#changemanager").html(data);
+				$('#ModalChangeManager').modal('show');
+
+			}
+		});
+	};
+
+</script>
+
+
+<script type="text/javascript">
+
+
+	function CreateManagerComment(orderId) {
+
+		$('#OrderId').val(orderId);
+		$('#ManagerComment').modal('show');
+	}
+</script>
+
+
+<script type="text/javascript">
+	function ShowOrderDetail(orderId) {
+		var url = "/Orders/ShowOrderDetail";
+		$.ajax({
+			url: url,
+			contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+			type: "GET",
+			data: {
+				orderId: orderId
+			},
+			success: function (data) {
+				$("#ShowOrderDetail").html(data);
+				$('#OrderDetail').modal('show');
+
+			}
+		});
+	};
+
+</script>
+
+<script type="text/javascript">
+	function OrderColours() {
+		var countRows = $('#listOrdersTable1').bootstrapTable('getOptions').totalRows;
+
+		$('#totalOrders').text(countRows);
+
+		$("td:contains('Завантажено')").each(function () {
+			$(this).addClass("btn-upload1 disabled");
+		});
+		$("td:contains('Відмова')").each(function () {
+			$(this).addClass("btn-refuse1 disabled");
+		});
+		$("td:contains('Очікує підтвердження')").each(function () {
+			$(this).addClass("btn-approve1 disabled");
+		});
+		$("td:contains('Очікує оплати')").each(function () {
+			$(this).addClass("btn-pay1 disabled");
+		});
+		$("td:contains('Виробництво')").each(function () {
+			$(this).addClass("btn-success1 disabled");
+		});
+		$("td:contains('Розглянуто')").each(function () {
+			$(this).addClass("btn-warning1 disabled");
+		});
+		$("td:contains('До розгляду')").each(function () {
+			$(this).addClass("btn-warning1 disabled");
+		});
+		$("td:contains('Обробка')").each(function () {
+			$(this).addClass("btn-warning1 disabled");
+		});
+		$("td:contains('Отримано')").each(function () {
+			$(this).addClass("btn-warning1 disabled");
+		});
+		$("td:contains('В роботі')").each(function () {
+			$(this).addClass("btn-danger1 disabled");
+		});
+		$("td:contains('Відвантажено')").each(function () {
+			$(this).addClass("btn-success1 disabled");
+		});
+		$("td:contains('На складі')").each(function () {
+			$(this).addClass("btn-storage1 disabled");
+		});
+	}
+
+</script>
+<script type="text/javascript">
+
+	 $(document).ready(function () {
+
+        $('#listOrdersTable1').bootstrapTable({
+            locale: 'uk-UA',
+            columns: [
+                {
+                    visible: false,
+                    field: 'OrderId'
+                },{
+                    field: 'OrderNumber',
+					title: '№',
+					width: '5',
+                    widthUnit: '%',
+                    sortable: true
+                },{
+					field: 'Db1SOrderNumbers',
+                    title: '№ 1С',
+					sortable: false,
+					width: '5',
+					widthUnit: '%',
+					formatter: operateFormatterDb1COrders
+				},{
+					field: 'OrderNumberContructions',
+					title: 'К-сть Конст',
+					width: '3',
+					widthUnit: '%',
+                    sortable: true
+				},{
+		            field: 'File',
+					title: ' Файл',
+		            width: '5',
+		            widthUnit: '%',
+		            formatter: operateFormatterFiles
+	            },{
+                    field: 'AllOrderDate',
+                    title: 'Дата',
+					width: '15',
+					widthUnit: '%',
+                    sortable: true
+
+				},{
+		            visible: @(!User.IsInRole("customer") ?"true":"false"),
+					field: 'CustomerName',
+		            width: '10',
+		            widthUnit: '%',
+					title: 'Дилер',
+					sortable: true,
+					formatter: customerFormatter
+				},{
+		            visible: true,
+		            title: 'Коментар',
+					sortable: false,
+		            width: '25',
+		            widthUnit: '%',
+					formatter: messageFormatter
+	            },{
+                    field: 'StatusName',
+					title: ' Статус',
+					width: '10',
+					widthUnit: '%',
+				},{
+		            //visible: @(User.IsInRole("admin") ?"true":"false"),
+		            visible: false,
+                    field: 'operate',
+                    title: 'Дії',
+		            width: '5',
+		            widthUnit: '%',
+                    events: operateEvents,
+                    formatter: operateFormatter
+                }
+            ],
+            onClickRow: function (row, $element) {
+                // row: the record corresponding to the clicked row,
+                // $element: the tr element.
+                //  alert('SingleClick');
+            },
+            onDblClickRow: function (row, $element) {
+                // row: the record corresponding to the clicked row,
+                // $element: the tr element.
+               // window.location.href = '/Orders/Edit/' + row['Id'];
+			},
+            onLoadSuccess: function () {
+				OrderColours();
+
+				$('.orderDetailLink').on('click', function () {
+					ShowOrderDetail(this.id);
+				});
+
+				$('.orderFileLink').on('click', function () {
+					GetOrderFileLink(this.id);
+				});
+
+            },
+            sidePagination: 'server',
+            pagination: true,
+            showPaginationSwitch: false,
+            striped: true,
+            pageList: [10, 25, 50, 'All'],
+            showToggle: false,
+            showColumns: false,
+            showRefresh: false,
+            detailView: false,
+            cardView: false,
+            clickToSelect: false,
+            singleSelect: false,
+			search: true,
+            loadingFontSize : '18px',
+            url: '@Html.Raw(Url.Action("TableDataGetOrders", "Orders"))'
+		});
+
+	 });
+
+
+    function operateFormatter(value, row, index) {
+        $('#listOrdersTable1').addClass('table-striped');
+
+		return  '<div style="text-align:center;margin:3px;" class="row-remove"><a href="javascript:void(0)"><i class="glyphicon glyphicon-remove" title="Видалити" style="color:red;"></i></div>';
+	}
+
+	function customerFormatter(value, row, index) {
+	
+		return '<div>' + row['CustomerName'] + '</div> <div class="text-success">' + row['OrganizationName'] + '</div>'  ;
+	}
+
+	 function messageFormatter(value, row, index) {
+
+		 var direction = 'right';
+		 //if (row['LastMessageWriter'] == row['CustomerName']) {
+			// direction = 'left';
+		 //}
+		 return ['<div style="display:inline-block"><span style="float:left;">[' + row['LastMessageTime'] + ']::</span>', '<span style="float:left;"><b> ' + row['LastMessageWriter'] + '</b></span></div>',
+			 '<div style="text-align:'+ direction +';width:100%">' + row['LastMessage'] + '</div>',
+			 '<br> <a href="#"> <div class="table-comment-add" onclick="javascript:ShowAllMessages(' + row['OrderId'] + ')">[Додати коментар]</div></a>']
+			 .join('');
+	 }
+
+    //---------------------------
+    window.operateEvents = {
+        'click .row-edit': function (e, value, row, index) {
+            window.location.href = '/Orders/Edit/' + row['Id'];
+        },
+
+		'click .row-remove': function (e, value, row, index) {
+			if (confirm('Видалити замовлення №' + row['OrderId'] + "?")) {
+				window.location.href = '/Orders/DelOrder?orderId=' + row['OrderId'];
+				}
+        },
+		'click .row-comments': function (e, value, row, index) {
+            ShowDocumentMessages(row['OrderId']);
+            $(e.currentTarget).removeClass('unread-messages');
+		}
+	};
+
+	function operateFormatterDb1COrders(value, row, index) {
+
+		var strValue = value.toString();
+		var result = '';
+		if (strValue != "") {
+			var db1cOrders = strValue.split(",");
+				db1cOrders.forEach(function(element) {
+					result = result + '<div class="orderDetailLink" id=' + row['OrderId'] + '><a href="#">' + element + '</a></div> ';
+			});
+		};
+
+		return result;
+	}
+
+	function operateFormatterFiles(value, row, index) {
+
+	    var result =
+		    '<span class="orderFileLink" id='+row['OrderId']+'><a href="javascript:void(0)"><i class="fa fa-download fa-lg"></i> Заказ </a></span>';
+
+	    return result;
+    }
+
+	$('input:radio[name="orders-sort"]').change(function () {
+		
+		$('#listOrdersTable1').bootstrapTable("refreshOptions", { url: '/Orders/TableDataGetOrders?status=' + $(this).val(), sortName: '' });
+    });
+
+	//function ChangeOrderListStatus(statusId) {
+
+
+ //       if (statusId == 0) {
+ //           $('#listOrdersTable1').bootstrapTable("refreshOptions", { url: '/Orders/TableDataGetAllOrders' });
+ //       } else {
+ //           $('#listOrdersTable1').bootstrapTable("refreshOptions", { url: '/Orders/TableDataGetOrdersByStatus?status=' + statusId });
+ //       }
+
+ //   }
+
+	 function GetOrderFileLink(id) {
+
+		 var url = "/Orders/GetOrderFileLink";
+		 $.ajax({
+			 url: url,
+			 type: "GET",
+			 data: {
+				 id: id
+			 },
+			 success: function (data) {
+				 OrderLoad(id, 'Отримано');
+				 var link = document.createElement('a');
+				 link.href = data;
+				 link.download = '';
+				 document.body.appendChild(link);
+				 link.click();
+
+			 },
+			 error: function() {
+				 alert('Файл не знайдено!');
+			 }
+		 });
+
+	 }
+
+</script>
+
+<script type="text/javascript">
+	function ShowOrdersByStatus(status) {
+		var url = "/Orders/ShowOrdersListByStatus";
+		$.ajax({
+			url: url,
+			contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+			type: "GET",
+			data: {
+				status: status
+			},
+			success: function (data) {
+				$("#orders-table").html(data);
+
+			}
+		});
+	};
+
+</script>
+

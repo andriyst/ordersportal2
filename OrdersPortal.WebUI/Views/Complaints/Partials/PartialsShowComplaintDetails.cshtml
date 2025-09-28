@@ -1,0 +1,204 @@
+﻿@using OrdersPortal.Application.Models.ViewModels
+@model ComplaintDetailsViewModel
+@{
+	string headerClass = "modal-check-header-green";
+	bool showApproveButton = false;
+	bool readyOrder = true;
+
+
+	if (!Model.ManagerApprove && Model.CustomerApprove)
+	{
+		headerClass = "modal-check-header-red";
+		readyOrder = false;
+	}
+	else if (!Model.CustomerApprove && Model.ManagerApprove)
+	{
+		headerClass = "modal-check-header-blue";
+		readyOrder = false;
+		showApproveButton = true;
+	}
+
+}
+
+
+@*///////////////////////////////////////////////////////////////////////////////////*@
+
+<div class="modal" id="ComplaintDetail">
+	<div class="modal-dialog modal-dialog-centered-top modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div>
+					<h4 class="modal-title">
+						Деталі рекламації :: @Model.ComplaintId :: (@Model.ComplaintOrderNumber):
+						@if (!User.IsInRole("customer"))
+						{
+							@Model.CustomerName
+						}
+					</h4>
+					<div style="padding-top: 5px;">
+						@if (!readyOrder)
+						{
+							@((showApproveButton) ? "Увага, змінено вирішення!" : "Очікується підтвердження від менеджера");
+						}	
+					</div>
+				</div>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true"></span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row justify-content-around">
+				<div class="card border-light mb-3" style="max-width: 20rem;">
+					<div class="card-body">
+						<div class="col-12">
+							<div  class="col-5 d-inline-block" style="font-size: 13px; font-weight: 300;">Номер:</div> <div class="d-inline-block" style="font-size: 14px; font-weight: 800;"> @Model.ComplaintOrderNumber </div>
+						</div>
+						<div class="col-12">
+							<div  class="col-5 d-inline-block" style="font-size: 13px; font-weight: 300;">Дата рекламації:</div> <div class="d-inline-block" style="font-size: 14px; font-weight: 800;"> @Model.ComplaintDate.ToString("dd.MM.yyyy") </div>
+						</div>
+						<div class="col-12">
+							<div   class="col-5 d-inline-block" style="font-size: 13px; font-weight: 300;">Дата доставки:</div> <div class="d-inline-block" style="font-size: 14px; font-weight: 800;"> @Model.ComplaintOrderDeliverDate.ToString("dd.MM.yyyy") </div>
+						</div>
+						<div class="col-12">
+							<div  class="col-5 d-inline-block" style="font-size: 13px; font-weight: 300;">Дата визначення:</div> <div class="d-inline-block" style="font-size: 14px; font-weight: 800;"> @Model.ComplaintOrderDefineDate.ToString("dd.MM.yyyy") </div>
+						</div>
+						<div class="col-12">
+							<hr style="color: grey; margin-top: 5px; margin-bottom: 0;">
+						</div>
+						<div class="col-12">
+							<div style="font-size: 13px; font-weight: 300;">Серії конструкцій в рекламації:</div>
+							@foreach (var item in Model.ComplaintsOrderSeries)
+							{
+								<div style="font-size: 14px; font-weight: 800;">@(item.SerieName);</div>
+							}
+						</div>
+						<div class="col-12">
+							<hr style="color: grey; margin-top: 5px; margin-bottom: 0;">
+						</div>
+						<div class="col-12" style="padding: 5px;">
+							<div style="font-size: 12px; font-weight: 300;">Опис рекламації:</div>
+							<div style="font-size: 14px; font-weight: 600;"> @Html.Raw(Model.ComplaintDescription) </div>
+						</div>
+						<div class="col-12" style="padding: 5px;">
+							<div style="font-size: 12px; font-weight: 300;">Проблема: </div>
+							<div style="font-size: 14px; font-weight: 600;">@Model.ComplaintIssue </div>
+
+						</div>
+						<div class="col-12" style="padding: 5px;">
+							<div style="font-size: 12px; font-weight: 300;">Вирішення: </div>
+							<div style="font-size: 14px; font-weight: 600;">@Model.ComplaintSolution </div>
+							@if (User.IsInRole("customer") && (!Model.ManagerApprove || !Model.CustomerApprove))
+							{
+								<a href="/Complaints/EditComplaint/?complaintid=@Model.ComplaintId">
+									<div class="btn btn-danger">Змінити</div>
+								</a>
+							}
+							@if (showApproveButton)
+							{
+								<div class="btn btn-success pull-right" onclick="javascript: ApproveSolution(@Model.ComplaintId);">Підтвердити</div>
+							}
+
+						</div>
+					</div>
+				</div>
+
+
+				<div class="card border-light mb-3" style="max-width: 20rem;">
+					<div class="card-body">
+						<div class="col-12">
+							<div class="d-inline-block col-5" style="font-size: 13px; font-weight: 300;">Номер Акту: </div> <div class="d-inline-block" style="font-size: 14px; font-weight: 800;">@Model.ComplaintActNumber </div>
+						</div>
+						<div class="col-12">
+							<div class="d-inline-block col-5" style="font-size: 13px; font-weight: 300;"> Номер замовлення рекламації:</div> <div class="d-inline-block" style="font-size: 14px; font-weight: 800;"> @Model.Complaint1cOrder </div>
+						</div>
+						<div class="col-12">
+							<div class="d-inline-block col-5" style="font-size: 13px; font-weight: 300;"> Відповідальний менеджер:</div> <div class="d-inline-block" style="font-size: 14px; font-weight: 800;"> @Model.ManagerName </div>
+						</div>
+
+						<div class="col-12">
+							<div class="d-inline-block col-5" style="font-size: 13px; font-weight: 300;">Дата готовності:</div> <div class="d-inline-block" style="font-size: 14px; font-weight: 800;"> @Model.ComplaintWorkStartDate.ToString("dd.MM.yyyy") </div>
+						</div>
+						<div class="col-12">
+							<hr style="color: grey; margin-top: 5px; margin-bottom: 5px;">
+						</div>
+						<div class="col-12">
+							<div class="d-inline-block col-5" style="font-size: 13px; font-weight: 300;">Статус:</div> <div class="d-inline-block" style="font-size: 14px; font-weight: 800;"> @Model.StatusName </div>
+						</div>
+						<div class="col-12">
+							<hr style="color: grey; margin-top: 5px; margin-bottom: 5px;">
+						</div>
+						<div class="col-12" style="padding-top: 10px;">
+							<div style="font-size: 13px; font-weight: 300; padding: 3px;"> Фото рекламації:</div>
+							@if (Model.ComplaintPhotoThubmnails.Count > 0)
+							{
+								foreach (var b in Model.ComplaintPhotoThubmnails)
+								{
+									if (b.ComplaintPhotoThumbnail != null)
+									{
+										<span style="padding: 3px; cursor: pointer;">
+											@Html.Raw("<img style='width:80px; height:60px;' onclick='ShowPhoto(" + b.ComplaintPhotoId + ")' src=\"data:image/jpeg;base64,"
+													  + Convert.ToBase64String(b.ComplaintPhotoThumbnail) + "\" />")
+
+										</span>
+									}
+									else
+									{
+										<div>
+											Немає фото
+										</div>
+									}
+								}
+							}
+
+						</div>
+					</div>
+				</div>
+
+					</div>
+			</div>
+			<div class="modal-footer">
+
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	function ShowPhoto(photoId) {
+
+		var url = "/Complaints/ShowPhoto";
+		$.ajax({
+			url: url,
+			contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+			type: "POST",
+			data: {
+				photoid: photoId
+			},
+			success: function (data) {
+				var w = window.open();
+				$(w.document.body).html(data);
+			}
+
+		});
+	};
+	function ApproveSolution(complaint) {
+		if (confirm("Увага! Після підтвердження, зміна рекламації буде неможливою!")) {
+
+			var url = "/Complaints/ApproveSolution";
+			$.ajax({
+				url: url,
+				contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+				type: "POST",
+				data: {
+					complaintId: complaint
+				},
+				success: function () {
+					location.href = "/Complaints/ShowComplaintsList";
+				}
+
+			});
+		};
+	}
+</script>

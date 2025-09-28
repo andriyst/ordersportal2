@@ -1,0 +1,88 @@
+﻿@model OrdersPortal.Domain.Dto.Update1cManagersDto
+<h2>@ViewBag.Title</h2>
+@{
+	ViewBag.Title = "Оновлення менеджерів з 1с";
+
+}
+<h4>Оновлення менеджерів з 1с</h4>
+<div class="row">
+	<div class="col-12 col-md-9 col-lg-6 col-xl-4">
+		@using (Html.BeginForm("Update1cManagers", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+		{
+			@Html.AntiForgeryToken()
+
+			<div class="form-group pt-2 field-customerorganiztion border-danger">
+				@Html.LabelFor(m => m.Organization1cId, new { @class = "col-11 control-label" })
+				<div class="col-12">
+					@Html.DropDownListFor(m => m.Organization1cId, Model.OrganizationList.Select(x => new SelectListItem
+					{
+						Text = x.OrganizationName,
+						Value = x.Organization1cId
+					}), new { @class = "form-select", @id = "select-customerorganiztion", @onchange = "OrganizationCustomerLoad();" })
+				</div>
+			</div>
+
+			<div class="form-group">
+				@Html.LabelFor(m => m.Managers, new { @class = "col-md-11 control-label" })
+				<div class="col-md-10">
+
+					@Html.CheckBoxFor(m => m.Managers, new { @class = "enable-checkbox", @checked = "checked" })
+					@*@Html.TextBoxFor(m => m.Enable, new { @class = "form-control" })*@
+
+				</div>
+			</div>
+
+
+			<div class="form-group">
+				@Html.LabelFor(m => m.RegionManagers, new { @class = "col-md-11 control-label" })
+				<div class="col-md-10">
+
+					@Html.CheckBoxFor(m => m.RegionManagers, new { @class = "enable-checkbox", @checked = "checked" })
+					@*@Html.TextBoxFor(m => m.Enable, new { @class = "form-control" })*@
+
+				</div>
+			</div>
+
+			<div class="row justify-content-between pt-4">
+
+				<div class="col-6">
+					<input id="addButton" type="submit" class="btn btn-success" value="Оновити" />
+				</div>
+
+				<div class="col-6">
+					<input id="cancelButton" type="button" class="btn btn-secondary float-right" onclick="CancelButtonClick()" value="Відмінити" />
+				</div>
+
+			</div>
+
+
+		}
+
+	</div>
+</div>
+<div text-align="center"><h2>@ViewBag.Result</h2></div>
+<div>
+	@{
+		if (Model.UpdatedCustomers.Count > 0)
+		{
+			<div>Оновлено наспупні дилери:</div>
+			foreach (var customer in Model.UpdatedCustomers)
+			{
+				<div>@customer.OrderPortalUser.FullName </div>
+			}
+		}
+	}
+</div>
+<script type="text/javascript">
+	// When the document is ready
+	$(document).ready(function () {
+
+
+		$(".enable-checkbox").bootstrapSwitch();
+
+
+	});
+</script>
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}

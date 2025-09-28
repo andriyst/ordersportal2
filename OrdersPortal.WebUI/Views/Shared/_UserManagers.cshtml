@@ -1,0 +1,26 @@
+﻿@model OrdersPortal.Application.Models.ViewModels.UserManagersViewModel
+<div class="container col-12">
+	<div class="row col-12 justify-content-center text-center text-uppercase text-white pt-2 pb-2 fs-4">
+		Ваші персональні менеджери, які завжди допоможуть вам, з питань персонального корпоративного обслуговування клієнтів
+	</div>
+	<div class="row col-12 d-flex justify-content-between">
+		<div class="regional-manager col-12 col-md-auto">
+			<div class="rm-photo d-none d-sm-inline "><img height="180px" width="180px" src="@Model.RegionManagerImagePath"></div>
+			<div class="rm-contact-info">
+				<div class="rm-info-name">@Model.RegionManagerName</div>
+				<div class="rm-info-role">@Model.RegionManagerRole</div>
+				<div class="rm-info-email"><i class="far fa-lg fa-envelope"></i> @Model.RegionManagerEmail</div>
+				<div class="rm-info-tel"><i class="fas fa-lg fa-flip-horizontal fa-phone"></i> @Model.RegionManagerPhone </div>
+			</div>
+		</div>
+		<div class="sales-manager col-12 col-md-auto">
+			<div class="sm-photo  d-none d-sm-inline"><img height="180px" width="180px" src="@Model.SalesManagerImagePath"></div>
+			<div class="sm-contact-info">
+				<div class="sm-info-name">@Model.SalesManagerName</div>
+				<div class="sm-info-role">@Model.SalesManagerRole </div>
+				<div class="sm-info-email"><i class="far fa-lg fa-envelope"></i> @Model.SalesManagerEmail</div>
+				<div class="sm-info-tel"><i class="fas fa-lg fa-flip-horizontal fa-phone"></i> @Model.SalesManagerPhone</div>
+			</div>
+		</div>
+	</div>
+</div>

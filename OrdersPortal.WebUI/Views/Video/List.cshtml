@@ -1,0 +1,65 @@
+﻿@model List<OrdersPortal.Domain.Entities.VideoContent>
+<div style="padding: 30px;">
+	<h1>Відео</h1>
+</div>
+@if (User.IsInRole("director") || User.IsInRole("admin"))
+{
+	<div style="margin-left: 50px;">
+		@Html.ActionLink("Додати відео", "Add", null, new { @class = "btn btn-success" })
+	</div>
+}
+
+<div class="row" style="padding: 30px;">
+
+	@foreach (var item in Model)
+	{
+		<div class="col-12" style="margin-bottom: 20px;">
+			<div class="row text-success" style="padding: 20px;"><b> @item.Description </b></div>
+			<div class="row col-12 d-flex justify-content-between">
+				<div class="col-12 col-md-auto">
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/@item.Url" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				</div>
+
+				<div class="col-12 col-md-12 col-lg-auto pt-4">
+					@if (User.IsInRole("director") || User.IsInRole("admin"))
+					{
+						<div class="col-12 d-flex justify-content-between">
+							<div class="btn btn-warning EditButton" editid="@item.Id ">Редагувати</div>
+							<div class="btn btn-danger DeleteButton" removeid="@item.Id ">Видалити</div>
+						</div>
+						@*<span class="">
+								<a class="EditButton" editid="@item.Id" href="#"><i class="fa fa-edit"></i>Edit</a>
+							</span>
+							<span class=""><a class="DeleteButton" removeid="@item.Id" href="#"><i class="fa fa-trash text-danger"></i>Del</a></span>
+						*@
+					}
+				</div>
+			</div>
+		</div>
+	}
+
+</div>
+<script type="text/javascript">
+
+
+
+
+	$('.EditButton').on('click',
+		function () {
+
+			var id = $(this).attr('editid');
+			window.location.href = "/Video/Edit/" + id;
+		}
+	);
+
+	$('.DeleteButton').on('click',
+		function () {
+
+			var id = $(this).attr('removeid');
+			if (confirm("You want to delete Video " + id + ", Are you sure?")) {
+				window.location.href = "/Video/Remove/" + id;
+			}
+		}
+	);
+
+</script>

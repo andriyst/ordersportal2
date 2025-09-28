@@ -1,0 +1,262 @@
+﻿@model OrdersPortal.Application.Models.ViewModels.UploadComplaintViewModel
+@{
+	ViewBag.Title = "Завантажити рекламацію";
+
+}
+<input type="hidden" name="order" value="false">
+<h2>@ViewBag.Title</h2>
+
+<div class="row">
+	<div class="col-12 col-md-9 col-lg-6 col-xl-4">
+		@using (Html.BeginForm("AddComplaint", "Complaints", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+		{
+			@Html.AntiForgeryToken()
+
+			<hr />
+			@Html.ValidationSummary()
+
+			<div class="form-group">
+				@Html.LabelFor(m => m.ComplaintOrderNumber, new { @class = "control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.ComplaintOrderNumber, new { @class = "form-control", @onchange = "javascript:CheckContrOrder()", id = "orderNum" })
+					<div class="checkorderbox">
+
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.ComplaintOrderDeliverDate, new { @class = "control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.ComplaintOrderDeliverDate, new { @class = "form-control", id = "dp1" })
+
+				</div>
+			</div>
+
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.ComplaintOrderDefineDate, new { @class = "control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.ComplaintOrderDefineDate, new { @class = "form-control", id = "dp2" })
+				</div>
+			</div>
+
+			<div id="orderSeriesUpload"></div>
+
+			@*<div class="form-group">
+				 <div class="col-md-2 control-label"></div>
+					<div class="col-md-10">
+						<input type="checkbox" name="fancy-checkbox-primary" id="fancy-checkbox-primary" autocomplete="off" />
+						<div class="btn-group">
+							<label for="fancy-checkbox-primary" class="btn btn-standart">
+								<span class="glyphicon glyphicon-ok"></span>
+								<span> </span>
+							</label>
+							<label for="fancy-checkbox-primary" class="btn btn-default active">
+								Primary Checkbox
+							</label>
+						</div>
+					</div>
+				</div>*@
+
+
+
+			@Html.HiddenFor(m => m.CustomerName)
+
+
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.ComplaintIssues, new { @class = "control-label" })
+				<div class="col-12">
+					<div>
+						@Html.DropDownListFor(m => m.ComplaintIssue, Model.ComplaintIssues,
+							new { @class = "form-select", id = "select-issue", onchange = "SolutionLoader();" })
+						@Html.ValidationMessageFor(m => m.ComplaintIssue)
+					</div>
+				</div>
+			</div>
+
+
+
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.ComplaintSolutions, new { @class = "control-label" })
+				<div class="col-12">
+					<div>
+						@Html.DropDownListFor(m => m.ComplaintSolution, Model.ComplaintSolutions,
+							new { @class = "form-select col-12 col-md-4", id = "select-solution" })
+						@Html.ValidationMessageFor(m => m.ComplaintSolution)
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.ComplaintDescription, new { @class = "control-label" })
+				<div class="col-12">
+					@Html.TextAreaFor(m => m.ComplaintDescription, new { @class = "form-control", @style = "height:200px;" })
+				</div>
+			</div>
+
+
+
+
+			//-------------------------------------
+			<div class="form-group pt-2">
+				@Html.Label("Фото рекламації")
+				<div class="col-12">
+					<input type="file" id="File" name="File" class="multi-photo with-preview form-control" />
+				</div>
+			</div>
+
+			//------------------------------------------------
+
+			<div class="row justify-content-between pt-4">
+				
+				<div class="col-6">
+					<input id="addButton" type="submit" class="btn btn-success" value="Додати" />
+				</div>
+
+				<div class="col-6">
+					<input id="cancelButton" type="button" class="btn btn-secondary float-right" onclick="CancelButtonClick()" value="Відмінити" />
+				</div>
+				
+			</div>
+		}
+	</div>
+</div>
+
+<script type="text/javascript">
+
+	jQuery.validator.methods["date"] = function (value, element) { return true; }
+
+</script>
+
+<script src="/Scripts/extra/jquery.MultiFile.js" type="text/javascript" language="javascript"></script>
+
+
+<script type="text/javascript">
+	existOrderNumer = $('#orderNum').val();
+
+
+	var attr = $('.validation-summary-errors').attr('data-valmsg-summary');
+
+	if (existOrderNumer !== "")
+	//	&& typeof attr !== typeof undefined && attr !== false)
+	{
+		CheckContrOrder();
+		//LoadOrderSeries(existOrderNumer);
+	}
+
+
+
+	function LoadOrderSeries(orderNumber) {
+
+		var url = "/Complaints/GetOrderSeries";
+		//   OrderNum = document.getElementById('orderNum').value;
+		$.ajax({
+			url: url,
+			contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+			type: "GET",
+			data: {
+				orderNumber: orderNumber
+			},
+			success: function (data) {
+				$("#orderSeriesUpload").html(data);
+
+			}
+		});
+
+	}
+	function CheckContrOrder() {
+		var url = "/Complaints/CheckOrder";
+		OrderNum = document.getElementById('orderNum').value;
+		$.ajax({
+			url: url,
+			contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+			type: "GET",
+			data: {
+				ordernum: OrderNum
+			},
+			success: function (data) {
+				$(".checkorderbox").html(data);
+				if ($("#checkOrder").hasClass("checkorderyes")) {
+					$("#addButton").removeAttr("disabled");
+
+					LoadOrderSeries(OrderNum);
+				} else {
+
+					$("#addButton").prop('disabled', true);
+
+				}
+			}
+		});
+	};
+
+	function SolutionLoader() {
+
+		var issue = $("#select-issue").val();
+		var $dropdown = $("#select-solution");
+
+		$dropdown.empty();
+
+		if (issue != "") {
+			$.ajax({
+				url: "/Complaints/GetSolutions",
+				contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+				type: "GET",
+				data: {
+					id: issue
+				},
+				success: function (data) {
+
+					$.each(data, function () {
+						$dropdown.append($("<option />").val(this.Value).text(this.Text));
+					});
+				}
+			});
+		}
+	}
+
+	function CancelButtonClick() {
+
+		location.href = "/Complaints/List";
+	}
+</script>
+
+
+<script type="text/javascript">
+	// When the document is ready
+	$(document).ready(function () {
+
+		// RoleChecker();
+		//  $("#enable-checkbox").bootstrapSwitch();
+		$('#dp1').datepicker({
+			format: "dd.mm.yyyy",
+			autoclose: true
+		}).on('changeDate', function (e) {
+			$(this).datepicker('hide');
+		});
+
+		$('#dp2').datepicker({
+			format: "dd.mm.yyyy",
+			autoclose: true
+		}).on('changeDate', function (e) {
+			$(this).datepicker('hide');
+		});
+
+
+		$(function () {
+			$('.multi-photo').MultiFile({
+				accept: 'gif|jpg|jpeg|png',
+				max: 10,
+				STRING: {
+					remove: 'X',
+					selected: 'Обрано: $file',
+					denied: 'Заборонено завантажувати даний тип фалів $ext!',
+					duplicate: 'Дублікат:\n$file!'
+				}
+			});
+		});
+	});
+</script>
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}

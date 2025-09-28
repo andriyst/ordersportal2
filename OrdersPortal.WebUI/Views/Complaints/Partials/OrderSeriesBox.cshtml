@@ -1,0 +1,39 @@
+﻿@model List<OrdersPortal.Domain.Dto.ComplaintOrderSerieDto>
+@{
+	int index = 0;
+}
+
+Виберіть серії для рекламації:
+
+@foreach (var item in Model)
+{
+	<div class="form-group pt-1">
+
+		<div class="col-12">
+
+			<input type="hidden" name="ComplaintsOrderSeries[@index].SerieName" id="@item.SerieName" autocomplete="off" value="@item.SerieName" />
+			<input type="hidden" name="ComplaintsOrderSeries[@index].SerieGuid" id="@item.SerieGuid" autocomplete="off" value="@item.SerieGuid" />
+			<input type="checkbox" data-val="true" value="true" name="ComplaintsOrderSeries[@index].Checked" id="ComplaintsOrderSeries[@index]" autocomplete="off" />
+
+
+
+			<div class="btn-group col-12" style="height: 3rem">
+				<label for="ComplaintsOrderSeries[@index]" class="btn btn-standart" style="height: 3rem">
+					<span><i class="fas fa-check"></i></span>
+					<span><i> </i></span>
+				</label>
+				<label for="ComplaintsOrderSeries[@index]" class="series-label d-inline-block w-100">
+					<div class="align-middle w-100 p-1">
+						<div class="d-inline-block align-self-center" style="color: bisque"><b>(@item.SerieName) </b></div>
+						<div class="d-inline-block  d-none d-sm-block">@item.SerieCategory </div>
+						
+					</div>
+
+				</label>
+			</div>
+		</div>
+	</div>
+
+	index++;
+
+}

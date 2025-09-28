@@ -1,0 +1,52 @@
+﻿@model List<OrdersPortal.Application.Models.ViewModels.UploadFilesListViewModel>
+@{
+	ViewBag.Title = "Файли";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<hr />
+
+@if (User.IsInRole("director") || User.IsInRole("admin"))
+{
+	<div style="padding-bottom: 30px;">
+		<a href="/Files/UploadFile" class="btn btn-success">Додати файл</a>
+	</div>
+}
+
+
+
+
+
+
+<div class="row">
+	<div class="row col-lg-10 col-md-12">
+		<div class="col-1">Id</div>
+		<div class="col-3">Імя файлу</div>
+		<div class="col-3">Опис</div>
+		<div class="col-2">Автор</div>
+		<div class="col-2">Дата</div>
+		@if (User.IsInRole("director") || User.IsInRole("admin"))
+		{
+			
+		}
+	</div>
+</div>
+<hr />
+<div class="row">
+	@foreach (var file in Model)
+	{
+		<div class="row col-lg-10 col-md-12" style="padding: 0 10px 10px 0">
+			<div class="col-1">@file.Id</div>
+			<div class="col-3"><a href="@file.FilePath@file.FileName" target="_blank"><i class="fa fa-download fa-lg"></i> @file.FileName </a></div>
+			<div class="col-3">@file.Description</div>
+			<div class="col-2">@file.Author</div>
+			<div class="col-2">@file.CreateDate</div>
+			@if (User.IsInRole("director") || User.IsInRole("admin"))
+			{
+			<div class="col-1">@Html.ActionLink("Видалити", "DeleteFile", "Files", new { id = @file.Id }, new { @class = "btn btn-danger" })</div>
+			}
+			
+		</div>
+	}
+</div>

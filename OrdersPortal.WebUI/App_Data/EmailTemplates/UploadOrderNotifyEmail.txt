@@ -1,0 +1,28 @@
+﻿    <html>
+    <body style="color:grey; font-size:15px;">
+    <font face="Helvetica, Arial, sans-serif">
+
+    <div style="position:absolute; height:100px; width:600px; background-color:0d1d36; padding:30px;">
+    <img src="cid:VSLogo" />
+    </div>
+
+    <br/>
+    <br/>
+
+    <div style="background-color: #ece8d4; width:600px; height:200px; padding:30px; margin-top:30px;">
+
+    <p>Доброго дня, <br/><p>
+
+    <p>Клієнт {0}, завантажив нове замовлення:</p>
+				<p>Номер замовлення:{1}</p>
+				<p>Дата та час завантаження замовлення:{3}</p>
+				<p>Кількість конструкцій в замовленні:{2}</p>
+				
+
+     
+
+    <br/>
+    <p>З найкращими побажаннями, колектив Вікна Стиль</p>
+    </div>
+    </body>
+    </html>

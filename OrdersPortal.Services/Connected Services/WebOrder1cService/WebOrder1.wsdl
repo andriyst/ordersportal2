@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:xsd1="http://weborder" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12bind="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:tns="http://weborder" name="WebOrder" targetNamespace="http://weborder" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xs:schema xmlns:xs1="http://weborder" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://weborder" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="ContractSumm">
+        <xs:sequence>
+          <xs:element name="Contract" type="xs:string" />
+          <xs:element name="Summ" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="PaymentDocumentData">
+        <xs:sequence>
+          <xs:element name="order_number" type="xs:string" />
+          <xs:element name="pay_sum" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="PaymentDocumentDataList">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="data" type="xs1:PaymentDocumentData" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="complectations_data">
+        <xs:sequence>
+          <xs:element name="_1c_ID" type="xs:string" />
+          <xs:element name="_1c_name" type="xs:string" />
+          <xs:element name="_1c_parent_ID" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="complectations_list">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="complectations_data_list" type="xs1:complectations_data" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="group_data">
+        <xs:sequence>
+          <xs:element name="_1c_ID" type="xs:string" />
+          <xs:element name="_1c_Name" type="xs:string" />
+          <xs:element name="_1c_Type" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="group_list">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="group_data_list" type="xs1:group_data" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="issues_data">
+        <xs:sequence>
+          <xs:element name="GUID" type="xs:string" />
+          <xs:element name="Name" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="issues_list">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="data_list" type="xs1:issues_data" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="nom_data">
+        <xs:sequence>
+          <xs:element name="_1c_ID" type="xs:string" />
+          <xs:element name="_1c_name" type="xs:string" />
+          <xs:element name="_1c_group" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="nom_list">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="nom_data_list" type="xs1:nom_data" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="nom_vs_comp_data">
+        <xs:sequence>
+          <xs:element name="_1c_ID_nom" type="xs:string" />
+          <xs:element name="_1c_ID_comp" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="nom_vs_comp_list">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="data_list" type="xs1:nom_vs_comp_data" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GetNomenklaturaGroup">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetNomenklaturaGroupResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:group_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetComplectation">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetComplectationResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:complectations_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetNomenklatura">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetNomenklaturaResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:nom_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetNomVSComp">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetNomVSCompResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:nom_vs_comp_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetLaminaVSColor">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="GUID" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetLaminaVSColorResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:nom_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetComplectationPrice">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="GUID" type="xs:string" />
+            <xs:element name="Width" type="xs:integer" />
+            <xs:element name="Height" type="xs:integer" />
+            <xs:element name="ArrayGUID" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetComplectationPriceResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" nillable="true" type="xs:double" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CreateDocument">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="OrderId" type="xs:integer" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CreateDocumentResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetLamina">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="PicGUID" type="xs:string" />
+            <xs:element name="CompGUID" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetLaminaResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetAdvanceContractSumm">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="kontr_kod" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetAdvanceContractSummResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" nillable="true" type="xs1:ContractSumm" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CreatePaymentDocument">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Data" type="xs1:PaymentDocumentDataList" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CreatePaymentDocumentResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="fin_section">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="kontr_kod" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="fin_sectionResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </types>
+  <message name="GetNomenklaturaGroupRequestMessage">
+    <part name="parameters" element="tns:GetNomenklaturaGroup" />
+  </message>
+  <message name="GetNomenklaturaGroupResponseMessage">
+    <part name="parameters" element="tns:GetNomenklaturaGroupResponse" />
+  </message>
+  <message name="GetComplectationRequestMessage">
+    <part name="parameters" element="tns:GetComplectation" />
+  </message>
+  <message name="GetComplectationResponseMessage">
+    <part name="parameters" element="tns:GetComplectationResponse" />
+  </message>
+  <message name="GetNomenklaturaRequestMessage">
+    <part name="parameters" element="tns:GetNomenklatura" />
+  </message>
+  <message name="GetNomenklaturaResponseMessage">
+    <part name="parameters" element="tns:GetNomenklaturaResponse" />
+  </message>
+  <message name="GetNomVSCompRequestMessage">
+    <part name="parameters" element="tns:GetNomVSComp" />
+  </message>
+  <message name="GetNomVSCompResponseMessage">
+    <part name="parameters" element="tns:GetNomVSCompResponse" />
+  </message>
+  <message name="GetLaminaVSColorRequestMessage">
+    <part name="parameters" element="tns:GetLaminaVSColor" />
+  </message>
+  <message name="GetLaminaVSColorResponseMessage">
+    <part name="parameters" element="tns:GetLaminaVSColorResponse" />
+  </message>
+  <message name="GetComplectationPriceRequestMessage">
+    <part name="parameters" element="tns:GetComplectationPrice" />
+  </message>
+  <message name="GetComplectationPriceResponseMessage">
+    <part name="parameters" element="tns:GetComplectationPriceResponse" />
+  </message>
+  <message name="CreateDocumentRequestMessage">
+    <part name="parameters" element="tns:CreateDocument" />
+  </message>
+  <message name="CreateDocumentResponseMessage">
+    <part name="parameters" element="tns:CreateDocumentResponse" />
+  </message>
+  <message name="GetLaminaRequestMessage">
+    <part name="parameters" element="tns:GetLamina" />
+  </message>
+  <message name="GetLaminaResponseMessage">
+    <part name="parameters" element="tns:GetLaminaResponse" />
+  </message>
+  <message name="GetAdvanceContractSummRequestMessage">
+    <part name="parameters" element="tns:GetAdvanceContractSumm" />
+  </message>
+  <message name="GetAdvanceContractSummResponseMessage">
+    <part name="parameters" element="tns:GetAdvanceContractSummResponse" />
+  </message>
+  <message name="CreatePaymentDocumentRequestMessage">
+    <part name="parameters" element="tns:CreatePaymentDocument" />
+  </message>
+  <message name="CreatePaymentDocumentResponseMessage">
+    <part name="parameters" element="tns:CreatePaymentDocumentResponse" />
+  </message>
+  <message name="fin_sectionRequestMessage">
+    <part name="parameters" element="tns:fin_section" />
+  </message>
+  <message name="fin_sectionResponseMessage">
+    <part name="parameters" element="tns:fin_sectionResponse" />
+  </message>
+  <portType name="WebOrderPortType">
+    <operation name="GetNomenklaturaGroup">
+      <input message="tns:GetNomenklaturaGroupRequestMessage" />
+      <output message="tns:GetNomenklaturaGroupResponseMessage" />
+    </operation>
+    <operation name="GetComplectation">
+      <input message="tns:GetComplectationRequestMessage" />
+      <output message="tns:GetComplectationResponseMessage" />
+    </operation>
+    <operation name="GetNomenklatura">
+      <input message="tns:GetNomenklaturaRequestMessage" />
+      <output message="tns:GetNomenklaturaResponseMessage" />
+    </operation>
+    <operation name="GetNomVSComp">
+      <input message="tns:GetNomVSCompRequestMessage" />
+      <output message="tns:GetNomVSCompResponseMessage" />
+    </operation>
+    <operation name="GetLaminaVSColor">
+      <input message="tns:GetLaminaVSColorRequestMessage" />
+      <output message="tns:GetLaminaVSColorResponseMessage" />
+    </operation>
+    <operation name="GetComplectationPrice">
+      <input message="tns:GetComplectationPriceRequestMessage" />
+      <output message="tns:GetComplectationPriceResponseMessage" />
+    </operation>
+    <operation name="CreateDocument">
+      <input message="tns:CreateDocumentRequestMessage" />
+      <output message="tns:CreateDocumentResponseMessage" />
+    </operation>
+    <operation name="GetLamina">
+      <input message="tns:GetLaminaRequestMessage" />
+      <output message="tns:GetLaminaResponseMessage" />
+    </operation>
+    <operation name="GetAdvanceContractSumm">
+      <input message="tns:GetAdvanceContractSummRequestMessage" />
+      <output message="tns:GetAdvanceContractSummResponseMessage" />
+    </operation>
+    <operation name="CreatePaymentDocument">
+      <input message="tns:CreatePaymentDocumentRequestMessage" />
+      <output message="tns:CreatePaymentDocumentResponseMessage" />
+    </operation>
+    <operation name="fin_section">
+      <input message="tns:fin_sectionRequestMessage" />
+      <output message="tns:fin_sectionResponseMessage" />
+    </operation>
+  </portType>
+  <binding name="WebOrderSoapBinding" type="tns:WebOrderPortType">
+    <soapbind:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="GetNomenklaturaGroup">
+      <soapbind:operation soapAction="http://weborder#WebOrder:GetNomenklaturaGroup" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetComplectation">
+      <soapbind:operation soapAction="http://weborder#WebOrder:GetComplectation" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetNomenklatura">
+      <soapbind:operation soapAction="http://weborder#WebOrder:GetNomenklatura" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetNomVSComp">
+      <soapbind:operation soapAction="http://weborder#WebOrder:GetNomVSComp" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetLaminaVSColor">
+      <soapbind:operation soapAction="http://weborder#WebOrder:GetLaminaVSColor" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetComplectationPrice">
+      <soapbind:operation soapAction="http://weborder#WebOrder:GetComplectationPrice" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateDocument">
+      <soapbind:operation soapAction="http://weborder#WebOrder:CreateDocument" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetLamina">
+      <soapbind:operation soapAction="http://weborder#WebOrder:GetLamina" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetAdvanceContractSumm">
+      <soapbind:operation soapAction="http://weborder#WebOrder:GetAdvanceContractSumm" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreatePaymentDocument">
+      <soapbind:operation soapAction="http://weborder#WebOrder:CreatePaymentDocument" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="fin_section">
+      <soapbind:operation soapAction="http://weborder#WebOrder:fin_section" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <binding name="WebOrderSoap12Binding" type="tns:WebOrderPortType">
+    <soap12bind:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="GetNomenklaturaGroup">
+      <soap12bind:operation soapAction="http://weborder#WebOrder:GetNomenklaturaGroup" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetComplectation">
+      <soap12bind:operation soapAction="http://weborder#WebOrder:GetComplectation" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetNomenklatura">
+      <soap12bind:operation soapAction="http://weborder#WebOrder:GetNomenklatura" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetNomVSComp">
+      <soap12bind:operation soapAction="http://weborder#WebOrder:GetNomVSComp" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetLaminaVSColor">
+      <soap12bind:operation soapAction="http://weborder#WebOrder:GetLaminaVSColor" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetComplectationPrice">
+      <soap12bind:operation soapAction="http://weborder#WebOrder:GetComplectationPrice" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateDocument">
+      <soap12bind:operation soapAction="http://weborder#WebOrder:CreateDocument" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetLamina">
+      <soap12bind:operation soapAction="http://weborder#WebOrder:GetLamina" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetAdvanceContractSumm">
+      <soap12bind:operation soapAction="http://weborder#WebOrder:GetAdvanceContractSumm" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreatePaymentDocument">
+      <soap12bind:operation soapAction="http://weborder#WebOrder:CreatePaymentDocument" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="fin_section">
+      <soap12bind:operation soapAction="http://weborder#WebOrder:fin_section" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="WebOrder">
+    <port name="WebOrderSoap" binding="tns:WebOrderSoapBinding">
+      <documentation>
+        <wsi:Claim xmlns:wsi="http://ws-i.org/schemas/conformanceClaim/" conformsTo="http://ws-i.org/profiles/basic/1.1" />
+      </documentation>
+      <soapbind:address location="http://192.168.1.10/oknastyle/ws/webOrder" />
+    </port>
+    <port name="WebOrderSoap12" binding="tns:WebOrderSoap12Binding">
+      <soap12bind:address location="http://192.168.1.10/oknastyle/ws/webOrder" />
+    </port>
+  </service>
+</definitions>

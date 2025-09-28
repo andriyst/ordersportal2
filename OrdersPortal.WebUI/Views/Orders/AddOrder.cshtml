@@ -1,0 +1,67 @@
+﻿@model OrdersPortal.Application.Models.ViewModels.UploadOrderViewModel
+@{
+	ViewBag.Title = "Завантажити замовлення";
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="row">
+	<div class="col-12 col-md-9 col-lg-6 col-xl-4">
+		@using (Html.BeginForm("AddOrder", "Orders", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+		{
+			@Html.AntiForgeryToken()
+
+			<hr />
+			@Html.ValidationSummary()
+			<div class="form-group">
+				@Html.LabelFor(m => m.File, new { @class = "col-2 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.File, new { @class = "uploadfiletext form-control", type = "file" })
+				</div>
+
+			</div>
+
+
+			@Html.HiddenFor(m => m.CustomerName)
+
+
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.OrderNumber, new { @class = "col-12 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.OrderNumber, new { @class = "form-control" })
+				</div>
+			</div>
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.OrderNumberContructions, new { @class = "col-12 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.OrderNumberContructions, new { @class = "form-control" })
+				</div>
+			</div>
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.CommentMessage, new { @class = "col-12 control-label" })
+				<div class="col-12">
+					@Html.TextAreaFor(m => m.CommentMessage, new { @class = "form-control", @style = "height:200px;" })
+				</div>
+			</div>
+			<div class="row justify-content-between pt-4">
+				
+					<div class="col-6">
+						<input id="addButton" type="submit" class="btn btn-success" value="Додати" />
+					</div>
+
+					<div class="col-6">
+						<input id="cancelButton" type="button" class="btn btn-secondary float-right" onclick="CancelButtonClick()" value="Відмінити" />
+					</div>
+				
+			</div>
+		}
+	</div>
+</div>
+<script>
+	function CancelButtonClick() {
+
+		location.href = "/Orders/List";
+	}
+</script>
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}

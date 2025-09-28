@@ -1,0 +1,11 @@
+﻿@model byte[]
+@{
+    
+    
+}
+<html>
+<body>
+@Html.Raw("<img   src=\"data:image/jpeg;base64,"
+                                + Convert.ToBase64String(@Model) + "\" />")
+    </body>
+</html>

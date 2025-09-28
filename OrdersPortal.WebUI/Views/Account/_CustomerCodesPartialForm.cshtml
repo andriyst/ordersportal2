@@ -1,0 +1,12 @@
+﻿@model OrdersPortal.Application.Models.ViewModels.OrganizationCustomerCodesViewModel
+
+<div class="form-group pt-2 field-customercode">
+	@Html.LabelFor(m => m.CustomerCode, new { @class = "col-11 control-label" })
+	<div class="col-12">
+		@Html.DropDownListFor(m => m.CustomerCode, Model.ContrCodesList.Select(x => new SelectListItem
+		{
+			Text = x.CustomerName,
+			Value = x.Code.ToString()
+		}), new { @class = "form-select", @id = "select-customer" })
+	</div>
+</div>

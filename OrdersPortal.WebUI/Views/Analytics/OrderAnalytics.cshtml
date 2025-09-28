@@ -1,0 +1,620 @@
+﻿@model OrdersPortal.Application.Models.ViewModels.OrderAnalyticsListViewModel
+@using Resources
+@{
+	ViewBag.Title = "Аналітика";
+}
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("OrderAnalytics", "Analytics", FormMethod.Post, new { id = "orderAnalyticsForm" }))
+{
+	@Html.AntiForgeryToken()
+
+	<hr />
+	@Html.ValidationSummary()
+
+
+	<div class="row" style="padding-left: 10px;">
+
+
+		<div class="row col-12 col-md-auto">
+			<div class="col-12 col-md-auto pb-2" style="padding-right: 25px;">
+				@Html.TextBoxFor(m => m.StartDate, new { @class = "btn btn-darkblue", id = "StartDate", Name = "startDate" })
+			</div>
+
+			<div class="col-12 col-md-auto pb-2">
+				@Html.TextBoxFor(m => m.EndDate, new { @class = "btn btn-darkblue", id = "EndDate", Name = "endDate" })
+			</div>
+		</div>
+		@if (!User.IsInRole("customer"))
+		{
+
+
+			<div class="col-12 col-md-auto pb-2">
+				@Html.DropDownListFor(m => m.ContrAgentCode,
+					Model.ContrAgentCodeList.Select(h => new SelectListItem { Text = h.Text, Value = h.Value }), new { data_live_search = true, @class = "selectpicker", id = "ContrAgentCode" })
+			</div>
+
+		}
+		else
+		{
+			@Html.HiddenFor(m => m.ContrAgentCode)
+		}
+
+
+		<div class="col-12 col-md-auto pb-2">
+			<input type="submit" class="btn btn-success" value="Пошук" />
+
+		</div>
+	</div>
+
+
+	<hr />
+
+}
+
+
+<div id="avarageBill" bill-data="@Model.AvarageBill" class="card text-white bg-info mb-3" style="visibility: hidden; max-width: 20rem;">
+	<div class="card-header">Середній чек:</div>
+	<div class="card-body">
+		<h3 class="card-title"> @Model.AvarageBill грн.</h3>
+	</div>
+</div>
+
+@*<div id="avarageBill" bill-data="@Model.AvarageBill" class="row" style="text-align: left; padding: 40px;  display:none">
+		<h3>Середній чек: @Model.AvarageBill грн.</h3>
+	</div>*@
+
+@if (Model != null && Model.AnalyticsCategoryOrderList != null)
+{
+	<div class="container d-flex  justify-content-center" style="visibility: hidden;">
+		<div id="CatAChart" class="col-12">
+			<canvas id="chartCatA"></canvas>
+		</div>
+	</div>
+	<div class="col-6 table-align-center pt-5">
+		<div class="container-fluid col-12">
+			<table class="table table-striped" data-search="true" id="listAnalyticsOrderTableCatA">
+				<thead>
+					<tr>
+						<th>Номер замовлення</th>
+						<th>Дата замолення</th>
+						<th>Дата готовності</th>
+						<th>К-сть конструкцій</th>
+					</tr>
+				</thead>
+
+				<tbody>
+
+
+
+					@foreach (var item in Model.AnalyticsCategoryOrderList.Where(x => x.Category == "Категорія А (3-7 роб. днів)").SelectMany(c => c.AnalyticsOrderList).ToList())
+					{
+
+						<tr>
+							<td>@item.Number</td>
+							<td>@(item.StartDate.HasValue ? item.StartDate.Value.ToString("dd.MM.yyyy") : "")</td>
+							<td>@item.DeliveryDate</td>
+							<td>@item.QuantityConstructions</td>
+						</tr>
+					}
+
+
+					<tr class="table-bg-color-footer-analytics">
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+}
+@if (Model != null && Model.AnalyticsCategoryOrderList != null)
+{
+	<div class="container d-flex  justify-content-center" style="visibility: hidden;">
+		<div id="CatBChart" class="col-12">
+			<canvas id="chartCatB"></canvas>
+		</div>
+	</div>
+	<div class="col-6 table-align-center pt-5">
+		<div class="container-fluid col-12">
+			<table class="table table-striped" data-search="true" id="listAnalyticsOrderTableCatA">
+				<thead>
+					<tr>
+						<th>Номер замовлення</th>
+						<th>Дата замолення</th>
+						<th>Дата готовності</th>
+						<th>К-сть конструкцій</th>
+					</tr>
+				</thead>
+
+				<tbody>
+
+
+					@foreach (var item in Model.AnalyticsCategoryOrderList.Where(x => x.Category == "Категорія В (10-14 роб. днів)").SelectMany(c => c.AnalyticsOrderList).ToList())
+					{
+
+						<tr>
+							<td>@item.Number</td>
+							<td>@(item.StartDate.HasValue ? item.StartDate.Value.ToString("dd.MM.yyyy") : "")</td>
+							<td>@item.DeliveryDate</td>
+							<td>@item.QuantityConstructions</td>
+						</tr>
+
+					}
+
+					<tr class="table-bg-color-footer-analytics">
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+}
+@if (Model != null && Model.AnalyticsCategoryOrderList != null)
+{
+	<div class="container d-flex  justify-content-center" style="visibility: hidden;">
+		<div id="CatCChart" class="col-12">
+			<canvas id="chartCatC"></canvas>
+		</div>
+	</div>
+	<div class="col-6 table-align-center pt-5">
+		<div class="container-fluid col-12">
+			<table class="table table-striped" data-search="true" id="listAnalyticsOrderTableCatA">
+				<thead>
+					<tr>
+						<th>Номер замовлення</th>
+						<th>Дата замолення</th>
+						<th>Дата готовності</th>
+						<th>К-сть конструкцій</th>
+					</tr>
+				</thead>
+
+				<tbody>
+
+
+
+					@foreach (var item in Model.AnalyticsCategoryOrderList.Where(x => x.Category == "Категорія С (24 роб. дні)").SelectMany(c => c.AnalyticsOrderList).ToList())
+					{
+
+						<tr>
+							<td>@item.Number</td>
+							<td>@(item.StartDate.HasValue ? item.StartDate.Value.ToString("dd.MM.yyyy") : "")</td>
+							<td>@item.DeliveryDate</td>
+							<td>@item.QuantityConstructions</td>
+						</tr>
+					}
+
+
+					<tr class="table-bg-color-footer-analytics">
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+}
+@*<div class="col-12 table-align-center">
+		<div class="container-fluid col-12">
+
+			<table class="table table-striped" data-search="true" id="listAnalyticsOrderTable1">
+				<thead>
+					<tr>
+						<th>@Finance.OrderNumber</th>
+						<th>@Finance.Date</th>
+						<th class="text-right">К-сть конструкцій</th>
+						<th class="text-right">Прострочка</th>
+						<th class="text-right">@Finance.Status</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					@if (Model.AnalyticsCategoryOrderList != null)
+					{
+						foreach (var b in Model.AnalyticsCategoryOrderList.OrderBy(x => x.Category))
+						{
+							<tr class="table-bg-color-header">
+								<td>@b.Category</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+
+
+							</tr>
+							foreach (var item in b.AnalyticsOrderList)
+							{
+
+								<tr>
+									<td>@item.Number</td>
+									<td>@item.StartDate.Value.ToShortDateString()</td>
+									<td>@item.QuantityConstructions</td>
+									<td>@item.ActualyProductionDays</td>
+									<td>@item.Status</td>
+
+
+
+								</tr>
+							}
+							<tr class="table-bg-color-footer-analytics">
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+
+
+							</tr>
+
+						}
+					}
+				</tbody>
+				<tfoot>
+					<tr class="table-bg-color-footer-analytics">
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>*@
+
+
+
+@if (Model != null && Model.AnalyticsProfileSystemChartList != null)
+{
+
+	<div id="profileChart" class="col-12" style="display:none">
+		<canvas id="barcanvas"></canvas>
+	</div>
+
+
+
+	@*<div class="container d-flex align-items-center justify-content-center">*@
+	<div class="col-6 table-align-center pt-5">
+		<div class="container-fluid col-12">
+
+			<table class="table table-striped" data-search="true" id="listAnalyticsOrderTable1">
+				<thead>
+					<tr>
+						<th>Профільна система</th>
+						<th class="text-center">К-сть конструкцій</th>
+						<th class="text-end">Середній чек</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					@foreach (var item in Model.AnalyticsProfileSystemChartList.OrderByDescending(x => x.ProfileSystemValue))
+					{
+
+					<tr>
+						<td>@item.ProfileSystemName</td>
+						<td class="text-center">@item.ProfileSystemValue</td>
+						<td class="text-end">@item.ProfileSystemAvarageBill.ToString("F2") грн.</td>
+					</tr>
+					}
+					
+
+					<tr class="table-bg-color-footer-analytics">
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+}
+	@*</div>*@
+
+
+
+	<script type="text/javascript">
+	// When the document is ready
+	$(document).ready(function () {
+
+		if ($('#avarageBill').attr('bill-data') != 0) {
+
+			$('#avarageBill').css('visibility', 'visible');
+			$('#profileChart').show();
+			$('#CatAChart').css('visibility', 'visible');
+			$('#CatBChart').css('visibility', 'visible');
+			$('#CatCChart').css('visibility', 'visible');
+
+		};
+
+		$('#StartDate').datepicker({
+
+			format: "dd.mm.yyyy"
+		});
+		$('#EndDate').datepicker({
+			format: "dd.mm.yyyy"
+		});
+		$('#StartDate').val("@Model.StartDate.ToShortDateString()");
+		$('#EndDate').val("@Model.EndDate.ToShortDateString()");
+
+
+	});
+
+	function statusCellStyle(value, row, index, field) {
+		if (value == 1) {
+			var result = {
+				css: { "background-color": "#d84435" }
+			};
+			if (isOdd(index)) {
+
+				result = {
+					css: { "background-color": "#d9534f" }
+				};
+			}
+		} else if (value == 2) {
+			var result = {
+				css: { "background-color": "#e2a500" }
+			};
+			if (isOdd(index)) {
+
+				result = {
+					css: { "background-color": "#ffba00" }
+				};
+			}
+		} else {
+			var result = {
+				css: { "background-color": "seagreen" }
+			};
+			if (isOdd(index)) {
+
+				result = {
+					css: { "background-color": "#449d44" }
+				};
+			}
+		}
+
+
+
+		return result;
+	}
+	function isOdd(n) {
+		return Math.abs(n % 2) == 1;
+	}
+	</script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+	<script>
+	var barChartDataCatA =
+	{
+		labels: [@Html.Raw(Model.ModelCharts != null && Model.ModelCharts.Count > 0   ? '"' + string.Join("\",\"", Model.ModelCharts.FirstOrDefault(s=>s.Name == "Категорія А (3-7 роб. днів)").ChartData.Select(x=>x.Name).ToList()) + '"' : null) ], //the names displayed on the x-axis, see images below
+		datasets: [{
+			label: 'Категорія А (3-7 роб. днів)',
+			backgroundColor: [
+				"#66CC00",
+				"#CC3333"
+			],
+			borderWidth: 2,
+			data: [@(Model.ModelCharts != null && Model.ModelCharts.Count > 0 ? string.Join(",", Model.ModelCharts.FirstOrDefault(s => s.Name == "Категорія А (3-7 роб. днів)").ChartData.Select(x => x.Value).ToList()) : null)]  //what you returned back from controller. values displayed on the y-axis, see images below
+		}]
+	};
+
+	var barChartDataCatB =
+	{
+		labels: [@Html.Raw(Model.ModelCharts != null && Model.ModelCharts.Count > 0 ? '"' + string.Join("\",\"", Model.ModelCharts.FirstOrDefault(s=>s.Name == "Категорія В (10-14 роб. днів)").ChartData.Select(x=>x.Name).ToList()) + '"' : null) ], //the names displayed on the x-axis, see images below
+		datasets: [{
+			label: 'Категорія В (10-14 роб. днів)',
+			backgroundColor: [
+				"#66CC00",
+				"#CC3333"
+			],
+			borderWidth: 2,
+			data: [@(Model.ModelCharts != null && Model.ModelCharts.Count > 0 ? string.Join(",", Model.ModelCharts.FirstOrDefault(s => s.Name == "Категорія В (10-14 роб. днів)").ChartData.Select(x => x.Value).ToList()) : null)]  //what you returned back from controller. values displayed on the y-axis, see images below
+		}]
+	};
+
+
+	var barChartDataCatC =
+	{
+		labels: [@Html.Raw(Model.ModelCharts != null && Model.ModelCharts.Count > 0 ? '"' + string.Join("\",\"", Model.ModelCharts.FirstOrDefault(s=>s.Name == "Категорія С (24 роб. дні)").ChartData.Select(x=>x.Name).ToList()) + '"' : null) ], //the names displayed on the x-axis, see images below
+		datasets: [{
+			label: 'Категорія С (24 роб. дні)',
+			backgroundColor: [
+				"#66CC00",
+				"#CC3333"
+			],
+			borderWidth: 2,
+			data: [@(Model.ModelCharts != null && Model.ModelCharts.Count > 0 ? string.Join(",", Model.ModelCharts.FirstOrDefault(s => s.Name == "Категорія С (24 роб. дні)").ChartData.Select(x => x.Value).ToList()) : null)]  //what you returned back from controller. values displayed on the y-axis, see images below
+		}]
+	};
+
+	var barChartData =
+	{
+		labels: [@Html.Raw(Model.AnalyticsProfileSystemChartList != null && Model.AnalyticsProfileSystemChartList.Count > 0 ? '"' + string.Join("\",\"", Model.AnalyticsProfileSystemChartList.Select(x => x.ProfileSystemName).ToList()) + '"' : null) ], //the names displayed on the x-axis, see images below
+		datasets: [{
+			label: 'Аналітика профільних систем',
+			backgroundColor: [
+				"#f94144ff",
+				"#005EB8",
+				"#008000",
+				"#f3722cff",
+				"#2D7DE1",
+				"#007200",
+				"#f8961eff",
+				"#3CD7E6",
+				"#70E000",
+				"#f9844aff",
+				"#00B496",
+				"#004B23",
+				"#f9c74fff",
+				"#006464",
+				"#CCFF33",
+				"#90be6dff",
+				"#9B6E00",
+				"#43aa8bff",
+				"#C89B00",
+				"#4d908eff",
+				"#577590ff",
+				"#77da1ff"
+			],
+			borderWidth: 2,
+			data: [@(Model.AnalyticsProfileSystemChartList != null && Model.AnalyticsProfileSystemChartList.Count > 0 ? string.Join(",", Model.AnalyticsProfileSystemChartList.Select(x => x.ProfileSystemValue).ToList()) : null)]  //what you returned back from controller. values displayed on the y-axis, see images below
+		}]
+	};
+
+	window.onload = function () {
+		var ctx1 = document.getElementById("barcanvas").getContext("2d");
+		var ctxA = document.getElementById("chartCatA").getContext("2d");
+		var ctxB = document.getElementById("chartCatB").getContext("2d");
+		var ctxC = document.getElementById("chartCatC").getContext("2d");
+
+
+		window.myBar1 = new Chart(ctx1,
+			{
+				type: 'pie',
+				data: barChartData,
+				options:
+				{
+					title:
+					{
+						padding: 75,
+						display: true,
+						fontSize: 26,
+						fontColor: 'white',
+						text: "             Аналітика профільних систем"
+					},
+					legend: {
+						display: true,
+						position: 'left',
+						labels: {
+							fontSize: 20,
+							fontColor: 'white',
+							generateLabels: (chart) => {
+								const datasets = chart.data.datasets;
+								return datasets[0].data.map((data, i) => ({
+									text: `${chart.data.labels[i]}: ${data}`,
+									fillStyle: datasets[0].backgroundColor[i],
+								}))
+							}
+						},
+						onClick: null
+					},
+
+				}
+			});
+
+		window.myBar = new Chart(ctxA,
+			{
+				type: 'pie',
+				data: barChartDataCatA,
+				options:
+				{
+					title:
+					{
+						padding: 75,
+						display: true,
+						fontSize: 26,
+						fontColor: 'white',
+						text: "             Категорія А (3-7 роб. днів)"
+					},
+					legend: {
+						display: true,
+						position: 'left',
+						labels: {
+							fontSize: 20,
+							fontColor: 'white',
+							generateLabels: (chart) => {
+								const datasets = chart.data.datasets;
+								return datasets[0].data.map((data, i) => ({
+									text: `${chart.data.labels[i]}: ${data}`,
+									fillStyle: datasets[0].backgroundColor[i],
+								}))
+							}
+						},
+						onClick: null
+					},
+
+				}
+			});
+
+		window.myBar3 = new Chart(ctxB,
+			{
+				type: 'pie',
+				data: barChartDataCatB,
+				options:
+				{
+					title:
+					{
+						padding: 75,
+						display: true,
+						fontSize: 26,
+						fontColor: 'white',
+						text: "             Категорія В (10-14 роб. днів)"
+					},
+					legend: {
+						display: true,
+						position: 'left',
+						labels: {
+							fontSize: 20,
+							fontColor: 'white',
+							generateLabels: (chart) => {
+								const datasets = chart.data.datasets;
+								return datasets[0].data.map((data, i) => ({
+									text: `${chart.data.labels[i]}: ${data}`,
+									fillStyle: datasets[0].backgroundColor[i],
+								}))
+							}
+						},
+						onClick: null
+					},
+
+				}
+			});
+
+
+		window.myBar4 = new Chart(ctxC,
+			{
+				type: 'pie',
+				data: barChartDataCatC,
+				options:
+				{
+					title:
+					{
+						padding: 75,
+						display: true,
+						fontSize: 26,
+						fontColor: 'white',
+						text: "             Категорія С (24 роб. дні)"
+					},
+					legend: {
+						display: true,
+						position: 'left',
+						labels: {
+							fontSize: 20,
+							fontColor: 'white',
+							generateLabels: (chart) => {
+								const datasets = chart.data.datasets;
+								return datasets[0].data.map((data, i) => ({
+									text: `${chart.data.labels[i]}: ${data}`,
+									fillStyle: datasets[0].backgroundColor[i],
+								}))
+							}
+						},
+						onClick: null
+					},
+
+				}
+			});
+	}
+	</script>
+

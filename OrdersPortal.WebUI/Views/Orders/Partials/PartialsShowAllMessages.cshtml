@@ -1,0 +1,76 @@
+﻿
+@model OrdersPortal.Application.Models.ViewModels.OrderMessageListViewModel
+
+
+<div class="modal" id="ModalAllMessages">
+	<div class="modal-dialog modal-dialog-centered-top modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Коментарі до замовлення:</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true"></span>
+				</button>
+			</div>
+			<div class="modal-body">
+				@foreach (var a in Model.OrdersMessageList)
+				{
+					if (a.MessageWriterRole == "customer")
+					{
+						<div class='table-comment-customer'>
+							<div class="fw-bold fs-6">@a.MessageWriterName</div>
+							<div class="d-inline-block" style="font-size: 14px;">@a.MessageTime.ToShortDateString() @a.MessageTime.ToShortTimeString() : </div> <div class="d-inline-block fs-5">@a.Message</div>
+						</div>
+					}
+					else
+					{
+						<div class='table-comment-manager'>
+							<div class="fw-bold fs-6">@a.MessageWriterName</div>
+							<div class="d-inline-block fs-5">@a.Message</div> <div class="d-inline-block" style="font-size: 14px;">: @a.MessageTime.ToShortTimeString() @a.MessageTime.ToShortDateString()</div>
+					</div>
+					}
+
+				}
+
+			</div>
+
+			<!-- Тут додати можливість додавати коментарі -->
+
+
+			@if (User.IsInRole("customer") || User.IsInRole("manager") || User.IsInRole("operator"))
+			{
+				using (Html.BeginForm("AddCommentMessage", "Orders", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+				{
+					<div style="height:150px;">
+						<p><span id='warning-message'></span></p>
+						@Html.AntiForgeryToken()
+						<hr />
+						@Html.ValidationSummary()
+						@Html.HiddenFor(m => m.OrderId)
+						<div class="form-group">
+
+							<div class="col-12 p-3">
+								@Html.TextAreaFor(m => m.Message, new { @class = "form-control" })
+							</div>
+						</div>
+					</div>
+
+					<div class="modal-footer">
+
+						<input type="submit" class="btn btn-success" value="Додати" />
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Відмінити</button>
+					</div>
+				}
+				<!--  -->
+			}
+			else
+			{
+				<div class="modal-footer">
+
+
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+				</div>
+			}
+		</div>
+	</div>
+</div>
+

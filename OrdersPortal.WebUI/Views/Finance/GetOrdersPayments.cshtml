@@ -1,0 +1,307 @@
+﻿@model OrdersPortal.Application.Models.ViewModels.OrdersPaymentsViewModel
+@{
+	int index = 0;
+	int groupIndex = 0;
+	int contractIndex = 0;
+}
+<div class="d-flex justify-content-end pt-4 pb-2 col-12 col-lg-10">
+	<div class="col-5 col-md-auto">
+		<div id="AvailableAdvance" hidden="hidden"> @Model.AvailableAdvance</div>
+		<div>Доступний баланс:</div>
+		<div id="CurrentAdvance" class="d-inline-block h3"> @Model.AvailableAdvance</div>
+		<div class="d-inline-block">грн.</div>
+	</div>
+</div>
+@using (Html.BeginForm("SetOrdersPayments", "Finance", FormMethod.Post, new { id = "financePaymentForm" }))
+{
+	@Html.HiddenFor(model => model.AvailableAdvance)
+	@Html.HiddenFor(model => model.ContrAgentCode)
+	@Html.HiddenFor(model => model.StartDate)
+	@Html.HiddenFor(model => model.EndDate)
+	<div class="row table-align-center" style="margin: 20px 0 20px 0">
+		<div class="col-2  col-lg-2 col-xl-2" style="text-align: center;">Дата</div>
+		<div class="col-2  col-lg-2 col-xl-2" style="text-align: center;">Номер</div>
+		<div class="col-2  col-lg-2 col-xl-1" style="text-align: right;">Ціна</div>
+		<div class="col-2  col-lg-2 col-xl-1" style="text-align: right;">Оплачена сума</div>
+		<div class="col-2  col-lg-2 col-xl-2" style="text-align: center;">Оплата</div>
+		<div class="col-12 col-md-12 col-lg-4 col-xl-4"></div>
+
+	</div>
+
+
+	<div class="accordion" id="accordionPanelsStayOpenExample">
+
+		@if (Model.Payments != null && Model.Payments.Count > 0)
+		{
+			foreach (var group in Model.Payments.GroupBy(x => x.Status).Select(g => new { name = g.Key, count = g.Count() }))
+			{
+
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="panelsStayOpen-heading-@group.name">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse-@group.name" aria-expanded="false" aria-controls="panelsStayOpen-collapse-@group.name">
+							@if (group.name == "1")
+							{
+								<div>В роботі (@group.count)</div>
+							}
+							else if (group.name == "2")
+							{
+								<div>На складі (@group.count)</div>
+							}
+							else if (group.name == "3")
+							{
+								<div>Відвантажено (@group.count)</div>
+							}
+
+						</button>
+					</h2>
+					<div id="panelsStayOpen-collapse-@group.name" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading-@group.name">
+						<div class="accordion-body">
+
+							<div class="accordion-order" id="accordionPanelsContracts">
+								@foreach (var contract in Model.Payments.Where(x => x.Status == group.name).GroupBy(x => x.Agreement).Select(g => new { name = g.Key, count = g.Count() }).OrderByDescending(f => f.name))
+								{
+
+									<div class="accordion-item" contractIndex="@contractIndex">
+
+										<h2 class="accordion-header" id="panelsStayOpenContract-heading-@groupIndex">
+											<button class="accordion-button collapsed" contractIndex="@contractIndex" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpenContract-collapse-@groupIndex" aria-expanded="false" aria-controls="panelsStayOpenContract-collapse-@groupIndex">
+
+												<div>@contract.name (@contract.count)</div>
+
+
+											</button>
+										</h2>
+										<div id="panelsStayOpenContract-collapse-@groupIndex" contractIndex="@contractIndex" class="accordion-collapse collapse" aria-labelledby="panelsStayOpenContract-heading-@groupIndex">
+											<div class="accordion-body">
+
+												@foreach (var item in Model.Payments.Where(x => x.Status == group.name && x.Agreement == contract.name))
+												{
+
+
+
+													@*<div class="row table-align-center" style="margin-top: 15px;" id="@index">
+															@Html.HiddenFor(model => model.Payments[index].OrderNumber)
+															@Html.HiddenFor(model => model.Payments[index].CurrentAdvance)
+															@Html.HiddenFor(model => model.Payments[index].OrderDate)
+															@Html.HiddenFor(model => model.Payments[index].Price)
+
+															<div class="col-2  col-lg-2 col-xl-2" style="text-align: center; margin: auto 0 auto 0;"> @Model.Payments[index].OrderDate.Value.ToShortDateString()</div>
+															<div class="col-2  col-lg-2 col-xl-2" style="text-align: center; margin: auto 0 auto 0;"> @Model.Payments[index].OrderNumber</div>
+															<div class="price  col-2 col-lg-1 col-xl-1" style="text-align: right; margin: auto 0 auto 0;">@Model.Payments[index].Price.ToString("0.00")</div>
+															<div class="payed  col-2 col-lg-1 col-xl-1" style="text-align: right; margin: auto 0 auto 0;">@Model.Payments[index].CurrentAdvance.ToString("0.00")</div>
+															<div class="col-4 col-md-4 col-lg-2 col-xl-2" style="margin: auto 0 auto 0;">@Html.TextBoxFor(model => model.Payments[index].Payment, new { @class = "form-control payment-edit" })</div>
+															<div class="col-12 col-md-12 col-lg-4 col-xl-4 d-flex justify-content-end mt-2">
+
+																<div class="up-halfpayment btn btn-warning" style="width: 70px;" id="up-@index">50%</div>
+
+																<div class="up-payment btn btn-info" style="width: 70px;" id="up-@index">100%</div>
+
+																<div class="x-payment btn btn-danger" style="width: 70px;" id="x-@index">X</div>
+
+															</div>
+
+														</div>*@
+
+
+
+												<div class="row table-align-center" style="margin-top: 15px;" id="@index">
+													<input id="Payments_@index.ToString()__OrderNumber" name="Payments[@index].OrderNumber" type="hidden" value="@item.OrderNumber">
+													<input data-val="true" data-val-number="The field CurrentAdvance must be a number." data-val-required="Требуется поле CurrentAdvance." id="Payments_@index.ToString()__CurrentAdvance" name="Payments[@index].CurrentAdvance" type="hidden" value="@item.CurrentAdvance">
+													<input data-val="true" data-val-date="The field OrderDate must be a date." id="Payments_@index.ToString()__OrderDate" name="Payments[@index].OrderDate" type="hidden" value="@item.OrderDate.ToString()">
+													<input data-val="true" data-val-number="The field Price must be a number." data-val-required="Требуется поле Price." id="Payments_@index.ToString()__Price" name="Payments[@index].Price" type="hidden" value="@item.Price">
+													
+													<div class="col-2  col-lg-2 col-xl-2" style="text-align: center; margin: auto 0 auto 0;"> @item.OrderDate.Value.ToShortDateString()</div>
+													<div class="col-2  col-lg-2 col-xl-2" style="text-align: center; margin: auto 0 auto 0;"> @item.OrderNumber</div>
+													<div class="price  col-2 col-lg-1 col-xl-1" style="text-align: right; margin: auto 0 auto 0;">@item.Price.ToString("0.00")</div>
+													<div class="payed  col-2 col-lg-1 col-xl-1" style="text-align: right; margin: auto 0 auto 0;">@item.CurrentAdvance.ToString("0.00")</div>
+													@*  <div class="col-4 col-md-4 col-lg-2 col-xl-2" style="margin: auto 0 auto 0;">@Html.TextBox(item.Payment.ToString(), new { @class = "form-control payment-edit" })</div>*@
+													<div class="col-4 col-md-4 col-lg-2 col-xl-2" style="margin: auto 0 auto 0;">
+														<input class="form-control payment-edit" data-val="true" data-val-number="The field Payment must be a number." data-val-required="Требуется поле Payment." id="Payments_@index.ToString()__Payment" name="Payments[@index].Payment" type="text" value="0">
+													</div>
+													<div class="col-12 col-md-12 col-lg-4 col-xl-4 d-flex justify-content-end mt-2">
+
+														<div class="up-halfpayment btn btn-warning" style="width: 70px;" id="up-@index">50%</div>
+
+														<div class="up-payment btn btn-info" style="width: 70px;" id="up-@index">100%</div>
+
+														<div class="x-payment btn btn-danger" style="width: 70px;" id="x-@index">X</div>
+
+													</div>
+
+												</div>
+
+													index++;
+												}
+											</div>
+										</div>
+									</div>
+									groupIndex++;
+									contractIndex++;
+								}
+								@{ contractIndex = 0; }
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		}
+
+	</div>
+
+	<div class="d-flex col-12 justify-content-center pt-4 pb-3">
+		<div class="col-2">
+			Всього до сплати:
+			<div id="SumaToPay" class="d-inline-block h3"> 0 </div>
+			грн.
+		</div>
+		<div class="col-1">
+			<input type="submit" id="submitPaymentButton" class="btn btn-success" value="Оплатити" />
+		</div>
+	</div>
+
+
+	@*
+
+		if (Model.Payments.Count > 0)
+		{
+			int count = Model.Payments.Count;
+
+			for (int i = 0; i < Model.Payments.Count; i++)
+			{
+				if (i != 0 && Model.Payments[i].Status != Model.Payments[i - 1].Status)
+				{
+					<hr />
+				}
+				<div class="row table-align-center" style="margin-top: 15px;" id="@i">
+					@Html.HiddenFor(model => model.Payments[i].OrderNumber)
+					@Html.HiddenFor(model => model.Payments[i].CurrentAdvance)
+					@Html.HiddenFor(model => model.Payments[i].Price)
+
+					<div class="col-2  col-lg-2 col-xl-2" style="text-align: center; margin: auto 0 auto 0;"> @Model.Payments[i].OrderDate.Value.ToShortDateString()</div>
+					<div class="col-2  col-lg-2 col-xl-2" style="text-align: center; margin: auto 0 auto 0;"> @Model.Payments[i].OrderNumber</div>
+					<div class="price  col-2 col-lg-1 col-xl-1" style="text-align: right; margin: auto 0 auto 0;">@Model.Payments[i].Price.ToString("0.00")</div>
+					<div class="payed  col-2 col-lg-1 col-xl-1" style="text-align: right; margin: auto 0 auto 0;">@Model.Payments[i].CurrentAdvance.ToString("0.00")</div>
+					<div class="col-4 col-md-4 col-lg-2 col-xl-2" style="margin: auto 0 auto 0;">@Html.TextBoxFor(model => model.Payments[i].Payment, new { @class = "form-control payment-edit" })</div>
+					<div class="col-12 col-md-12 col-lg-4 col-xl-4 d-flex justify-content-end mt-2">
+
+						<div class="up-halfpayment btn btn-warning" style="width: 70px;" id="up-@i">50%</div>
+
+						<div class="up-payment btn btn-info" style="width: 70px;" id="up-@i">100%</div>
+
+						<div class="x-payment btn btn-danger" style="width: 70px;" id="x-@i">X</div>
+
+					</div>
+
+				</div>
+			}
+			<div class="d-flex col-10 justify-content-end">
+				<div class="col-1">
+					<input type="submit" id="submitPaymentButton" class="btn btn-success" value="Оплатити" />
+				</div>
+			</div>
+		}*@
+}
+
+
+
+
+
+
+
+
+<script>
+	$(document).ready(function () {
+
+		$('[contractIndex="0"]').addClass('show').removeClass('collapsed');
+
+
+	});
+
+	$('.up-halfpayment').on('click',
+		function () {
+
+			var maxSum = parseFloat($(this).parent().parent().find('.price').text().replace(',', '.'));
+			var payedSum = parseFloat($(this).parent().parent().find('.payed').text().replace(',', '.'));
+
+			var maxAllowed = (maxSum - payedSum) / 2;
+
+			var avBalance = parseFloat($('#CurrentAdvance').text());
+			if (maxAllowed > avBalance) {
+				maxAllowed = avBalance;
+			}
+
+			$(this).parent().parent().find('.payment-edit').val(maxAllowed.toString().replace('.', ','));
+			RecalculateSum();
+		});
+
+	$('.up-payment').on('click',
+		function () {
+
+			var maxSum = parseFloat($(this).parent().parent().find('.price').text().replace(',', '.'));
+			var payedSum = parseFloat($(this).parent().parent().find('.payed').text().replace(',', '.'));
+
+			var maxAllowed = maxSum - payedSum;
+
+			var avBalance = parseFloat($('#CurrentAdvance').text());
+			if (maxAllowed > avBalance) {
+				maxAllowed = avBalance;
+			}
+
+			$(this).parent().parent().find('.payment-edit').val(maxAllowed.toString().replace('.', ','));
+			RecalculateSum();
+		});
+
+	$('.x-payment').on('click',
+		function () {
+			$(this).parent().parent().find('.payment-edit').val(0);
+			RecalculateSum();
+		});
+
+	$('.payment-edit').on('change',
+		function () {
+
+			RecalculateSum();
+		});
+
+
+
+	function RecalculateSum() {
+		var sum = 0,
+			avBalance = parseFloat($('#AvailableAdvance').text());
+
+		$('.payment-edit').each(function () {
+
+			var maxSum = parseFloat($(this).parent().find('.price').text().replace(',', '.'));
+			var payedSum = parseFloat($(this).parent().find('.payed').text().replace(',', '.'));
+			var maxAllowed = maxSum - payedSum;
+
+			var paymentsValue = parseFloat($(this).val().replace(',', '.'));
+
+			if (paymentsValue > maxAllowed) {
+
+				$(this).val(maxAllowed);
+				paymentsValue = maxAllowed;
+			}
+
+			sum += !isNaN(paymentsValue) ? paymentsValue : 0;
+		});
+
+
+		var balance = avBalance - sum;
+
+		if (balance < 0) {
+			$('#CurrentAdvance').addClass('text-danger');
+			$('#submitPaymentButton').attr("disabled", true);
+
+		} else {
+			$('#CurrentAdvance').removeClass('text-danger');
+			$('#submitPaymentButton').attr("disabled", false);
+		}
+		$('#SumaToPay').text(sum);
+		$('#CurrentAdvance').text(balance);
+	}
+
+
+
+
+</script>

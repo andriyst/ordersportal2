@@ -1,0 +1,102 @@
+﻿@model OrdersPortal.Application.Models.ViewModels.OrdersPaymentsViewModel
+<h2>Оплата замовлень</h2>
+<hr>
+<div class="btn-group btn-group-justified">
+
+	@*<div class="row" style="padding-left: 10px;">
+
+
+		<div class="row col-12 col-md-auto">
+			<div class="col-12 col-md-auto pb-2" style="padding-right: 25px;">
+				@Html.TextBoxFor(m => m.StartDate, new { @class = "btn btn-darkblue", id = "StartDate", Name = "startDate" })
+			</div>
+
+			<div class="col-12 col-md-auto pb-2">
+				@Html.TextBoxFor(m => m.EndDate, new { @class = "btn btn-darkblue", id = "EndDate", Name = "endDate" })
+			</div>
+		</div>
+		
+			@Html.HiddenFor(m => m.ContrAgentCode)
+	
+
+
+		<div class="col-12 col-md-auto pb-2">
+			<input type="button" class="btn btn-success" onclick="SubmitOrderPaymentsForm();" value="Пошук" />
+
+		</div>
+	</div>*@
+
+
+
+
+
+</div>
+<div class="row">
+	<div id="spinner-overlay" >
+		<div class="col-1 text-center" style="margin-left: 46%">
+			<div class="spinner"></div>
+		</div>
+	</div>
+</div>
+<div id="paymentList"></div>
+<script>
+
+	$(document).ready(function () {
+
+		
+
+		@*$('#StartDate').datepicker({
+
+			format: "dd.mm.yyyy"
+		});
+		$('#EndDate').datepicker({
+			format: "dd.mm.yyyy"
+		});
+		$('#StartDate').val("@Model.StartDate.Value.ToShortDateString()");
+		$('#EndDate').val("@Model.EndDate.Value.ToShortDateString()");*@
+		//$('#StartDate').val('2021-01-01');
+		//$('#EndDate').val(Date.now().Value.ToShortDateString());
+
+		var today = new Date();
+
+		$('#EndDate').val(today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate());
+
+		SubmitOrderPaymentsForm();
+	});
+
+	function SubmitOrderPaymentsForm() {
+
+
+		spinnerOn();
+		var serverCall = {};
+
+		// add limits and offset provided by bootstrap table
+		serverCall["ContrAgentCode"] = $('#ContrAgentcode').val();
+
+		var pattern = /(\d{2})\.(\d{2})\.(\d{4})/;
+		const timeElapsed = Date.now();
+
+		var startDate = new Date(2024, 1, 1);
+		var endDate = new Date(timeElapsed);
+	
+		//serverCall["StartDate"] = new Date($('#StartDate').replace(pattern, '$3-$2-$1')).toDateString();
+		//serverCall["EndDate"] = new Date($('#EndDate').replace(pattern, '$3-$2-$1')).toDateString();
+
+		serverCall["StartDate"] = startDate.toDateString();
+		serverCall["EndDate"] = endDate.toDateString();
+
+		var url = "/Finance/GetOrdersPayments";
+		//   OrderNum = document.getElementById('orderNum').value;
+		$.ajax({
+			url: url,
+			contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+			type: "GET",
+			data: serverCall,
+			success: function (data) {
+				spinnerOff();
+				$("#paymentList").html(data);
+
+			}
+		});
+	}
+</script>

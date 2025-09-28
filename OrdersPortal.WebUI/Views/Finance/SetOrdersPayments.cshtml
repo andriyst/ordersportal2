@@ -1,0 +1,29 @@
+﻿
+
+@if (ViewBag.Error == "Error")
+{
+<div class="row">
+	<div class="alert alert-dismissible alert-danger">
+		<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+		При зарахуванні оплати <strong> сталася помилка</strong>. Повторіть операцію пізніше.
+	</div>
+</div>
+}
+else if (ViewBag.Error == "Delay")
+{
+	<div class="row">
+		<div class="alert alert-dismissible alert-danger">
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+			<strong>Відмова</strong>. Відбувається зарахування попередньої оплати. Повторіть операцію пізніше.
+		</div>
+	</div>
+}
+else
+{
+	<div class="row">
+		<div class="alert alert-dismissible alert-success">
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+			Оплата пройшла <strong>Успішно!</strong>
+		</div>
+	</div>
+}

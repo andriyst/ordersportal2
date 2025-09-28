@@ -1,0 +1,656 @@
+﻿@model PagedList.IPagedList<OrdersPortal.Application.Models.ViewModels.UploadOrdersListViewModel>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Список завантажених замовлень";
+    string Tstatus = "notwork";
+}
+
+<div style="display:inline;">
+    <h1>@ViewBag.OrdersCount Замовленнь</h1>
+</div>
+
+<div class="orders-buttons" style="display: inline-block; margin-bottom: 20px;">
+
+	@Html.ActionLink("Необроблені", "ShowOrdersListByStatus", "Orders", new { status = "notwork", message = "" }, htmlAttributes: new { @class = "btn btn-default", @id="notwork", title = "Необроблені" })
+	@Html.ActionLink("Непідтверджені", "ShowOrdersListByStatus", "Orders", new { status = "notconfirm", message = "" }, htmlAttributes: new { @class = "btn btn-default", @id = "notconfirm", title = "Непідтвердженні" })
+	@Html.ActionLink("Завантажені", "ShowOrdersListByStatus", "Orders", new { status = "recieved", message = "" }, htmlAttributes: new { @class = "btn btn-default", @id = "recieved", title = "Отримані" })
+	@Html.ActionLink("У Виробництві", "ShowOrdersListByStatus", "Orders", new { status = "inwork", message = "" }, htmlAttributes: new { @class = "btn btn-default", @id = "inwork", title = "У Виробництві" })
+	@Html.ActionLink("Відмова", "ShowOrdersListByStatus", "Orders", new { status = "reject", message = "" }, htmlAttributes: new { @class = "btn btn-default", @id = "reject", title = "Відмова" })
+	@Html.ActionLink("Всі", "UploadOrdersList", "Orders", new { message = "" }, htmlAttributes: new { @class = "btn btn-default", title = "Всі" })
+
+
+
+
+</div>
+
+
+<div id="orders-table">
+
+    @if (User.IsInRole("customer"))
+    {
+        <div>
+            <a href="/Orders/AddOrder" class="btn btn-success">Додати Замовлення</a>
+        </div>
+
+        <table class="table table-striped table-hover" data-toggle="table" data-search="true" id="orderstable" onclick="OrderColours()">
+            <thead>
+                <tr>
+
+                    <th data-sortable="true" class="table-width80">Номер</th>
+                    <th data-sortable="true" class="table-width80">Номер 1С</th>
+                    <th data-sortable="true" class="table-width40">К К</th>
+                    <th data-sortable="true" class="table-width100">Менеджер</th>
+                    <th data-sortable="true" class="table-width120">Дата та час дії</th>
+                    <th data-sortable="true" class="table-width300">Коментар</th>
+
+                    <th data-sortable="true">Статус</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var b in Model)
+                {
+                    <tr>
+                        <td>@b.OrderNumber</td>
+                        <td>
+                            <a href="javascript:ShowOrderDetail(@b.OrderId)">
+                                @if (b.Db1SOrderNumbers.Count() > 0)
+                                {
+                                    var tmp1COrders = b.Db1SOrderNumbers.ToArray();
+                                    <TEXT>
+                                    @string.Join(", \n ", tmp1COrders).ToString()
+                                    </TEXT>
+                                }
+                            </a>
+                        </td>
+                        <td>@b.OrderNumberContructions</td>
+                        <td>@b.ManagerName</td>
+                        <td>
+                            @if (@b.OrderDateCreate != null)
+                            {<img src="/Images/sm_YES.png">}
+                            else
+                            {<img src="/Images/sm_NO.png">}
+
+                            @b.OrderDateCreate<br>
+                            @if (@b.OrderDateProgress != null)
+                            {<img src="/Images/sm_YES.png">}
+                            else
+                            {<img src="/Images/sm_NO.png">}
+                            @b.OrderDateProgress<br>
+                            @if (@b.OrderDateComplete != null)
+                            {<img src="/Images/sm_YES.png">}
+                            else
+                            {<img src="/Images/sm_NO.png">}
+                            @b.OrderDateComplete
+                        </td>
+                        <td>
+                            @if (b.LastMessageWriter == b.CustomerName)
+                            {
+                                <div class='table-comment-customer'>
+                                    @b.LastMessageWriter <br>
+                                    @b.LastMessageTime:    @b.LastMessage
+                                </div>
+                            }
+                            else if (b.LastMessageWriter == b.ManagerName)
+                            {
+                                <div class='table-comment-manager'>
+                                    @b.LastMessageWriter <br>
+                                    @b.LastMessage   : @b.LastMessageTime
+                                </div>
+                            }
+                            <br> <a href='#'> <div class='table-comment-add' onclick='javascript:ShowAllMessages(@b.OrderId)'>[Додати коментар]</div></a>
+                        </td>
+
+                        <td>@b.StatusName</td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    }
+    else if (User.IsInRole("manager") || User.IsInRole("operator"))
+    {
+
+        <table class="table table-striped table-hover" data-toggle="table" data-search="true" id="orderstable" onclick="OrderColours()">
+            <thead>
+                <tr>
+                    <th data-sortable="true" class="table-width80">Номер</th>
+                    <th data-sortable="true" class="table-width80">Номер 1С</th>
+                    <th data-sortable="true" class="table-width60">Файл</th>
+                    <th data-sortable="true" class="table-width40">К К</th>
+                    <th data-sortable="true" class="table-width120">Дилер</th>
+                    <th data-sortable="true" class="table-width120">Дата та час дії</th>
+                    <th data-sortable="true" class="table-width300">Коментар</th>
+
+                    <th data-sortable="true" class="table-width60">Статус</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var b in Model)
+                {
+                    <tr>
+
+                        <td>@b.OrderNumber</td>
+                        <td>
+                            <a href="javascript:ShowOrderDetail(@b.OrderId)">
+                                @if (b.Db1SOrderNumbers.Count() > 0)
+                                {
+                                    var tmp1COrders = b.Db1SOrderNumbers.ToArray();
+                                    <TEXT>
+                                    @string.Join(", \n ", tmp1COrders).ToString()
+                                    </TEXT>
+                                }
+                            </a>
+                        </td>
+                        <td><a href="@b.File" onclick="javascript:OrderLoad('@b.OrderId','Отримано')">Заказ</a></td>
+                        <td>@b.OrderNumberContructions</td>
+                        <td>@b.CustomerName</td>
+                        <td>
+                            @if (@b.OrderDateCreate != null)
+                            {<img src="/Images/sm_YES.png" title="Дата Зaвантаження">}
+                            else
+                            {<img src="/Images/sm_NO.png">}
+
+                            @b.OrderDateCreate<br>
+                            @if (@b.OrderDateProgress != null)
+                            {<img src="/Images/sm_YES.png" title="Дата Обробки">}
+                            else
+                            {<img src="/Images/sm_NO.png" title="Дата Обробки">}
+                            @b.OrderDateProgress<br>
+                            @if (@b.OrderDateComplete != null)
+                            {<img src="/Images/sm_YES.png" title="Дата Запуску у Виробництво">}
+                            else
+                            {<img src="/Images/sm_NO.png" title="Дата Запуску у Виробництво">}
+                            @b.OrderDateComplete
+                        </td>
+
+                        <td>
+                            @if (b.LastMessageWriter == b.CustomerName)
+                            {
+                                <div class='table-comment-customer'>
+                                    @b.LastMessageWriter <br>
+                                    @b.LastMessageTime:    @b.LastMessage
+                                </div>
+                            }
+                            else if (b.LastMessageWriter == b.ManagerName)
+                            {
+                                <div class='table-comment-manager'>
+                                    @b.LastMessageWriter <br>
+                                    @b.LastMessage   : @b.LastMessageTime
+                                </div>
+                            }
+                            <br> <a href='#'> <div class='table-comment-add' onclick='javascript:ShowAllMessages(@b.OrderId)'>[Додати коментар]</div></a>
+                        </td>
+                        <td>@b.StatusName</td>
+
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    }
+    else if (User.IsInRole("regionmanager"))
+    {
+
+        <table class="table table-striped table-hover" data-toggle="table" data-search="true" id="orderstable" onclick="OrderColours()">
+            <thead>
+                <tr>
+                    <th data-sortable="true" class="table-width60">Номер</th>
+                    <th data-sortable="true" class="table-width80">Номер 1С</th>
+                    <th data-sortable="true" class="table-width60">Файл</th>
+                    <th data-sortable="true" class="table-width40">К К</th>
+                    <th data-sortable="true" class="table-width100">Менеджер</th>
+                    <th data-sortable="true" class="table-width100">Дилер</th>
+                    <th data-sortable="true" class="table-width120">Дата та час</th>
+                    <th data-sortable="true" class="table-width250">Коментар Дилера</th>
+                    <th data-sortable="true" class="table-width80">Статус</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var b in Model)
+                {
+                    <tr>
+
+                        <td>@b.OrderNumber</td>
+                        <td>
+                            <a href="javascript:ShowOrderDetail(@b.OrderId)">
+                                @if (b.Db1SOrderNumbers.Count() > 0)
+                                {
+                                    var tmp1COrders = b.Db1SOrderNumbers.ToArray();
+                                    <TEXT>
+                                    @string.Join(", \n ", tmp1COrders).ToString()
+                                    </TEXT>
+                                }
+                            </a>
+                        </td>
+                        <td><a href="@b.File">Заказ</a></td>
+                        <td>@b.OrderNumberContructions</td>
+                        <td>@b.ManagerName</td>
+                        <td>@b.CustomerName</td>
+                        <td>
+                            @if (@b.OrderDateCreate != null)
+                            {<img src="/Images/sm_YES.png">}
+                            else
+                            {<img src="/Images/sm_NO.png">}
+
+                            @b.OrderDateCreate<br>
+                            @if (@b.OrderDateProgress != null)
+                            {<img src="/Images/sm_YES.png">}
+                            else
+                            {<img src="/Images/sm_NO.png">}
+                            @b.OrderDateProgress<br>
+                            @if (@b.OrderDateComplete != null)
+                            {<img src="/Images/sm_YES.png">}
+                            else
+                            {<img src="/Images/sm_NO.png">}
+                            @b.OrderDateComplete
+                        </td>
+                        <td>
+                            @if (b.LastMessageWriter == b.CustomerName)
+                            {
+                                <div class='table-comment-customer'>
+                                    @b.LastMessageWriter <br>
+                                    @b.LastMessageTime:    @b.LastMessage
+                                </div>
+                            }
+                            else if (b.LastMessageWriter == b.ManagerName)
+                            {
+                                <div class='table-comment-manager'>
+                                    @b.LastMessageWriter <br>
+                                    @b.LastMessage   : @b.LastMessageTime
+                                </div>
+                            }
+                            <br> <a href='#'> <div class='table-comment-add' onclick='javascript:ShowAllMessages(@b.OrderId)'>[Додати коментар]</div></a>
+                        </td>
+
+                        <td>@b.StatusName</td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    }
+    else if (User.IsInRole("director"))
+    {
+
+        <table class="table table-striped table-hover" data-toggle="table" data-search="true" id="orderstable" onclick="OrderColours()">
+            <thead>
+                <tr>
+
+                    <th data-sortable="true" class="table-width60">Номер</th>
+                    <th data-sortable="true" class="table-width80">Номер 1С</th>
+                    <th data-sortable="true" class="table-width60">Файл</th>
+                    <th data-sortable="true" class="table-width40">К К</th>
+                    <th data-sortable="true" class="table-width100">Менеджер</th>
+                    <th data-sortable="true" class="table-width100">Дилер</th>
+                    <th data-sortable="true" class="table-width120">Дата та час</th>
+                    <th data-sortable="true" class="table-width250">Коментар Дилера</th>
+                    <th data-sortable="true" class="table-width80">Статус</th>
+
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var b in Model)
+                {
+                    <tr>
+
+                        <td>@b.OrderNumber</td>
+                        <td>
+                            <a href="javascript:ShowOrderDetail(@b.OrderId)">
+                                @if (b.Db1SOrderNumbers.Count() > 0)
+                                {
+                                    var tmp1COrders = b.Db1SOrderNumbers.ToArray();
+                                    <TEXT>
+                                    @string.Join(",<br>", tmp1COrders).ToString()
+                                    </TEXT>
+                                }
+                            </a>
+                        </td>
+                        <td><a href="@b.File">Заказ</a></td>
+                        <td>@b.OrderNumberContructions</td>
+                        <td>@b.ManagerName<br><div style="text-align:center"><a href="javascript:ChangeManager(@b.OrderId)">X</a></div></td>
+                        <td>@b.CustomerName</td>
+                        <td>
+                            @if (@b.OrderDateCreate != null)
+                            {<img src="/Images/sm_YES.png">}
+                            else
+                            {<img src="/Images/sm_NO.png">}
+
+                            @b.OrderDateCreate<br>
+                            @if (@b.OrderDateProgress != null)
+                            {<img src="/Images/sm_YES.png">}
+                            else
+                            {<img src="/Images/sm_NO.png">}
+                            @b.OrderDateProgress<br>
+                            @if (@b.OrderDateComplete != null)
+                            {<img src="/Images/sm_YES.png">}
+                            else
+                            {<img src="/Images/sm_NO.png">}
+                            @b.OrderDateComplete
+                        </td>
+                        <td>
+                            @if (b.LastMessageWriter == b.CustomerName)
+                            {
+                                <div class='table-comment-customer'>
+                                    @b.LastMessageWriter <br>
+                                    @b.LastMessageTime:    @b.LastMessage
+                                </div>
+                            }
+                            else if (b.LastMessageWriter == b.ManagerName)
+                            {
+                                <div class='table-comment-manager'>
+                                    @b.LastMessageWriter <br>
+                                    @b.LastMessage   : @b.LastMessageTime
+                                </div>
+                            }
+                            <br> <a href='#'> <div class='table-comment-add' onclick='javascript:ShowAllMessages(@b.OrderId)'>[Додати коментар]</div></a>
+                        </td>
+
+                        <td>@b.StatusName</td>
+
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    }
+    else
+    {
+
+        <table class="table table-striped table-hover" data-toggle="table" data-search="true" id="orderstable" onclick="OrderColours()">
+            <thead>
+                <tr>
+
+                    <th data-sortable="true" class="table-width60">Номер</th>
+                    <th data-sortable="true" class="table-width80">Номер 1С</th>
+                    <th data-sortable="true" class="table-width60">Файл</th>
+                    <th data-sortable="true" class="table-width40">К К</th>
+                    <th data-sortable="true" class="table-width100">Менеджер</th>
+                    <th data-sortable="true" class="table-width100">Дилер</th>
+                    <th data-sortable="true" class="table-width120">Дата та час</th>
+                    <th data-sortable="true" class="table-width250">Коментар Дилера</th>
+                    <th data-sortable="true" class="table-width80">Статус</th>
+                    <th></th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var b in Model)
+                {
+                    <tr>
+
+                        <td>@b.OrderNumber</td>
+                        <td>
+                            <a href="javascript:ShowOrderDetail(@b.OrderId)">
+                                @if (b.Db1SOrderNumbers.Any())
+                                {
+                                    var tmp1COrders = b.Db1SOrderNumbers.ToArray();
+                                    <TEXT>
+                                    @string.Join(", \n ", tmp1COrders).ToString()
+                                    </TEXT>
+                                }
+                            </a>
+                        </td>
+                        <td><a href="@b.File">Заказ</a></td>
+                        <td>@b.OrderNumberContructions</td>
+                        <td>@b.ManagerName<br><div style="text-align:center"><a href="javascript:ChangeManager(@b.OrderId)">X</a></div></td>
+                        <td>@b.CustomerName</td>
+                        <td>
+                            @if (@b.OrderDateCreate != null)
+                            {<img src="/Images/sm_YES.png">}
+                            else
+                            {<img src="/Images/sm_NO.png">}
+
+                            @b.OrderDateCreate<br>
+                            @if (@b.OrderDateProgress != null)
+                            {<img src="/Images/sm_YES.png">}
+                            else
+                            {<img src="/Images/sm_NO.png">}
+                            @b.OrderDateProgress<br>
+                            @if (@b.OrderDateComplete != null)
+                            {<img src="/Images/sm_YES.png">}
+                            else
+                            {<img src="/Images/sm_NO.png">}
+                            @b.OrderDateComplete
+                        </td>
+                        <td>
+                            @if (b.LastMessageWriter == b.CustomerName)
+                            {
+                                <div class='table-comment-customer'>
+                                    @b.LastMessageWriter <br>
+                                    @b.LastMessageTime:    @b.LastMessage
+                                </div>
+                            }
+                            else if (b.LastMessageWriter == b.ManagerName)
+                            {
+                                <div class='table-comment-manager'>
+                                    @b.LastMessageWriter <br>
+                                    @b.LastMessage   : @b.LastMessageTime
+                                </div>
+                            }
+                        <br> <a href='#'> <div class='table-comment-add' onclick='javascript:ShowAllMessages(@b.OrderId)'>[Додати коментар]</div></a>
+                    </td>
+
+                    <td>@b.StatusName</td>
+                    <td>@Html.ActionLink("X", "DelOrder", "Orders", new { orderId = b.OrderId, message = "" }, htmlAttributes: new { title = "Видалити" })</td>
+
+                </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    }
+
+    Сторінка @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) з @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("ShowOrdersListByStatus", new {@ViewBag.Status, page }))
+
+    <div id="allmessages">
+
+    </div>
+    <div id="changemanager">
+
+    </div>
+
+    <div id="ShowOrderDetail">
+    </div>
+
+    <script type="text/javascript">
+        function OrderLoad(OrderId, Status) {
+            var url = "/Orders/ChangeOrderStatus";
+            $.ajax({
+                url: url,
+                contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+                type: "POST",
+                data: {
+                    orderId: OrderId,
+                    status: Status
+                },
+                success: function (data) {
+                }
+            });
+        };
+
+    </script>
+
+    <script type="text/javascript">
+        function ShowAllMessages(OrderId) {
+            var url = "/Orders/ShowAllMessages";
+            $.ajax({
+                url: url,
+                contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+                type: "POST",
+                data: {
+                    orderid: OrderId
+                },
+                success: function (data) {
+                    $("#allmessages").html(data);
+                    $('#ModalAllMessages').modal('toggle');
+
+                }
+            });
+        };
+
+    </script>
+
+
+
+    <script type="text/javascript">
+        function ChangeManager(OrderId) {
+            var url = "/Orders/ChangeManager";
+            $.ajax({
+                url: url,
+                contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+                type: "GET",
+                data: {
+                    orderid: OrderId
+                },
+                success: function (data) {
+                    $("#changemanager").html(data);
+                    $('#ModalChangeManager').modal('toggle');
+
+                }
+            });
+        };
+
+    </script>
+
+
+    <script type="text/javascript">
+
+
+        function CreateManagerComment(OrderId) {
+
+            $('#OrderId').val(OrderId);
+            $('#ManagerComment').modal('toggle');
+        }
+    </script>
+
+
+    <script type="text/javascript">
+        function ShowOrderDetail(OrderId) {
+            var url = "/Orders/ShowOrderDetail";
+            $.ajax({
+                url: url,
+                contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+                type: "GET",
+                data: {
+                    orderid: OrderId
+                },
+                success: function (data) {
+                    $("#ShowOrderDetail").html(data);
+                    $('#OrderDetail').modal('toggle');
+
+                }
+            });
+        };
+
+    </script>
+
+<script type="text/javascript">
+	function OrderColours() {
+
+
+		$("td:contains('Завантажено')").each(function () {
+			$(this).addClass("btn-upload1 disabled");
+		});
+		$("td:contains('Відмова')").each(function () {
+			$(this).addClass("btn-refuse1 disabled");
+		});
+		$("td:contains('Очікує підтвердження')").each(function () {
+			$(this).addClass("btn-approve1 disabled");
+		});
+		$("td:contains('Очікує оплати')").each(function () {
+			$(this).addClass("btn-pay1 disabled");
+		});
+		$("td:contains('Виробництво')").each(function () {
+			$(this).addClass("btn-success disabled");
+		});
+		$("td:contains('Розглянуто')").each(function () {
+			$(this).addClass("btn-warning disabled");
+		});
+		$("td:contains('До розгляду')").each(function () {
+			$(this).addClass("btn-warning disabled");
+		});
+		$("td:contains('Обробка')").each(function () {
+			$(this).addClass("btn-warning disabled");
+		});
+		$("td:contains('Отримано')").each(function () {
+			$(this).addClass("btn-warning disabled");
+		});
+		$("td:contains('В роботі')").each(function () {
+			$(this).addClass("btn-danger disabled");
+		});
+		$("td:contains('Відвантажено')").each(function () {
+			$(this).addClass("btn-success disabled");
+		});
+		$("td:contains('На складі')").each(function () {
+			$(this).addClass("btn-storage1 disabled");
+		});
+	}
+
+</script>
+    <script type="text/javascript">
+        function ButtonsColours(status) {
+
+            $('.orders-buttons a').each(function () {
+                $(this).removeClass('btn-info');
+            })
+
+            
+            $('.orders-buttons a#'+status).addClass('btn-info');
+
+        }
+        </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            OrderColours();
+            ButtonsColours('@ViewBag.Status');
+
+        });
+    </script>
+
+    <script type="text/javascript">
+        function ShowOrdersByStatus(Status) {
+            var url = "/Orders/ShowOrdersListByStatus";
+            $.ajax({
+                url: url,
+                contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+                type: "GET",
+                data: {
+                    status: Status
+                },
+                success: function (data) {
+                    $("#orders-table").html(data);
+
+                }
+            });
+        };
+
+    </script>
+
+
+</div>
+

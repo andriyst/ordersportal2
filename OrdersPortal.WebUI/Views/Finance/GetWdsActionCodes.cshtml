@@ -1,0 +1,107 @@
+﻿@using Resources
+@model OrdersPortal.Application.Models.ViewModels.WdsActionCodeViewModel
+@{
+	ViewBag.Title = "Акція WDS";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+	@*<a href="/Finance/GetWdsActionRating" class="btn btn-danger">Рейтинг Акції WDS</a>*@
+</div>
+
+@using (Html.BeginForm("GetWdsActionCodes", "Finance", FormMethod.Post, new { id = "GetWdsActionCodesForm" }))
+{
+	@Html.AntiForgeryToken()
+
+	<hr />
+	@Html.ValidationSummary()
+
+
+	<div class="btn-group btn-group-justified col-12">
+
+		<div class="col-10">
+			@Html.TextBoxFor(m => m.DateStart, new { @class = "btn btn-darkblue", id = "DateStart", Name = "dateStart" })
+			@Html.TextBoxFor(m => m.DateEnd, new { @class = "btn btn-darkblue", id = "DateEnd", Name = "dateEnd" })
+	
+			@if (!User.IsInRole("customer"))
+			{
+
+
+				@Html.DropDownListFor(m => m.ContrCode,
+					Model.ContrAgentCodeList.Select(h => new SelectListItem { Text = h.Text, Value = h.Value }), new { data_live_search = true, @class = "selectpicker", id= "ContrAgentCode" })
+
+			}
+			else
+			{
+				@Html.HiddenFor(m => m.ContrCode)
+			}
+
+			<div style="margin-left: 30px; display: inline;">
+				<input type="submit" class="btn btn-success" value="Пошук" />
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<hr />
+
+}
+
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 table-align-center">
+		<div class="container-fluid col-lg-9 col-md-12 col-sm-12 col-xs-12">
+
+			<table class="table table-striped" data-search="true" id="listFinanceCashFlowTable1">
+				<thead>
+					<tr  class="table-bg-color-header">
+						<th>@Finance.OrderNumber</th>
+						<th class="text-right">Серія</th>
+						<th class="text-right">Акційний WDS код</th>
+
+					</tr>
+				</thead>
+
+				<tbody>
+					@if (Model.WdsActionCodeList != null)
+					{
+						foreach (var b in Model.WdsActionCodeList)
+						{
+							<tr>
+								<td>@b.Db1cOrderNumber</td>
+								<td class="text-right">
+									@b.Db1cOrderSerie
+								</td>
+								<td class="text-right">
+									@b.Db1cWdsActionCode
+								</td>
+
+							</tr>
+						}
+					}
+				</tbody>
+
+			</table>
+		</div>
+	</div>
+
+<script type="text/javascript">
+	// When the document is ready
+	$(document).ready(function () {
+
+
+
+		$('#DateStart').datepicker({
+
+			format: "dd.mm.yyyy"
+		});
+		$('#DateEnd').datepicker({
+			format: "dd.mm.yyyy"
+		});
+		$('#DateStart').val("@Model.DateStart.ToShortDateString()");
+		$('#DateEnd').val("@Model.DateEnd.ToShortDateString()");
+
+
+	});
+</script>

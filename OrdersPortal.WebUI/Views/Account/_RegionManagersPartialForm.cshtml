@@ -1,0 +1,12 @@
+﻿@model OrdersPortal.Application.Models.RegionManagersViewModel
+
+<div class="form-group pt-2 field-regionmanager">
+	@Html.LabelFor(m => m.RegionManagerId, new { @class = "col-8 control-label" })
+	<div class="col-12">
+		@Html.DropDownListFor(m => m.RegionManagerId, Model.RegionManagerList.Select(x=> new SelectListItem
+		{
+			Text = x.FullName,
+			Value = x.Id.ToString()
+		}), new { @class = "form-select", @id = "select-regionmanager" })
+	</div>
+</div>

@@ -1,0 +1,54 @@
+﻿@model OrdersPortal.Application.Models.ViewModels.UploadFileViewModel
+@{
+	ViewBag.Title = "Заватнаження файлу";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<hr />
+<div class="row">
+	<div class="col-12 col-md-9 col-lg-6 col-xl-4">
+		@using (Html.BeginForm("UploadFile", "Files", FormMethod.Post, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+		{
+			@Html.AntiForgeryToken()
+
+
+			@Html.ValidationSummary()
+
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.UploadFile, new { @class = "col-2 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.UploadFile, new { @class = "uploadfiletext form-control", type = "file" })
+				</div>
+
+			</div>
+
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.Description, new { @class = "control-label" })
+				<div class="col-12">
+					@Html.TextAreaFor(m => m.Description, new { @class = "form-control", @style = "height:200px;" })
+				</div>
+			</div>
+
+			<div class="row justify-content-between pt-4">
+
+				<div class="col-6">
+					<input id="uploadButton" type="submit" class="btn btn-success" value="Завантажити" />
+				</div>
+
+				<div class="col-6">
+					<input id="cancelButton" type="button" class="btn btn-secondary float-right" onclick="CancelButtonClick()" value="Відмінити" />
+				</div>
+
+			</div>
+
+		}
+
+	</div>
+</div>
+<script>
+	function CancelButtonClick() {
+
+		location.href = "/Files/List";
+	}
+</script>

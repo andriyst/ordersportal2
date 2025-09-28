@@ -1,0 +1,167 @@
+﻿@model OrdersPortal.Application.Models.ViewModels.FinanceCashFlowViewModel
+@using Resources
+<script type="text/javascript" src="/Scripts/bootstrap-table/bootstrap-table.js"></script>
+<script type="text/javascript" src="/Scripts/bootstrap-table/bootstrap-table-uk-UA.js"></script>
+@{
+	ViewBag.Title = "Рух коштів";
+}
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("CashFlow", "Finance", FormMethod.Post, new { id = "financeCashFlowForm" }))
+{
+	@Html.AntiForgeryToken()
+
+	<hr />
+	@Html.ValidationSummary()
+
+
+	<div class="row" style="padding-left: 10px;">
+
+
+		<div class="row col-12 col-md-auto">
+			<div class="col-12 col-md-auto pb-2" style="padding-right: 25px;">
+				@Html.TextBoxFor(m => m.StartDate, new { @class = "btn btn-darkblue", id = "StartDate", Name = "startDate" })
+			</div>
+
+			<div class="col-12 col-md-auto pb-2">
+				@Html.TextBoxFor(m => m.EndDate, new { @class = "btn btn-darkblue", id = "EndDate", Name = "endDate" })
+			</div>
+		</div>
+		@if (!User.IsInRole("customer"))
+		{
+
+
+			<div class="col-12 col-md-auto pb-2">
+				@Html.DropDownListFor(m => m.ContrAgentCode,
+					Model.ContrAgentCodeList.Select(h => new SelectListItem { Text = h.Text, Value = h.Value }), new { data_live_search = true, @class = "selectpicker", id = "ContrAgentCode" })
+			</div>
+
+		}
+		else
+		{
+			@Html.HiddenFor(m => m.ContrAgentCode)
+		}
+
+
+		<div class="col-12 col-md-auto pb-2">
+			<input type="submit" class="btn btn-success" value="Пошук" />
+
+		</div>
+	</div>
+
+	if (Model.FinanceDayCashFlowList != null && Model.FinanceDayCashFlowList.Count > 0)
+	{
+		<div class="row">
+			<div class="col-12" style="padding-right: 25px;">
+				@Html.ActionLink(@Finance.XLSExport, "CashFlowExportCsv", Model, new { @class = "btn btn-secondary text-nowrap float-right" })
+			</div>
+		</div>
+	}
+
+
+	<hr />
+
+}
+
+	<div class="col-12 table-align-center">
+		<div class="container-fluid col-12">
+
+			<table class="table table-striped" data-search="true" id="listFinanceCashFlowTable1">
+				<thead>
+					<tr>
+						<th>@Finance.Date</th>
+						<th>@Finance.OrderNumber</th>
+						<th class="text-right">@Finance.StartBalance</th>
+						<th class="text-right">@Finance.Income</th>
+						<th class="text-right">@Finance.Outcome</th>
+						<th class="text-right">@Finance.Balance</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					@if (Model.FinanceDayCashFlowList != null)
+					{
+						foreach (var b in Model.FinanceDayCashFlowList)
+						{
+							<tr class="table-bg-color-header">
+								<td>@b.Day.ToShortDateString()</td>
+								<td></td>
+								<td class="text-right">
+									@if (b.TotalStartIncome != 0)
+									{
+										@b.TotalStartIncome.ToString("F2")
+									}
+
+								</td>
+								<td></td>
+								<td></td>
+								<td></td>
+
+							</tr>
+							foreach (var item in b.FinanceCashFlow)
+							{
+
+								<tr>
+									<td>@item.Document</td>
+									<td>@item.OrderNumber</td>
+									<td class="text-right">
+
+										@(item.BeginPeriod != 0 ? item.BeginPeriod.ToString("F2") : "")
+
+
+									</td>
+									<td class="text-right">
+
+										@(item.IncomeValue != 0 ? item.IncomeValue.ToString("F2") : "")
+
+
+									</td>
+									<td class="text-right">
+										@(item.OutcomeValue != 0 ? item.OutcomeValue.ToString("F2") : "")
+
+
+
+									</td>
+									<td class="text-right">
+										@(item.EndPeriod != "0,00" ? item.EndPeriod : "")
+
+									</td>
+
+								</tr>
+							}
+							<tr class="table-bg-color-footer-total">
+								<td>@Finance.Total:</td>
+								<td></td>
+								<td class="text-right">@(b.TotalStartIncomeEnd != 0 ? b.TotalStartIncomeEnd.ToString("F2") : "")</td>
+								<td class="text-right">@(b.TotalIncome != 0 ? b.TotalIncome.ToString("F2") : "")</td>
+								<td class="text-right">@(b.TotalOutcome != 0 ? b.TotalOutcome.ToString("F2") : "")</td>
+								<td class="text-right">@(!string.IsNullOrEmpty(b.RestIncome) && b.RestIncome != "0" ? b.RestIncome : "" )</td>
+
+							</tr>
+
+						}
+					}
+				</tbody>
+
+			</table>
+		</div>
+	</div>
+<script type="text/javascript">
+	// When the document is ready
+	$(document).ready(function () {
+
+
+
+		$('#StartDate').datepicker({
+
+			format: "dd.mm.yyyy"
+		});
+		$('#EndDate').datepicker({
+			format: "dd.mm.yyyy"
+		});
+		$('#StartDate').val("@Model.StartDate.ToShortDateString()");
+		$('#EndDate').val("@Model.EndDate.ToShortDateString()");
+
+
+	});
+</script>

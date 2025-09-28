@@ -1,0 +1,171 @@
+﻿@model OrdersPortal.Application.Models.ViewModels.FinanceReconciliationViewModel
+@using Resources
+@{
+	ViewBag.Title = "Взаєморозрахунки";
+}
+
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Reconciliation", "Finance", FormMethod.Post, new { id = "financeReconciliationForm" }))
+{
+	@Html.AntiForgeryToken()
+
+	<hr />
+	@Html.ValidationSummary()
+
+
+	<div class="row" style="padding-left: 10px;">
+
+
+		<div class="row col-12 col-md-auto">
+			<div class="col-12 col-md-auto pb-2" style="padding-right: 25px;">
+				@Html.TextBoxFor(m => m.StartDate, new { @class = "btn btn-darkblue", id = "StartDate", Name = "startDate" })
+			</div>
+
+			<div class="col-12 col-md-auto pb-2">
+				@Html.TextBoxFor(m => m.EndDate, new { @class = "btn btn-darkblue", id = "EndDate", Name = "endDate" })
+			</div>
+		</div>
+		@if (!User.IsInRole("customer"))
+		{
+
+
+			<div class="col-12 col-md-auto pb-2">
+				@Html.DropDownListFor(m => m.ContrAgentCode,
+					Model.ContrAgentCodeList.Select(h => new SelectListItem { Text = h.Text, Value = h.Value }), new { data_live_search = true, @class = "selectpicker", id = "ContrAgentCode" })
+			</div>
+
+		}
+		else
+		{
+			@Html.HiddenFor(m => m.ContrAgentCode)
+		}
+
+
+		<div class="col-12 col-md-auto pb-2">
+			<input type="submit" class="btn btn-success" value="Пошук" />
+
+		</div>
+	</div>
+
+	if (Model.FinanceReconciliationList != null && Model.FinanceReconciliationList.FinanceMainReconciliationList.Count > 0)
+	{
+		<div class="row">
+			<div class="col-12" style="padding-right: 25px;">
+				@Html.ActionLink(@Finance.XLSExport, "CashFlowExportCsv", Model, new { @class = "btn btn-secondary text-nowrap float-right" })
+			</div>
+		</div>
+	}
+
+
+	<hr />
+}
+
+
+<div class="col-12 table-align-center">
+	<div class="container-fluid col-12">
+
+		<table class="table table-striped" data-search="true" id="listFinanceReconciliationTable1">
+			<thead>
+				<tr>
+					<th>@Finance.Document</th>
+					<th>@Finance.OrderNumber</th>
+					<th class="text-right">@Finance.InitialBalance</th>
+					<th class="text-right">@Finance.Income</th>
+					<th class="text-right">@Finance.Outcome</th>
+					<th class="text-right">@Finance.FinalBalance</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				@if (Model.FinanceReconciliationList != null)
+				{
+
+					<tr class="table-bg-color-advance">
+						<td>@Model.FinanceReconciliationList.FinanceAdvanceReconciliationList.Document</td>
+						<td></td>
+						<td class="text-right">@Model.FinanceReconciliationList.FinanceAdvanceReconciliationList.InitialBalance.ToString("F")</td>
+						<td class="text-right">@Model.FinanceReconciliationList.FinanceAdvanceReconciliationList.IncomeValue.ToString("F")</td>
+						<td class="text-right">@Model.FinanceReconciliationList.FinanceAdvanceReconciliationList.OutcomeValue.ToString("F")</td>
+						<td class="text-right">@Model.FinanceReconciliationList.FinanceAdvanceReconciliationList.FinalBalance.ToString("F")</td>
+					</tr>
+
+					foreach (var listReconciliation in Model.FinanceReconciliationList.FinanceMainReconciliationList)
+					{
+						<tr class="table-bg-color-document-name">
+							<td colspan="6" class="text-center">@listReconciliation.Document</td>
+
+						</tr>
+
+						foreach (var item in listReconciliation.ReconciliationList)
+						{
+
+
+
+							<tr>
+								<td></td>
+								<td>@item.OrderNumber</td>
+								<td class="text-right">
+
+									@item.InitialBalance.ToString("F")
+
+
+								</td>
+								<td class="text-right">
+
+									@item.IncomeValue.ToString("F")
+
+
+								</td>
+								<td class="text-right">
+
+									@item.OutcomeValue.ToString("F")
+
+								</td>
+								<td class="text-right">
+
+									@item.FinalBalance.ToString("F")
+
+
+								</td>
+
+							</tr>
+						}
+
+
+
+					}
+					<tr class="table-bg-color-footer-total">
+						<td>Підсумок:</td>
+						<td></td>
+						<td class="text-right">@Model.FinanceReconciliationList.FullBeginTotal.ToString("F2")</td>
+						<td class="text-right">@Model.FinanceReconciliationList.FullIncomeTotal.ToString("F2")</td>
+						<td class="text-right">@Model.FinanceReconciliationList.FullOutcomeTotal.ToString("F2")</td>
+						<td class="text-right">@Model.FinanceReconciliationList.FullEndTotal.ToString("F2")</td>
+					</tr>
+				}
+			</tbody>
+
+		</table>
+	</div>
+</div>
+<script type="text/javascript">
+	// When the document is ready
+	$(document).ready(function () {
+
+
+
+		$('#StartDate').datepicker({
+
+			format: "dd.mm.yyyy"
+		});
+		$('#EndDate').datepicker({
+			format: "dd.mm.yyyy"
+		});
+		$('#StartDate').val("@Model.StartDate.ToShortDateString()");
+		$('#EndDate').val("@Model.EndDate.ToShortDateString()");
+
+
+	});
+</script>

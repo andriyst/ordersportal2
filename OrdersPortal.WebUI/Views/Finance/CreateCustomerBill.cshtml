@@ -1,0 +1,322 @@
+﻿@model OrdersPortal.Application.Models.ViewModels.Create1COrderViewModel
+@{
+	ViewBag.Title = "Створити рахунок контрагента в 1с";
+
+
+
+
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("CreateCustomerBill", "Finance", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+	@Html.AntiForgeryToken()
+	<h4>Створити рахунок</h4>
+	<hr />
+	@Html.ValidationSummary()
+	<div class="row">
+		<div class="col-12">
+
+			<div class="form-group field-customer col-xl-5 pt-4">
+				@Html.LabelFor(m => m.OrderContrAgent, new { @class = "col-md-2 control-label" })
+				<div class="col-lg-10">
+					@Html.DropDownListFor(m => m.OrderContrAgent, Model.Contragents.Select(x => new SelectListItem
+			   {
+				   Text = x.Name.ToString(),
+				   Value = x.Guid.ToString()
+			   }), new { @class = "form-select" })
+				</div>
+			</div>
+
+			<div class="form-group field-address col-xl-5 pt-4">
+				@Html.LabelFor(m => m.Address, new { @class = "col-md-2 control-label" })
+				<div class="col-lg-10">
+					@Html.DropDownListFor(m => m.Address, Model.Addresses.Select(x => new SelectListItem
+					{
+						Text = x.Name.ToString(),
+						Value = x.Guid.ToString()
+					}), new { @class = "form-select" })
+				</div>
+			</div>
+
+			<div class="form-group field-iban col-xl-5 pt-4">
+				@Html.LabelFor(m => m.OrderIban, new { @class = "col-md-2 control-label" })
+				<div class="col-lg-10">
+					@Html.DropDownListFor(m => m.OrderIban, Model.Ibans.Select(x => new SelectListItem
+			   {
+				   Text = x.Name.ToString(),
+				   Value = x.Guid.ToString()
+			   }), new { @class = "form-select" })
+				</div>
+			</div>
+
+
+
+			<div class=" field-item OrderItem col-12" itemIndex="0">
+				<hr />
+				<label class="col-6">Позиція 1</label>
+
+				<div class="row">
+					<div class="col-12 col-lg-12 col-xxl-5">
+						<span>Найменування</span>
+						@Html.DropDownListFor(m => m.OrderItems[0].OrderItem.Guid, Model.Items.Select(x => new SelectListItem
+						{
+							Text = x.Name.ToString(),
+							Value = x.Guid.ToString()
+						}), new { @class = "form-select", style = "min-width:100%" })
+					</div>
+
+					<div class="col-6 col-lg-3 col-xxl-2">
+						<span>Висота(мм)</span>
+						@Html.TextBoxFor(m => m.OrderItems[0].Height, new { @class = "form-control orderHeight" })
+					</div>
+					<div class="col-6 col-lg-3 col-xxl-2">
+						<span>Ширина(мм)</span>
+						@Html.TextBoxFor(m => m.OrderItems[0].Width, new { @class = "form-control orderWidth" })
+					</div>
+					<div class="col-6 col-lg-3 col-xxl-1">
+						<span>К-сть</span>
+						@*@Html.TextBoxFor(m => m.OrderItems[0].Count, new { @class = "form-control orderCount", pattern = "[0-9]+([,\\.][0-9]+)?", step = "0.0001" })*@
+						@Html.TextBoxFor(m => m.OrderItems[0].Count, new { @class = "form-control orderCount"})
+					</div>
+					<div class="col-6 col-lg-3 col-xxl-1">
+						<span>Ціна</span>
+						@Html.TextBoxFor(m => m.OrderItems[0].Price, new { @class = "form-control orderPrice"})
+					</div>
+					<div class="col-12 col-lg-12 col-xxl-1">
+
+						<div style="height: 60px; line-height: 92px; white-space: nowrap;">
+							<div id=removeButton_0 class="btn btn-danger" onclick="removeItemRow(0)">Видалити</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="row pt-4">
+				<div class="col-12">
+					<div class="btn btn-success" href="#" id="addItemButton">Дoдати ще</div>
+				</div>
+			</div>
+			<hr />
+
+			<div class="form-group col-xl-5 pt-4">
+				@Html.LabelFor(m => m.OrderSuma, new { @class = "col-md-6" })
+				<div class="col-md-10">
+					@Html.TextBoxFor(m => m.OrderSuma, new { @class = "form-control", @readonly = "readonly" })
+				</div>
+			</div>
+
+			<div class="form-group col-xl-5 pt-4">
+				@Html.LabelFor(m => m.OrderCreateDate, new { @class = "col-md-6 control-label" })
+				<div class="col-md-10">
+					@Html.TextBoxFor(m => m.OrderCreateDate, new { @class = "form-control", id = "dp1" })
+
+				</div>
+			</div>
+
+			<div class="form-group col-xl-5 pt-4">
+				@Html.LabelFor(m => m.OrderDeliveryDate, new { @class = "col-md-6 control-label" })
+				<div class="col-md-10">
+					@Html.TextBoxFor(m => m.OrderDeliveryDate, new { @class = "form-control", id = "dp2" })
+
+				</div>
+			</div>
+
+
+			<div class="form-group col-xl-5 pt-4">
+				@Html.LabelFor(m => m.InternalComment, new { @class = "col-md-6 control-label" })
+				<div class="col-md-10">
+					@Html.TextAreaFor(m => m.InternalComment, new { @class = "form-control", @style = "max-width:700px; height:200px;" })
+				</div>
+			</div>
+
+
+			<div class="form-group pt-4">
+				<div class="col-md-10">
+					<input type="submit" class="btn btn-success" value="Створити" />
+				</div>
+			</div>
+
+		</div>
+	</div>
+}
+
+<script type="text/javascript">
+
+	jQuery.validator.methods["date"] = function (value, element) { return true; }
+
+</script>
+
+
+
+<script type="text/javascript">
+	// When the document is ready
+	$(document).ready(function () {
+
+		$('#dp1').datepicker({
+			format: "dd.mm.yyyy",
+			autoclose: true
+		}).on('changeDate', function (e) {
+			$(this).datepicker('hide');
+		});
+
+		$('#dp2').datepicker({
+			format: "dd.mm.yyyy",
+			autoclose: true
+		}).on('changeDate', function (e) {
+			$(this).datepicker('hide');
+		});
+
+		$('#addItemButton').on('click', function () { addItemRow(); });
+
+		$(document).on('change', '.orderPrice', function () {
+			var $replace = $(this).val().toString().replace(/,/g, '.');
+
+			$(this).val($replace);
+			calculateTotalSum();
+
+		});
+
+
+		$(document).on('change', '.orderCount', function () {
+			
+			var $replace = $(this).val().toString().replace(/,/g, '.');
+
+			$(this).val($replace);
+			calculateTotalSum();
+
+		});
+
+		//$('.orderSum').change(function () { calculateTotalSum(); });
+
+
+	});
+
+
+
+	function removeItemRow(item) {
+		var lastItem = $('.OrderItem').last();
+		var countItems = $('.OrderItem').length;
+		if (countItems > 1) {
+			$('div[itemIndex=' + item + ']').remove();
+
+			for (i = item; i < countItems - 1; i++) {
+
+				var element = $('.OrderItem').eq(i);
+				element.attr("itemIndex", i);
+
+				$('#OrderItems_' + (i + 1) + '__OrderItem_Guid').attr('name', 'OrderItems[' + i + '].OrderItem.Guid');
+				$('#OrderItems_' + (i + 1) + '__OrderItem_Guid').attr('id', 'OrderItems_' + i + '__OrderItem_Guid');
+
+				$('#OrderItems_' + (i + 1) + '__Width').attr('name', 'OrderItems[' + i + '].Width');
+				$('#OrderItems_' + (i + 1) + '__Width').attr('id', 'OrderItems_' + i + '__Width');
+
+				$('#OrderItems_' + (i + 1) + '__Height').attr('name', 'OrderItems[' + i + '].Height');
+				$('#OrderItems_' + (i + 1) + '__Height').attr('id', 'OrderItems_' + i + '__Height');
+
+				$('#OrderItems_' + (i + 1) + '__Price').attr('name', 'OrderItems[' + i + '].Price');
+				$('#OrderItems_' + (i + 1) + '__Price').attr('id', 'OrderItems_' + i + '__Price');
+
+				$('#OrderItems_' + (i + 1) + '__Count').attr('name', 'OrderItems[' + i + '].Count');
+				$('#OrderItems_' + (i + 1) + '__Count').attr('id', 'OrderItems_' + i + '__Count');
+
+				$('#OrderItems_' + (i + 1) + '__Price').attr('name', 'OrderItems[' + i + '].Price');
+				$('#OrderItems_' + (i + 1) + '__Price').attr('id', 'OrderItems_' + i + '__Price');
+
+				$('#removeButton_' + (i + 1)).attr('onClick', 'removeItemRow(' + i + ')');
+				$('#removeButton_' + (i + 1)).attr('id', 'removeButton_' + i);
+
+
+
+			};
+
+			calculateTotalSum();
+		}
+	};
+
+	function calculateTotalSum() {
+
+		var sum = 0;
+
+		$(".orderPrice").each(function () {
+
+			if (!isNaN(this.value) && this.value.length != 0) {
+				var currentCount = $(this).parent().prev().find('.orderCount').val();
+
+				if (!isNaN(currentCount) && currentCount.length != 0) {
+					sum += parseFloat(this.value * currentCount);
+				}
+			}
+
+		});
+
+		$fixedVal = sum.toFixed(2);
+		$("#OrderSuma").val($fixedVal);
+
+		//var countItems = $('.OrderItem').length;
+		//var sum = 0;
+		//for (i = 0; i < countItems - 1; i++) {
+		//	sum = sum + $('#OrderItems_' + i + '__Price').val();
+		//}
+
+		//$('#OrderSuma').val(sum);
+	}
+	function addItemRow() {
+
+		var $options = $("#OrderItems_0__OrderItem_Guid > option").clone();
+
+		$('#secondSelectId').append($options);
+
+
+		var lastItem = $('.OrderItem').last();
+		var countItems = $('.OrderItem').length;
+
+		var lastItemIndex = lastItem.attr('itemIndex');
+		var index = ++lastItemIndex;
+		var addItemRow = '<div class="form-group field-item OrderItem" itemIndex="' + index + '"> <hr /><label class="col-6 control-label">Позиція ' + (index + 1) + '</label> \
+							<div class="row" > \
+							<div class="col-12 col-lg-12 col-xxl-5"> \
+							<span>Найменування</span> '
+			+ '<select class="form-select" id="OrderItems_' + index + '__OrderItem_Guid" name="OrderItems[' + index + '].OrderItem.Guid" style="min-width:100%">'
+			+ '</select>'
+			+ '</div> \
+							<div class="col-12 col-lg-3 col-xxl-2"> \
+							<span>Висота(мм)</span> \
+							<input class="form-control orderHeight" data-val="true" data-val-number="The field Height must be a number." data-val-required="The Height field is required." id="OrderItems_' + index + '__Height" name="OrderItems[' + index + '].Height" type="text" value="">'
+			+ '</div> \
+							<div class="col-12 col-lg-3 col-xxl-2"> \
+							<span>Ширина(мм)</span> \
+							<input class="form-control orderWidth" data-val="true" data-val-number="The field Width must be a number." data-val-required="The Width field is required." id="OrderItems_' + index + '__Width" name="OrderItems[' + index + '].Width" type="text" value="">' +
+			'</div> \
+							<div class="col-12 col-lg-3 col-xxl-1"> \
+							<span>К-сть</span> \
+							<input class="form-control orderCount" data-val="true" data-val-number="The field Count must be a number." data-val-required="The Count field is required." id="OrderItems_' + index + '__Count" name="OrderItems[' + index + '].Count" type="text" value="">'
+			+ '</div> \
+							<div class="col-12 col-lg-3 col-xxl-1"> \
+							<span>Ціна</span> \
+							<input class="form-control orderPrice" data-val="true" data-val-number="The field Price must be a number." data-val-required="The Price field is required." id="OrderItems_' + index + '__Price" name="OrderItems[' + index + '].Price" type="text" value="">' +
+			'</div>  \
+						<div class="col-12 col-lg-12 col-xxl-1"> \
+						<div style=" height: 60px;line-height: 92px;white-space: nowrap;"><div id="removeButton_' + index + '" class="btn btn-danger" onclick="removeItemRow(' + index + ')">Видалити</div></div> \
+						</div> \
+						</div> \
+						</div>';
+
+
+		$('div.OrderItem:last').after(addItemRow);
+		$('#OrderItems_' + index + '__OrderItem_Guid').append($options);
+	}
+
+</script>
+
+
+
+
+
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}
+

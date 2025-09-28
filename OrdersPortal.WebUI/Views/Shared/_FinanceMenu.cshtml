@@ -1,0 +1,21 @@
+﻿
+
+<li class="nav-item dropdown  col-6 col-md-auto">
+	<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+		<div class="d-none d-sm-inline d-md-inline  d-lg-none d-xl-inline"><i class="fas fa-money-check-alt fa-lg icon-green"></i></div>
+		Фінанси
+	</a>
+	<div class="dropdown-menu">
+		@Html.ActionLink("Взаєморозрахунки", "Reconciliation", "Finance", null, new { @class = "dropdown-item" })
+		@Html.ActionLink("Рух коштів", "CashFlow", "Finance", null, new { @class = "dropdown-item" })
+		<div class="dropdown-divider"></div>
+		@Html.ActionLink("Аналітика", "OrderAnalytics", "Analytics", null, new { @class = "dropdown-item" })
+		<div class="dropdown-divider"></div>
+		@Html.ActionLink("Оплата", "OrdersPayments", "Finance", null, new { @class = "dropdown-item" })
+		<div class="dropdown-divider"></div>
+		@Html.ActionLink("Акція WDS", "GetWdsActionCodes", "Finance", null, new { @class = "dropdown-item" })
+		@*@Html.ActionLink("Бонус дня", "GetWdsActionRating", "Finance", null, new { @class = "dropdown-item" })*@
+		<div class="dropdown-divider"></div>
+		@Html.ActionLink("Рахунки", "GetCustomerBillList", "Finance", null, new { @class = "dropdown-item" })
+	</div>
+</li>

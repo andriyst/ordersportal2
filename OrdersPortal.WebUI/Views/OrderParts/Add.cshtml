@@ -1,0 +1,211 @@
+﻿@model OrdersPortal.Application.Models.ViewModels.AddOrderPartsViewModel
+@{
+	ViewBag.Title = "Дозамовлення";
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="row">
+	<div class="col-12 col-md-9 col-lg-6 col-xl-4">
+		@using (Html.BeginForm("Add", "OrderParts", FormMethod.Post, new { @class = "form-horizontal", role = "form"}))
+		{
+			@Html.AntiForgeryToken()
+
+			<hr />
+			@Html.ValidationSummary()
+
+
+			@Html.HiddenFor(m => m.CustomerName)
+
+
+
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.OrderNumber, new { @class = "col-12 control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.OrderNumber, new { @class = "form-control", id = "OrderNumberText", @onchange = "javascript:CheckContrOrder()" })
+				</div>
+				<div class="checkorderbox">
+
+				</div>
+			</div>
+
+			<div class="form-group  pt-2">
+				<input type="checkbox" data-val="true" value="true" name="NoOrder" id="NoOrder" autocomplete="off" />
+				<div class="btn-group col-12" style="height: 3rem">
+					<label for="NoOrder" class="btn btn-standart" style="height: 3rem">
+						<span><i class="fas fa-check"></i></span>
+						<span><i> </i></span>
+					</label>
+					<label for="NoOrder" class="d-inline-block w-100 ">
+
+						<div class="d-inline-block align-self-center m-2" style="color: bisque">
+							Без замовлення
+						</div>
+
+
+					</label>
+				</div>
+			</div>
+
+
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.OrderPartsItems, new { @class = "control-label" })
+				<div class="col-12">
+					<div>
+						@Html.DropDownListFor(m => m.OrderPartsItemsId, Model.OrderPartsItems,
+							new { @class = "form-select", id = "select-issue" })
+						@Html.ValidationMessageFor(m => m.OrderPartsItems)
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.OrderPartsReason, new { @class = "control-label" })
+				<div class="col-12">
+					<div>
+						@Html.DropDownListFor(m => m.OrderPartsReasonId, Model.OrderPartsReason,
+							new { @class = "form-select", id = "selectReason", onchange = "ReasonLoader();" })
+						@Html.ValidationMessageFor(m => m.OrderPartsReason)
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group pt-2" id="DepartureDateField">
+				@Html.LabelFor(m => m.OrderPartsDepartureDate, new { @class = "control-label" })
+				<div class="col-12">
+					@Html.TextBoxFor(m => m.OrderPartsDepartureDate, new { @class = "form-control", id = "dp1" })
+
+				</div>
+			</div>
+
+			<div class="form-group pt-2">
+				@Html.LabelFor(m => m.OrderPartsDescription, new { @class = "col-12 control-label" })
+				<div class="col-12">
+					@Html.TextAreaFor(m => m.OrderPartsDescription, new { @class = "form-control", @style = "height:200px;" })
+				</div>
+			</div>
+			<div class="row justify-content-between pt-4">
+
+				<div class="col-6">
+					<input id="addButton" type="submit" disabled="disabled" class="btn btn-success" value="Додати" />
+				</div>
+
+				<div class="col-6">
+					<input id="cancelButton" type="button" class="btn btn-secondary float-right" onclick="CancelButtonClick()" value="Відмінити" />
+				</div>
+
+			</div>
+		}
+	</div>
+</div>
+
+<script type="text/javascript">
+	existOrderNumer = $('#OrderNumberText').val();
+
+
+	var attr = $('.validation-summary-errors').attr('data-valmsg-summary');
+
+	if (existOrderNumer !== "")
+	//	&& typeof attr !== typeof undefined && attr !== false)
+	{
+		CheckContrOrder();
+		//LoadOrderSeries(existOrderNumer);
+	}
+
+
+	function CheckContrOrder() {
+		var url = "/Complaints/CheckOrder";
+		OrderNum = document.getElementById('OrderNumberText').value;
+		$.ajax({
+			url: url,
+			contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+			type: "GET",
+			data: {
+				ordernum: OrderNum
+			},
+			success: function (data) {
+				$(".checkorderbox").html(data);
+				if ($("#checkOrder").hasClass("checkorderyes")) {
+
+					$("#addButton").removeAttr("disabled");
+									   				
+				} else {
+
+					$(".checkorderbox").show();
+					$("#addButton").prop('disabled', true);
+
+				}
+			}
+		});
+	};
+
+
+	function CancelButtonClick() {
+
+		location.href = "/OrderParts/List";
+	}
+
+	function ReasonLoader() {
+
+		ReasonGuid = $('#selectReason').find(":selected").val();
+
+	
+		if (ReasonGuid === "2" ) {
+
+			$('#DepartureDateField').show();
+
+			
+		} else {
+
+			$('#DepartureDateField').hide();
+
+		}
+
+
+	}
+
+
+</script>
+
+<script type="text/javascript">
+
+	jQuery.validator.methods["date"] = function (value, element) { return true; }
+
+</script>
+
+<script type="text/javascript">
+	// When the document is ready
+	$(document).ready(function () {
+
+		$('#DepartureDateField').hide();
+
+		// RoleChecker();
+		//  $("#enable-checkbox").bootstrapSwitch();
+		$('#dp1').datepicker({
+			format: "dd.mm.yyyy",
+			autoclose: true
+		}).on('changeDate', function (e) {
+			$(this).datepicker('hide');
+		});
+
+
+
+		$('#NoOrder').val(this.unchecked);
+
+		$('#NoOrder').change(function () {
+			if (this.checked) {
+				$("#OrderNumberText").attr("disabled", true);
+				$("#addButton").removeAttr("disabled");
+				$(".checkorderbox").hide();
+				$("#OrderNumberText").val("");
+			} else {
+				$("#OrderNumberText").removeAttr("disabled");
+				$("#addButton").prop('disabled', true);
+				$("#OrderNumberText").val("");
+			}
+
+		});
+	})
+</script>
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}

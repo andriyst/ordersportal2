@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Список завантажених замовлень";
+    int n = 0;
+
+    double percents = 0;
+    double percentsbar = 0;
+    int sum = 0;
+    foreach (var s in ViewBag.Result)
+    {
+        sum = sum + Convert.ToInt32(s.NumOrders);
+    }
+
+}
+
+
+<div style="display:inline-block;">
+    <h1>Оброблено: @sum Замовленнь</h1>
+</div>
+
+
+@foreach (var a in ViewBag.Result)
+{
+    n++;
+    <div>
+
+
+        @{percentsbar = Math.Round(((double)a.NumOrders) / sum * 100, 0);}
+        @{percents = Math.Round(((double)a.NumOrders) / sum * 100, 2);}
+
+
+        @a.ManagerName : @a.NumOrders замовлень
+
+    </div>
+    <div class="progress">
+        @if (n == 1)
+        {
+            <div class="progress-bar progress-bar-success" style="width: @percentsbar%"></div>
+        }
+        else
+        {
+            <div class="progress-bar progress-bar-warning" style="width: @percentsbar%"></div>
+        }
+    </div>
+
+
+}

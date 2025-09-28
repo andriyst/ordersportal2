@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:xsd1="http://cportal_bill.vs" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12bind="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:tns="http://cportal_bill.vs" name="cportal_bill_vs" targetNamespace="http://cportal_bill.vs" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xs:schema xmlns:xs1="http://cportal_bill.vs" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://cportal_bill.vs" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="Create1COrder">
+        <xs:sequence>
+          <xs:element name="OrderNumber" nillable="true" type="xs:string" />
+          <xs:element name="OrderContrAgent" type="xs:string" />
+          <xs:element name="OrderIban" type="xs:string" />
+          <xs:element name="OrderCreateDate" type="xs:dateTime" />
+          <xs:element name="OrderDeliveryDate" type="xs:dateTime" />
+          <xs:element name="Address" type="xs:string" />
+          <xs:element name="OrderSuma" type="xs:double" />
+          <xs:element name="InternalComment" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="OrderItemsLIST" type="xs1:OrderItemsDATA" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Customer1cOrderDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="LIST" type="xs1:CustomerOrderDATA" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CustomerOrderDATA">
+        <xs:sequence>
+          <xs:element name="TYPE" type="xs:string" />
+          <xs:element name="GUID" type="xs:string" />
+          <xs:element name="NAME" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="OrderItemsDATA">
+        <xs:sequence>
+          <xs:element name="ItemGUID" type="xs:string" />
+          <xs:element name="Price" type="xs:double" />
+          <xs:element name="Count" type="xs:double" />
+          <xs:element name="Height" nillable="true" type="xs:int" />
+          <xs:element name="Width" nillable="true" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="bill_list">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="LIST" type="xs1:bill_listDATA" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="bill_listDATA">
+        <xs:sequence>
+          <xs:element name="GUID" type="xs:string" />
+          <xs:element name="number" type="xs:string" />
+          <xs:element name="date" type="xs:dateTime" />
+          <xs:element name="bill_sum" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="get_customer_bill_info">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="kontr_kod" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_customer_bill_infoResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:Customer1cOrderDTO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="set_customer_bill">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="DTO" type="xs1:Create1COrder" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="set_customer_billResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_customer_bill_list">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="kontr_kod" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_customer_bill_listResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:bill_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_customer_bill_PDF">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="bill_GUID" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_customer_bill_PDFResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </types>
+  <message name="get_customer_bill_infoRequestMessage">
+    <part name="parameters" element="tns:get_customer_bill_info" />
+  </message>
+  <message name="get_customer_bill_infoResponseMessage">
+    <part name="parameters" element="tns:get_customer_bill_infoResponse" />
+  </message>
+  <message name="set_customer_billRequestMessage">
+    <part name="parameters" element="tns:set_customer_bill" />
+  </message>
+  <message name="set_customer_billResponseMessage">
+    <part name="parameters" element="tns:set_customer_billResponse" />
+  </message>
+  <message name="get_customer_bill_listRequestMessage">
+    <part name="parameters" element="tns:get_customer_bill_list" />
+  </message>
+  <message name="get_customer_bill_listResponseMessage">
+    <part name="parameters" element="tns:get_customer_bill_listResponse" />
+  </message>
+  <message name="get_customer_bill_PDFRequestMessage">
+    <part name="parameters" element="tns:get_customer_bill_PDF" />
+  </message>
+  <message name="get_customer_bill_PDFResponseMessage">
+    <part name="parameters" element="tns:get_customer_bill_PDFResponse" />
+  </message>
+  <portType name="cportal_bill_vsPortType">
+    <operation name="get_customer_bill_info">
+      <input message="tns:get_customer_bill_infoRequestMessage" />
+      <output message="tns:get_customer_bill_infoResponseMessage" />
+    </operation>
+    <operation name="set_customer_bill">
+      <input message="tns:set_customer_billRequestMessage" />
+      <output message="tns:set_customer_billResponseMessage" />
+    </operation>
+    <operation name="get_customer_bill_list">
+      <input message="tns:get_customer_bill_listRequestMessage" />
+      <output message="tns:get_customer_bill_listResponseMessage" />
+    </operation>
+    <operation name="get_customer_bill_PDF">
+      <input message="tns:get_customer_bill_PDFRequestMessage" />
+      <output message="tns:get_customer_bill_PDFResponseMessage" />
+    </operation>
+  </portType>
+  <binding name="cportal_bill_vsSoapBinding" type="tns:cportal_bill_vsPortType">
+    <soapbind:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="get_customer_bill_info">
+      <soapbind:operation soapAction="http://cportal_bill.vs#cportal_bill_vs:get_customer_bill_info" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="set_customer_bill">
+      <soapbind:operation soapAction="http://cportal_bill.vs#cportal_bill_vs:set_customer_bill" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_customer_bill_list">
+      <soapbind:operation soapAction="http://cportal_bill.vs#cportal_bill_vs:get_customer_bill_list" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_customer_bill_PDF">
+      <soapbind:operation soapAction="http://cportal_bill.vs#cportal_bill_vs:get_customer_bill_PDF" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <binding name="cportal_bill_vsSoap12Binding" type="tns:cportal_bill_vsPortType">
+    <soap12bind:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="get_customer_bill_info">
+      <soap12bind:operation soapAction="http://cportal_bill.vs#cportal_bill_vs:get_customer_bill_info" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="set_customer_bill">
+      <soap12bind:operation soapAction="http://cportal_bill.vs#cportal_bill_vs:set_customer_bill" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_customer_bill_list">
+      <soap12bind:operation soapAction="http://cportal_bill.vs#cportal_bill_vs:get_customer_bill_list" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_customer_bill_PDF">
+      <soap12bind:operation soapAction="http://cportal_bill.vs#cportal_bill_vs:get_customer_bill_PDF" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="cportal_bill_vs">
+    <port name="cportal_bill_vsSoap" binding="tns:cportal_bill_vsSoapBinding">
+      <documentation>
+        <wsi:Claim xmlns:wsi="http://ws-i.org/schemas/conformanceClaim/" conformsTo="http://ws-i.org/profiles/basic/1.1" />
+      </documentation>
+      <soapbind:address location="http://192.168.1.10/oknastyle/ws/cportal_bill_vs" />
+    </port>
+    <port name="cportal_bill_vsSoap12" binding="tns:cportal_bill_vsSoap12Binding">
+      <soap12bind:address location="http://192.168.1.10/oknastyle/ws/cportal_bill_vs" />
+    </port>
+  </service>
+</definitions>

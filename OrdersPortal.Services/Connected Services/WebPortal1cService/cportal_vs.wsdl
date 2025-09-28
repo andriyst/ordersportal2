@@ -1,0 +1,1323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:xsd1="http://cportal.vs" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12bind="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:tns="http://cportal.vs" name="cportal_vs" targetNamespace="http://cportal.vs" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xs:schema xmlns:xs1="http://cportal.vs" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://cportal.vs" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="debt_data">
+        <xs:sequence>
+          <xs:element name="agreement" type="xs:string" />
+          <xs:element name="debt_sum" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="debt_list">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="contr_debt_data" type="xs1:debt_data" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="debt_movement_D">
+        <xs:sequence>
+          <xs:element name="is_main_contract" type="xs:double" />
+          <xs:element name="contract" type="xs:string" />
+          <xs:element name="order_number" type="xs:string" />
+          <xs:element name="order_date" nillable="true" type="xs:dateTime" />
+          <xs:element name="order_status" nillable="true" type="xs:string" />
+          <xs:element name="Summ_Start" type="xs:double" />
+          <xs:element name="Summ_In" type="xs:double" />
+          <xs:element name="Summ_Out" type="xs:double" />
+          <xs:element name="Summ_End" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="debt_movement_D_2019">
+        <xs:sequence>
+          <xs:element name="is_main_contract" type="xs:double" />
+          <xs:element name="contract" nillable="true" type="xs:string" />
+          <xs:element name="order_number" nillable="true" type="xs:string" />
+          <xs:element name="order_date" nillable="true" type="xs:dateTime" />
+          <xs:element name="Summ_Start" type="xs:double" />
+          <xs:element name="Summ_In" type="xs:double" />
+          <xs:element name="Summ_Out" type="xs:double" />
+          <xs:element name="Summ_End" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="debt_movement_L">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="List" type="xs1:debt_movement_D" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="debt_movement_L_2019">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="List" type="xs1:debt_movement_D_2019" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="diag_data">
+        <xs:sequence>
+          <xs:element name="field" type="xs:string" />
+          <xs:element name="pay_sum" type="xs:double" />
+          <xs:element name="constr_sum" type="xs:double" />
+          <xs:element name="average_sum" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="diag_list">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="DiagDataList" type="xs1:diag_data" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="kontr_data">
+        <xs:sequence>
+          <xs:element name="kod" type="xs:string" />
+          <xs:element name="name" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="kontr_list">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="KontrDataList" type="xs1:kontr_data" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="list_WDS">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="list" type="xs1:list_WDS_data" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="list_WDS_data">
+        <xs:sequence>
+          <xs:element name="kons_name" nillable="true" type="xs:string" />
+          <xs:element name="seria_number" nillable="true" type="xs:string" />
+          <xs:element name="kod_wds" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="managers_data">
+        <xs:sequence>
+          <xs:element name="_1c_ID" type="xs:string" />
+          <xs:element name="_1c_name" type="xs:string" />
+          <xs:element name="_1c_parent_ID" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="managers_list">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="managers_data_list" type="xs1:managers_data" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="money_movement_D">
+        <xs:sequence>
+          <xs:element name="order_number" type="xs:string" />
+          <xs:element name="Summ_Start" type="xs:double" />
+          <xs:element name="Summ_In" type="xs:double" />
+          <xs:element name="Summ_Out" type="xs:double" />
+          <xs:element name="Summ_End" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="money_movement_L">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="List" type="xs1:money_movement_D" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="order_data">
+        <xs:sequence>
+          <xs:element name="order_sum" type="xs:double" />
+          <xs:element name="pay_sum" type="xs:double" />
+          <xs:element name="constr_sum" type="xs:double" />
+          <xs:element name="date_start" type="xs:dateTime" />
+          <xs:element name="date_ready" type="xs:string" />
+          <xs:element name="debt_sum" type="xs:double" />
+          <xs:element name="order_number" type="xs:string" />
+          <xs:element name="product_status" type="xs:string" />
+          <xs:element name="delay_date" type="xs:dateTime" />
+          <xs:element name="delivery_date" type="xs:dateTime" />
+          <xs:element name="date_plan" type="xs:string" />
+          <xs:element name="contract_name" nillable="true" type="xs:string" />
+          <xs:element name="prod_days" type="xs:string" />
+          <xs:element name="prod_days_group" type="xs:string" />
+          <xs:element name="profile_system" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="order_list">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="OrderDataList" type="xs1:order_data" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="orders_dynamics_data">
+        <xs:sequence>
+          <xs:element name="period" type="xs:dateTime" />
+          <xs:element name="summ" type="xs:double" />
+          <xs:element name="quantity" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="orders_dynamics_list">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="List" type="xs1:orders_dynamics_data" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="organization_data">
+        <xs:sequence>
+          <xs:element name="kod" />
+          <xs:element name="name" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="organization_list">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="List" type="xs1:organization_data" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="rating1_data">
+        <xs:sequence>
+          <xs:element name="kontr_kod" />
+          <xs:element name="rating_sum" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="rating1_list">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="rating1DataList" type="xs1:rating1_data" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="short_order_data">
+        <xs:sequence>
+          <xs:element name="date_start" type="xs:dateTime" />
+          <xs:element name="orders_qt" type="xs:double" />
+          <xs:element name="orders_sum" type="xs:double" />
+          <xs:element name="constr_sum" type="xs:double" />
+          <xs:element name="order_type" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="short_order_list">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="OrderDataList" type="xs1:short_order_data" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="get_debt_movement">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="kontr_kod" type="xs:string" />
+            <xs:element name="data1" type="xs:dateTime" />
+            <xs:element name="data2" type="xs:dateTime" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_debt_movementResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" nillable="true" type="xs1:debt_movement_L" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_debt_movement2019">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="kontr_kod" type="xs:string" />
+            <xs:element name="data1" type="xs:dateTime" />
+            <xs:element name="data2" type="xs:dateTime" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_debt_movement2019Response">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" nillable="true" type="xs1:debt_movement_L_2019" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_diag_uni">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="kontr_kod" type="xs:string" />
+            <xs:element name="field_name" type="xs:string" />
+            <xs:element name="data1" type="xs:dateTime" />
+            <xs:element name="data2" type="xs:dateTime" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_diag_uniResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:diag_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_diag_uni2">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="kontr_kod" type="xs:string" />
+            <xs:element name="field_name" type="xs:string" />
+            <xs:element name="data1" type="xs:dateTime" />
+            <xs:element name="data2" type="xs:dateTime" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_diag_uni2Response">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:diag_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_kontr_debt">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="kontr_kod" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_kontr_debtResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_kontr_debt_detailed">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="kontr_kod" type="xs:string" />
+            <xs:element name="data1" type="xs:dateTime" />
+            <xs:element name="data2" type="xs:dateTime" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_kontr_debt_detailedResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:debt_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_kontr_list">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_kontr_listResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:kontr_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_manager_kontr_list">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="manager_ID" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_manager_kontr_listResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:kontr_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_money_movement">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="kontr_kod" type="xs:string" />
+            <xs:element name="data1" type="xs:dateTime" />
+            <xs:element name="data2" type="xs:dateTime" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_money_movementResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:money_movement_L" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_order_list">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="kontr_kod" type="xs:string" />
+            <xs:element name="data1" type="xs:dateTime" />
+            <xs:element name="data2" type="xs:dateTime" />
+            <xs:element name="payment" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_order_listResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:order_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_orders_dynamics">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="kontr_kod" type="xs:string" />
+            <xs:element name="data1" type="xs:dateTime" />
+            <xs:element name="data2" type="xs:dateTime" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_orders_dynamicsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:orders_dynamics_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_personal_rating">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="startdata" type="xs:dateTime" />
+            <xs:element name="kontr_kod" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_personal_ratingResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs:double" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_rating1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="startdata" type="xs:dateTime" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_rating1Response">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:rating1_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_rating2024">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="startdata" type="xs:dateTime" />
+            <xs:element name="enddata" type="xs:dateTime" />
+            <xs:element name="top" type="xs:integer" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_rating2024Response">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:rating1_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_short_order_list">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="kontr_kod" nillable="true" type="xs:string" />
+            <xs:element name="data1" type="xs:dateTime" />
+            <xs:element name="data2" type="xs:dateTime" />
+            <xs:element name="monthly" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_short_order_listResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:short_order_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_wds">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="order_number" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_wdsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:list_WDS" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetManagers">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetManagersResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:managers_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetRegionalManagers">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetRegionalManagersResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:managers_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="set_order_state_wait_for_pay">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="OrderID" type="xs:string" />
+            <xs:element name="kontr_kod" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="set_order_state_wait_for_payResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs:integer" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="set_orderparts_state">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="OrderPartID" type="xs:integer" />
+            <xs:element name="kontr_kod" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="set_orderparts_stateResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs:integer" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_organization_list">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_organization_listResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:organization_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_kontr_list_by_organizations">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="firm" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_kontr_list_by_organizationsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:kontr_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_order_list_by_organizations">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="kontr_kod" type="xs:string" />
+            <xs:element name="data1" type="xs:dateTime" />
+            <xs:element name="data2" type="xs:dateTime" />
+            <xs:element name="payment" type="xs:boolean" />
+            <xs:element name="firm" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="get_order_list_by_organizationsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:order_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetManagers_by_organizations">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="firm" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetManagers_by_organizationsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:managers_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetRegionalManagers_by_organizations">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="firm" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetRegionalManagers_by_organizationsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:managers_list" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="set_order_state_wait_for_pay_by_org">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="OrderID" type="xs:string" />
+            <xs:element name="kontr_kod" type="xs:string" />
+            <xs:element name="firm" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="set_order_state_wait_for_pay_by_orgResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs:integer" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </types>
+  <message name="get_debt_movementRequestMessage">
+    <part name="parameters" element="tns:get_debt_movement" />
+  </message>
+  <message name="get_debt_movementResponseMessage">
+    <part name="parameters" element="tns:get_debt_movementResponse" />
+  </message>
+  <message name="get_debt_movement2019RequestMessage">
+    <part name="parameters" element="tns:get_debt_movement2019" />
+  </message>
+  <message name="get_debt_movement2019ResponseMessage">
+    <part name="parameters" element="tns:get_debt_movement2019Response" />
+  </message>
+  <message name="get_diag_uniRequestMessage">
+    <part name="parameters" element="tns:get_diag_uni" />
+  </message>
+  <message name="get_diag_uniResponseMessage">
+    <part name="parameters" element="tns:get_diag_uniResponse" />
+  </message>
+  <message name="get_diag_uni2RequestMessage">
+    <part name="parameters" element="tns:get_diag_uni2" />
+  </message>
+  <message name="get_diag_uni2ResponseMessage">
+    <part name="parameters" element="tns:get_diag_uni2Response" />
+  </message>
+  <message name="get_kontr_debtRequestMessage">
+    <part name="parameters" element="tns:get_kontr_debt" />
+  </message>
+  <message name="get_kontr_debtResponseMessage">
+    <part name="parameters" element="tns:get_kontr_debtResponse" />
+  </message>
+  <message name="get_kontr_debt_detailedRequestMessage">
+    <part name="parameters" element="tns:get_kontr_debt_detailed" />
+  </message>
+  <message name="get_kontr_debt_detailedResponseMessage">
+    <part name="parameters" element="tns:get_kontr_debt_detailedResponse" />
+  </message>
+  <message name="get_kontr_listRequestMessage">
+    <part name="parameters" element="tns:get_kontr_list" />
+  </message>
+  <message name="get_kontr_listResponseMessage">
+    <part name="parameters" element="tns:get_kontr_listResponse" />
+  </message>
+  <message name="get_manager_kontr_listRequestMessage">
+    <part name="parameters" element="tns:get_manager_kontr_list" />
+  </message>
+  <message name="get_manager_kontr_listResponseMessage">
+    <part name="parameters" element="tns:get_manager_kontr_listResponse" />
+  </message>
+  <message name="get_money_movementRequestMessage">
+    <part name="parameters" element="tns:get_money_movement" />
+  </message>
+  <message name="get_money_movementResponseMessage">
+    <part name="parameters" element="tns:get_money_movementResponse" />
+  </message>
+  <message name="get_order_listRequestMessage">
+    <part name="parameters" element="tns:get_order_list" />
+  </message>
+  <message name="get_order_listResponseMessage">
+    <part name="parameters" element="tns:get_order_listResponse" />
+  </message>
+  <message name="get_orders_dynamicsRequestMessage">
+    <part name="parameters" element="tns:get_orders_dynamics" />
+  </message>
+  <message name="get_orders_dynamicsResponseMessage">
+    <part name="parameters" element="tns:get_orders_dynamicsResponse" />
+  </message>
+  <message name="get_personal_ratingRequestMessage">
+    <part name="parameters" element="tns:get_personal_rating" />
+  </message>
+  <message name="get_personal_ratingResponseMessage">
+    <part name="parameters" element="tns:get_personal_ratingResponse" />
+  </message>
+  <message name="get_rating1RequestMessage">
+    <part name="parameters" element="tns:get_rating1" />
+  </message>
+  <message name="get_rating1ResponseMessage">
+    <part name="parameters" element="tns:get_rating1Response" />
+  </message>
+  <message name="get_rating2024RequestMessage">
+    <part name="parameters" element="tns:get_rating2024" />
+  </message>
+  <message name="get_rating2024ResponseMessage">
+    <part name="parameters" element="tns:get_rating2024Response" />
+  </message>
+  <message name="get_short_order_listRequestMessage">
+    <part name="parameters" element="tns:get_short_order_list" />
+  </message>
+  <message name="get_short_order_listResponseMessage">
+    <part name="parameters" element="tns:get_short_order_listResponse" />
+  </message>
+  <message name="get_wdsRequestMessage">
+    <part name="parameters" element="tns:get_wds" />
+  </message>
+  <message name="get_wdsResponseMessage">
+    <part name="parameters" element="tns:get_wdsResponse" />
+  </message>
+  <message name="GetManagersRequestMessage">
+    <part name="parameters" element="tns:GetManagers" />
+  </message>
+  <message name="GetManagersResponseMessage">
+    <part name="parameters" element="tns:GetManagersResponse" />
+  </message>
+  <message name="GetRegionalManagersRequestMessage">
+    <part name="parameters" element="tns:GetRegionalManagers" />
+  </message>
+  <message name="GetRegionalManagersResponseMessage">
+    <part name="parameters" element="tns:GetRegionalManagersResponse" />
+  </message>
+  <message name="set_order_state_wait_for_payRequestMessage">
+    <part name="parameters" element="tns:set_order_state_wait_for_pay" />
+  </message>
+  <message name="set_order_state_wait_for_payResponseMessage">
+    <part name="parameters" element="tns:set_order_state_wait_for_payResponse" />
+  </message>
+  <message name="set_orderparts_stateRequestMessage">
+    <part name="parameters" element="tns:set_orderparts_state" />
+  </message>
+  <message name="set_orderparts_stateResponseMessage">
+    <part name="parameters" element="tns:set_orderparts_stateResponse" />
+  </message>
+  <message name="get_organization_listRequestMessage">
+    <part name="parameters" element="tns:get_organization_list" />
+  </message>
+  <message name="get_organization_listResponseMessage">
+    <part name="parameters" element="tns:get_organization_listResponse" />
+  </message>
+  <message name="get_kontr_list_by_organizationsRequestMessage">
+    <part name="parameters" element="tns:get_kontr_list_by_organizations" />
+  </message>
+  <message name="get_kontr_list_by_organizationsResponseMessage">
+    <part name="parameters" element="tns:get_kontr_list_by_organizationsResponse" />
+  </message>
+  <message name="get_order_list_by_organizationsRequestMessage">
+    <part name="parameters" element="tns:get_order_list_by_organizations" />
+  </message>
+  <message name="get_order_list_by_organizationsResponseMessage">
+    <part name="parameters" element="tns:get_order_list_by_organizationsResponse" />
+  </message>
+  <message name="GetManagers_by_organizationsRequestMessage">
+    <part name="parameters" element="tns:GetManagers_by_organizations" />
+  </message>
+  <message name="GetManagers_by_organizationsResponseMessage">
+    <part name="parameters" element="tns:GetManagers_by_organizationsResponse" />
+  </message>
+  <message name="GetRegionalManagers_by_organizationsRequestMessage">
+    <part name="parameters" element="tns:GetRegionalManagers_by_organizations" />
+  </message>
+  <message name="GetRegionalManagers_by_organizationsResponseMessage">
+    <part name="parameters" element="tns:GetRegionalManagers_by_organizationsResponse" />
+  </message>
+  <message name="set_order_state_wait_for_pay_by_orgRequestMessage">
+    <part name="parameters" element="tns:set_order_state_wait_for_pay_by_org" />
+  </message>
+  <message name="set_order_state_wait_for_pay_by_orgResponseMessage">
+    <part name="parameters" element="tns:set_order_state_wait_for_pay_by_orgResponse" />
+  </message>
+  <portType name="cportal_vsPortType">
+    <operation name="get_debt_movement">
+      <input message="tns:get_debt_movementRequestMessage" />
+      <output message="tns:get_debt_movementResponseMessage" />
+    </operation>
+    <operation name="get_debt_movement2019">
+      <input message="tns:get_debt_movement2019RequestMessage" />
+      <output message="tns:get_debt_movement2019ResponseMessage" />
+    </operation>
+    <operation name="get_diag_uni">
+      <input message="tns:get_diag_uniRequestMessage" />
+      <output message="tns:get_diag_uniResponseMessage" />
+    </operation>
+    <operation name="get_diag_uni2">
+      <input message="tns:get_diag_uni2RequestMessage" />
+      <output message="tns:get_diag_uni2ResponseMessage" />
+    </operation>
+    <operation name="get_kontr_debt">
+      <input message="tns:get_kontr_debtRequestMessage" />
+      <output message="tns:get_kontr_debtResponseMessage" />
+    </operation>
+    <operation name="get_kontr_debt_detailed">
+      <input message="tns:get_kontr_debt_detailedRequestMessage" />
+      <output message="tns:get_kontr_debt_detailedResponseMessage" />
+    </operation>
+    <operation name="get_kontr_list">
+      <input message="tns:get_kontr_listRequestMessage" />
+      <output message="tns:get_kontr_listResponseMessage" />
+    </operation>
+    <operation name="get_manager_kontr_list">
+      <input message="tns:get_manager_kontr_listRequestMessage" />
+      <output message="tns:get_manager_kontr_listResponseMessage" />
+    </operation>
+    <operation name="get_money_movement">
+      <input message="tns:get_money_movementRequestMessage" />
+      <output message="tns:get_money_movementResponseMessage" />
+    </operation>
+    <operation name="get_order_list">
+      <input message="tns:get_order_listRequestMessage" />
+      <output message="tns:get_order_listResponseMessage" />
+    </operation>
+    <operation name="get_orders_dynamics">
+      <input message="tns:get_orders_dynamicsRequestMessage" />
+      <output message="tns:get_orders_dynamicsResponseMessage" />
+    </operation>
+    <operation name="get_personal_rating">
+      <input message="tns:get_personal_ratingRequestMessage" />
+      <output message="tns:get_personal_ratingResponseMessage" />
+    </operation>
+    <operation name="get_rating1">
+      <input message="tns:get_rating1RequestMessage" />
+      <output message="tns:get_rating1ResponseMessage" />
+    </operation>
+    <operation name="get_rating2024">
+      <input message="tns:get_rating2024RequestMessage" />
+      <output message="tns:get_rating2024ResponseMessage" />
+    </operation>
+    <operation name="get_short_order_list">
+      <input message="tns:get_short_order_listRequestMessage" />
+      <output message="tns:get_short_order_listResponseMessage" />
+    </operation>
+    <operation name="get_wds">
+      <input message="tns:get_wdsRequestMessage" />
+      <output message="tns:get_wdsResponseMessage" />
+    </operation>
+    <operation name="GetManagers">
+      <input message="tns:GetManagersRequestMessage" />
+      <output message="tns:GetManagersResponseMessage" />
+    </operation>
+    <operation name="GetRegionalManagers">
+      <input message="tns:GetRegionalManagersRequestMessage" />
+      <output message="tns:GetRegionalManagersResponseMessage" />
+    </operation>
+    <operation name="set_order_state_wait_for_pay">
+      <input message="tns:set_order_state_wait_for_payRequestMessage" />
+      <output message="tns:set_order_state_wait_for_payResponseMessage" />
+    </operation>
+    <operation name="set_orderparts_state">
+      <input message="tns:set_orderparts_stateRequestMessage" />
+      <output message="tns:set_orderparts_stateResponseMessage" />
+    </operation>
+    <operation name="get_organization_list">
+      <input message="tns:get_organization_listRequestMessage" />
+      <output message="tns:get_organization_listResponseMessage" />
+    </operation>
+    <operation name="get_kontr_list_by_organizations">
+      <input message="tns:get_kontr_list_by_organizationsRequestMessage" />
+      <output message="tns:get_kontr_list_by_organizationsResponseMessage" />
+    </operation>
+    <operation name="get_order_list_by_organizations">
+      <input message="tns:get_order_list_by_organizationsRequestMessage" />
+      <output message="tns:get_order_list_by_organizationsResponseMessage" />
+    </operation>
+    <operation name="GetManagers_by_organizations">
+      <input message="tns:GetManagers_by_organizationsRequestMessage" />
+      <output message="tns:GetManagers_by_organizationsResponseMessage" />
+    </operation>
+    <operation name="GetRegionalManagers_by_organizations">
+      <input message="tns:GetRegionalManagers_by_organizationsRequestMessage" />
+      <output message="tns:GetRegionalManagers_by_organizationsResponseMessage" />
+    </operation>
+    <operation name="set_order_state_wait_for_pay_by_org">
+      <input message="tns:set_order_state_wait_for_pay_by_orgRequestMessage" />
+      <output message="tns:set_order_state_wait_for_pay_by_orgResponseMessage" />
+    </operation>
+  </portType>
+  <binding name="cportal_vsSoapBinding" type="tns:cportal_vsPortType">
+    <soapbind:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="get_debt_movement">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:get_debt_movement" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_debt_movement2019">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:get_debt_movement2019" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_diag_uni">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:get_diag_uni" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_diag_uni2">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:get_diag_uni2" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_kontr_debt">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:get_kontr_debt" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_kontr_debt_detailed">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:get_kontr_debt_detailed" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_kontr_list">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:get_kontr_list" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_manager_kontr_list">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:get_manager_kontr_list" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_money_movement">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:get_money_movement" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_order_list">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:get_order_list" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_orders_dynamics">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:get_orders_dynamics" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_personal_rating">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:get_personal_rating" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_rating1">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:get_rating1" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_rating2024">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:get_rating2024" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_short_order_list">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:get_short_order_list" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_wds">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:get_wds" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetManagers">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:GetManagers" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetRegionalManagers">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:GetRegionalManagers" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="set_order_state_wait_for_pay">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:set_order_state_wait_for_pay" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="set_orderparts_state">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:set_orderparts_state" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_organization_list">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:get_organization_list" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_kontr_list_by_organizations">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:get_kontr_list_by_organizations" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_order_list_by_organizations">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:get_order_list_by_organizations" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetManagers_by_organizations">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:GetManagers_by_organizations" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetRegionalManagers_by_organizations">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:GetRegionalManagers_by_organizations" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="set_order_state_wait_for_pay_by_org">
+      <soapbind:operation soapAction="http://cportal.vs#cportal_vs:set_order_state_wait_for_pay_by_org" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <binding name="cportal_vsSoap12Binding" type="tns:cportal_vsPortType">
+    <soap12bind:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="get_debt_movement">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:get_debt_movement" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_debt_movement2019">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:get_debt_movement2019" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_diag_uni">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:get_diag_uni" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_diag_uni2">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:get_diag_uni2" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_kontr_debt">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:get_kontr_debt" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_kontr_debt_detailed">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:get_kontr_debt_detailed" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_kontr_list">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:get_kontr_list" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_manager_kontr_list">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:get_manager_kontr_list" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_money_movement">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:get_money_movement" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_order_list">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:get_order_list" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_orders_dynamics">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:get_orders_dynamics" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_personal_rating">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:get_personal_rating" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_rating1">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:get_rating1" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_rating2024">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:get_rating2024" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_short_order_list">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:get_short_order_list" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_wds">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:get_wds" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetManagers">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:GetManagers" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetRegionalManagers">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:GetRegionalManagers" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="set_order_state_wait_for_pay">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:set_order_state_wait_for_pay" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="set_orderparts_state">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:set_orderparts_state" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_organization_list">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:get_organization_list" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_kontr_list_by_organizations">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:get_kontr_list_by_organizations" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_order_list_by_organizations">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:get_order_list_by_organizations" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetManagers_by_organizations">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:GetManagers_by_organizations" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetRegionalManagers_by_organizations">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:GetRegionalManagers_by_organizations" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="set_order_state_wait_for_pay_by_org">
+      <soap12bind:operation soapAction="http://cportal.vs#cportal_vs:set_order_state_wait_for_pay_by_org" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="cportal_vs">
+    <port name="cportal_vsSoap" binding="tns:cportal_vsSoapBinding">
+      <documentation>
+        <wsi:Claim xmlns:wsi="http://ws-i.org/schemas/conformanceClaim/" conformsTo="http://ws-i.org/profiles/basic/1.1" />
+      </documentation>
+      <soapbind:address location="http://192.168.1.10/oknastyle/ws/cportal_vs" />
+    </port>
+    <port name="cportal_vsSoap12" binding="tns:cportal_vsSoap12Binding">
+      <soap12bind:address location="http://192.168.1.10/oknastyle/ws/cportal_vs" />
+    </port>
+  </service>
+</definitions>

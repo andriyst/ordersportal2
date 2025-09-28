@@ -1,0 +1,42 @@
+﻿@model List<OrdersPortal.Domain.Entities.Organization>
+@{
+	ViewBag.Title = "Організації";
+
+}
+
+<div>
+	<h2>@ViewBag.Title</h2>
+</div>
+
+
+@Html.AntiForgeryToken()
+<div>
+	@Html.ActionLink("Додати організацію", "Add", null, new { @class = "btn btn-success" })
+</div>
+<table class="table table-striped table-hover " data-toggle="table" data-search="true">
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>Назва організації</th>
+			<th>Код організації в 1С</th>
+			<th>Дії</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		@foreach (var b in Model)
+		{
+		<tr>
+			<td>@b.OrganizationId</td>
+			<td>@b.OrganizationName</td>
+			<td>@b.Organization1cId</td>
+			<td>
+				<p>
+					@Html.ActionLink("Edit", "Edit", "Regions", new { regionId = b.OrganizationId }, new { title = "Управління" })
+					@Html.ActionLink("Del", "Del", "Regions", new { regionId = b.OrganizationId, message = "" }, new { title = "Управління" })
+				</p>
+			</td>
+		</tr>
+		}
+	</tbody>
+</table>

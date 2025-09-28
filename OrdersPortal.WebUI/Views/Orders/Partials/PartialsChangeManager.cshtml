@@ -1,0 +1,63 @@
+﻿@model OrdersPortal.WebUI.Models.Order
+
+@{
+    
+    //OrderMessages = OrderMessages.Sort(x => x.MessageTime).ToList();
+    int OrderId = ViewBag.OrderId;
+    List<SelectListItem> managers_list = new List<SelectListItem>();
+
+    int i = 0;
+
+    if (ViewBag.Managers != null)
+    {
+        foreach (var r in ViewBag.Managers)
+        {
+            managers_list.Add(new SelectListItem() { Text = ViewBag.Managers[i].FullName, Value = ViewBag.Managers[i].Id.ToString() });//Заполняем его
+            i++;
+        }
+        
+    }
+    
+}
+<div class="modal fade" id="ModalChangeManager">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-check-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Змінити менеджера: </h4>
+            </div>
+
+
+            @using (Html.BeginForm("ChangeManager", "Orders", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <div class="modal-body" style="height:350px;">
+                    <div style="height:150px;">
+                        <p><span id='warning-message'></span></p>
+                        @Html.AntiForgeryToken()
+                        <hr />
+                        @Html.ValidationSummary()
+
+
+                        @Html.HiddenFor(m => OrderId)
+
+                        <div class="form-group field-manager">
+                            @Html.LabelFor(m => m.ManagerId, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(m => m.ManagerId, managers_list, new { @class = "form-control", @id = "select-manager" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <input type="submit" class="btn btn-default" value="Додати" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Відмінити</button>
+                </div>
+            }
+            <!--  -->
+
+
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

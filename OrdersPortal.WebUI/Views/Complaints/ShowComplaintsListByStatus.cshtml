@@ -1,0 +1,261 @@
+﻿@model PagedList.IPagedList<OrdersPortal.Application.Models.ViewModels.UploadComplaintsListViewModel>
+@using PagedList.Mvc;
+@{
+	ViewBag.Title = "Список завантажених рекламацій";
+	string Tstatus = "notwork";
+}
+
+<div style="display:inline;">
+	<h1>@ViewBag.ComplaintsCount Замовленнь</h1>
+</div>
+
+<div class="complaint-buttons" style="display: inline-block; margin-bottom: 20px;">
+
+	@Html.ActionLink("Необроблені", "ShowComplaintsListByStatus", "Complaints", new { status = "notwork", message = "" }, htmlAttributes: new { @class = "btn btn-default", title = "Необроблені" })
+	@Html.ActionLink("Непідтверджені", "ShowComplaintsListByStatus", "Complaints", new { status = "notconfirm", message = "" }, htmlAttributes: new { @class = "btn btn-default", @id = "notconfirm", title = "Непідтвердженні" })
+	@Html.ActionLink("Завантажені", "ShowComplaintsListByStatus", "Complaints", new { status = "recieved", message = "" }, htmlAttributes: new { @class = "btn btn-default", title = "Отримані" })
+	@Html.ActionLink("У Виробництві", "ShowComplaintsListByStatus", "Complaints", new { status = "inwork", message = "" }, htmlAttributes: new { @class = "btn btn-default", title = "У Виробництві" })
+	@Html.ActionLink("Відмова", "ShowComplaintsListByStatus", "Complaints", new { status = "reject", message = "" }, htmlAttributes: new { @class = "btn btn-default", title = "Відмова" })
+	@Html.ActionLink("Всі", "ShowComplaintsList", "Complaints", new { message = "" }, htmlAttributes: new { @class = "btn btn-default btn-info", title = "Всі" })
+
+
+</div>
+
+
+<div id="complaints-table">
+
+
+	<div>
+		<a href="/Complaints/AddComplaint" class="btn btn-success">Додати Рекламацію</a>
+	</div>
+
+	<table class="table table-striped table-hover" data-toggle="table" data-search="true" id="complaintstable">
+		<thead>
+		<tr>
+
+			<th data-sortable="true" class="table-width80">Номер</th>
+			<th data-sortable="true" class="table-width80">Номер 1С</th>
+			<th data-sortable="true" class="table-width80">Дата </th>
+			<th data-sortable="true" class="table-width250 ">Коментар</th>
+			@if (User.IsInRole("customer"))
+			{
+				<th data-sortable="true" class="table-width100">Менеджер</th>
+			}
+			else
+			{
+				<th data-sortable="true" class="table-width80">Контрагент</th>
+			}
+
+
+
+			<th data-sortable="true" class="table-width250">Вирішення</th>
+			<th data-sortable="true" class="table-width80">Статус</th>
+
+
+
+		</tr>
+		</thead>
+
+		<tbody>
+
+		@foreach (var b in Model)
+		{
+			<tr class='clickable-row' data-href='javascript:ShowComplaintDetail(@b.ComplaintId)'>
+				<td>@b.ComplaintId</td>
+				<td>@b.ComplaintOrderNumber</td>
+				<td>
+					@b.ComplaintDate.ToString("dd.MM.yyyy")
+				</td>
+				<td>@Html.Raw(b.ComplaintDescription) </td>
+				@if (User.IsInRole("customer"))
+				{
+					<td>@b.ManagerName</td>
+				}
+				else
+				{
+					<td>@b.CustomerName</td>
+				}
+
+				<td>@b.ComplaintIssue / @b.ComplaintSolution</td>
+				<td>
+					@b.StatusName
+				</td>
+
+
+
+
+			</tr>
+		}
+
+		</tbody>
+
+	</table>
+
+
+		Сторінка @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) з @Model.PageCount
+
+		@Html.PagedListPager(Model, page => Url.Action("ShowComplaintsListByStatus", new { @ViewBag.Status, page }))
+
+		<div id="allmessages">
+		</div>
+
+		<div id="changemanager">
+		</div>
+
+		<div id="ShowComplaintDetail">
+		</div>
+
+		<script type="text/javascript">
+
+		$("#complaintstable thead").on("click", "tr", function () {
+			//sleep(10).then(() => {
+			//    OrderColours();
+
+			setTimeout(OrderColours, 10);
+		});
+
+		function OrderLoad(OrderId, Status) {
+			var url = "/Complaints/ChangeOrderStatus";
+			$.ajax({
+				url: url,
+				contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+				type: "POST",
+				data: {
+					orderId: OrderId,
+					status: Status
+				},
+				success: function (data) {
+				}
+			});
+		};
+
+		function ShowAllMessages(OrderId) {
+			var url = "/Complaints/ShowAllMessages";
+			$.ajax({
+				url: url,
+				contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+				type: "POST",
+				data: {
+					orderid: OrderId
+				},
+				success: function (data) {
+					$("#allmessages").html(data);
+					$('#ModalAllMessages').modal('toggle');
+
+				}
+			});
+		};
+
+
+		function ChangeManager(OrderId) {
+			var url = "/Complaints/ChangeManager";
+			$.ajax({
+				url: url,
+				contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+				type: "GET",
+				data: {
+					orderid: OrderId
+				},
+				success: function (data) {
+					$("#changemanager").html(data);
+					$('#ModalChangeManager').modal('toggle');
+
+				}
+			});
+		};
+
+
+		function CreateManagerComment(OrderId) {
+
+			$('#ComplaintId').val(OrderId);
+			$('#ManagerComment').modal('toggle');
+		}
+
+		function ShowComplaintDetail(ComplaintId) {
+			var url = "/Complaints/ShowComplaintDetail";
+			$.ajax({
+				url: url,
+				contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+				type: "GET",
+				data: {
+					complaintid: ComplaintId
+				},
+				success: function (data) {
+					$("#ShowComplaintDetail").html(data);
+					$('#ComplaintDetail').modal('toggle');
+
+				}
+			});
+		};
+
+
+		function OrderColours() {
+
+
+			$("td:contains('Завантажено')").each(function () {
+				$(this).addClass("btn-danger disabled");
+			});
+			$("td:contains('Виробництво')").each(function () {
+				$(this).addClass("btn-success disabled");
+			});
+			$("td:contains('Розглянуто')").each(function () {
+				$(this).addClass("btn-warning disabled");
+			});
+			$("td:contains('До розгляду')").each(function () {
+				$(this).addClass("btn-warning disabled");
+			});
+
+			$("td:contains('Обробка')").each(function () {
+				$(this).addClass("btn-warning disabled");
+			});
+			$("td:contains('Отримано')").each(function () {
+				$(this).addClass("btn-warning disabled");
+			});
+
+			$(".clickable-row").click(function () {
+				window.document.location = $(this).data("href");
+			});
+		}
+
+		jQuery(document).ready(function ($) {
+
+			OrderColours();
+			ButtonsColours('@ViewBag.Status');
+
+			$(".clickable-row").click(function () {
+				window.document.location = $(this).data("href");
+			});
+		});
+
+		function ShowOrdersByStatus(Status) {
+			var url = "/Complaints/ShowOrdersListByStatus";
+			$.ajax({
+				url: url,
+				contentType: "application/x-www-form-urlencoded; charset=windows-1251",
+				type: "GET",
+				data: {
+					status: Status
+				},
+				success: function (data) {
+					$("#complaintstable").html(data);
+
+				}
+			});
+		};
+
+		function ButtonsColours(status) {
+
+			$('.complaint-buttons a').each(function () {
+				$(this).removeClass('btn-info');
+			});
+
+
+			$('.complaint-buttons a#' + status).addClass('btn-info');
+
+		}
+
+		</script>
+
+
+</div>
+

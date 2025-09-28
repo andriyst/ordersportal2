@@ -1,0 +1,70 @@
+﻿@{
+
+    var iptels = ViewBag.IpTelDetail;
+    string color;
+    if (ViewBag.Disposition == "NO ANSWER")
+    {
+        color = "red";
+    }
+    else if (ViewBag.Disposition == "ANSWERED")
+    {   color = "green";}
+    else
+    {   color = "blue";}
+
+}
+  <div class="modal fade" id="IpTelDetail">
+    <div class="modal-dialog" style="width:700px;">
+        <div class="modal-content">
+            <div class="modal-header modal-check-header-@color">
+                @if (ViewBag.Disposition == "NO ANSWER")
+                {
+                    <div>
+                        Пропущені
+                    </div>
+                }
+                else if (ViewBag.Disposition == "ANSWERED")
+                {
+                    <div>
+                        Отримані
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        Набрані
+                    </div>
+                }
+                    </div>
+            <table id="table-detailed" class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>№ п/п</th>
+                    <th>Дата і час</th>
+                    <th>Дзвінок звідки</th>
+                    <th>Дзвінок куди</th>
+                    <th>Тривалість</th>
+
+
+                </tr>
+                </thead>
+                @foreach (var t in iptels)
+                {
+
+                    <tr>
+                        <td></td>
+                        <td>@t.CallDateTime</td>
+                        <td>@t.FromNumber</td>
+                        <td>@t.ToNumber</td>
+                        <td>@t.Duration</td>
+
+
+                    </tr>
+
+                }
+            </table>
+        </div>
+    </div>
+</div>
+
+
+

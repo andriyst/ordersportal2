@@ -1,0 +1,678 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7BE901B5-4E6D-4DD9-A703-FE15CB4D8F3E}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OrdersPortal.WebUI</RootNamespace>
+    <AssemblyName>OrdersPortal.WebUI</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.3.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.3.1\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Protobuf, Version=3.14.0.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.14.0\lib\net45\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.ProtocolBuffers, Version=2.4.1.555, Culture=neutral, PublicKeyToken=55f7125234beb589, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.ProtocolBuffers.2.4.1.555\lib\net40\Google.ProtocolBuffers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.ProtocolBuffers.Serialization, Version=2.4.1.555, Culture=neutral, PublicKeyToken=55f7125234beb589, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.ProtocolBuffers.2.4.1.555\lib\net40\Google.ProtocolBuffers.Serialization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.3\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.3\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.1.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.1.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.1.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.1.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.1.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.7.6\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
+      <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Common, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.Common.4.3.0\lib\net451\System.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Data.SqlClient, Version=4.6.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SqlClient.4.8.2\lib\net461\System.Data.SqlClient.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.4.3.1\lib\net462\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Xml.ReaderWriter.4.3.1\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
+    </Reference>
+    <Reference Include="Telegram.Bot, Version=15.7.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Telegram.Bot.15.7.1\lib\net45\Telegram.Bot.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Abstractions, Version=5.11.6.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.9\lib\net47\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.10.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.9\lib\net47\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AnalyticsController.cs" />
+    <Compile Include="Controllers\CatalogPricesController.cs" />
+    <Compile Include="Controllers\ComplaintsController.cs" />
+    <Compile Include="Controllers\FilesController.cs" />
+    <Compile Include="Controllers\FinanceController.cs" />
+    <Compile Include="Controllers\HelpServiceController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrderPartsController.cs" />
+    <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\OrganizationController.cs" />
+    <Compile Include="Controllers\RegionsController.cs" />
+    <Compile Include="Controllers\StatsController.cs" />
+    <Compile Include="Controllers\VideoController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202501222221323_InitialCreate.cs" />
+    <Compile Include="Migrations\202501222221323_InitialCreate.designer.cs">
+      <DependentUpon>202501222221323_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202501222222154_Prod1.cs" />
+    <Compile Include="Migrations\202501222222154_Prod1.designer.cs">
+      <DependentUpon>202501222222154_Prod1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202501222226078_Prod2.cs" />
+    <Compile Include="Migrations\202501222226078_Prod2.designer.cs">
+      <DependentUpon>202501222226078_Prod2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202506112133557_AddOrganizationsAndUserOrganizations.cs" />
+    <Compile Include="Migrations\202506112133557_AddOrganizationsAndUserOrganizations.designer.cs">
+      <DependentUpon>202506112133557_AddOrganizationsAndUserOrganizations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202506122201252_AddOrganizationsAndUserOrganizations-with1S.cs" />
+    <Compile Include="Migrations\202506122201252_AddOrganizationsAndUserOrganizations-with1S.designer.cs">
+      <DependentUpon>202506122201252_AddOrganizationsAndUserOrganizations-with1S.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Data\EmailTemplates\AccountRegisterEmail.txt" />
+    <Content Include="App_Data\EmailTemplates\logo.jpg" />
+    <Content Include="App_Data\EmailTemplates\ChangePasswordEmail.txt" />
+    <Content Include="App_Data\EmailTemplates\UploadOrderNotifyEmail.txt" />
+    <Content Include="Content\bootstrap5\bootstrap.css" />
+    <Content Include="Content\extra\bootstrap-datepicker3.css" />
+    <Content Include="Content\extra\bootstrap-select\bootstrap-select.css" />
+    <Content Include="Content\extra\bootstrap-select\bootstrap-select.min.css" />
+    <Content Include="Content\extra\bootstrap-switch.css" />
+    <Content Include="Content\extra\bootstrap-table.css" />
+    <Content Include="Content\extra\fontawesome\all.css" />
+    <Content Include="Content\extra\fontawesome\all.min.css" />
+    <Content Include="Content\extra\radios-to-slider.css" />
+    <Content Include="Content\extra\webfonts\fa-brands-400.svg" />
+    <Content Include="Content\extra\webfonts\fa-regular-400.svg" />
+    <Content Include="Content\extra\webfonts\fa-solid-900.svg" />
+    <Content Include="Content\ordersportal.css" />
+    <Content Include="Content\PagedList.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Images\dveri_za_den.jpg" />
+    <Content Include="Images\fon.jpg" />
+    <Content Include="Images\icons\sm_add-blog.png" />
+    <Content Include="Images\icons\sm_add-user.png" />
+    <Content Include="Images\icons\sm_add.png" />
+    <Content Include="Images\icons\sm_cancel.png" />
+    <Content Include="Images\icons\sm_clock.png" />
+    <Content Include="Images\icons\sm_complete.png" />
+    <Content Include="Images\icons\sm_delete-user.png" />
+    <Content Include="Images\icons\sm_delete.png" />
+    <Content Include="Images\icons\sm_edit-user.png" />
+    <Content Include="Images\icons\sm_info-user.png" />
+    <Content Include="Images\icons\sm_info.png" />
+    <Content Include="Images\icons\sm_inwork.png" />
+    <Content Include="Images\icons\sm_reload.png" />
+    <Content Include="Images\icons\sm_search-user.png" />
+    <Content Include="Images\icons\sm_search.png" />
+    <Content Include="Images\icons\sm_trash.png" />
+    <Content Include="Images\icons\sm_upload.png" />
+    <Content Include="Images\icons\vs_analitic.svg" />
+    <Content Include="Images\icons\vs_basket.svg" />
+    <Content Include="Images\icons\vs_exit.svg" />
+    <Content Include="Images\icons\vs_money.svg" />
+    <Content Include="Images\icons\vs_order.svg" />
+    <Content Include="Images\icons\vs_service.svg" />
+    <Content Include="Images\icons\vs_settings.svg" />
+    <Content Include="Images\icons\vs_user.svg" />
+    <Content Include="Images\icons\vs_video.svg" />
+    <Content Include="Images\kava.gif" />
+    <Content Include="Images\kava_1.gif" />
+    <Content Include="Images\NO.png" />
+    <Content Include="Images\sm_NO.png" />
+    <Content Include="Images\sm_YES.png" />
+    <Content Include="Images\viknastyle_2025.png" />
+    <Content Include="Images\vikna_logo_white.png" />
+    <Content Include="Images\vst_logo_h.png" />
+    <Content Include="Images\vst_logo_h2.png" />
+    <Content Include="Images\vst_logo_h3.png" />
+    <Content Include="Images\vst_logo_v.png" />
+    <Content Include="Images\vst_logo_v3.png" />
+    <Content Include="Images\YES.png" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\extra\webfonts\fa-brands-400.eot" />
+    <Content Include="Content\extra\webfonts\fa-brands-400.ttf" />
+    <Content Include="Content\extra\webfonts\fa-brands-400.woff" />
+    <Content Include="Content\extra\webfonts\fa-brands-400.woff2" />
+    <Content Include="Content\extra\webfonts\fa-regular-400.eot" />
+    <Content Include="Content\extra\webfonts\fa-regular-400.ttf" />
+    <Content Include="Content\extra\webfonts\fa-regular-400.woff" />
+    <Content Include="Content\extra\webfonts\fa-regular-400.woff2" />
+    <Content Include="Content\extra\webfonts\fa-solid-900.eot" />
+    <Content Include="Content\extra\webfonts\fa-solid-900.ttf" />
+    <Content Include="Content\extra\webfonts\fa-solid-900.woff" />
+    <Content Include="Content\extra\webfonts\fa-solid-900.woff2" />
+    <Content Include="Scripts\bootstrap5\bootstrap.bundle.js.map" />
+    <Content Include="Scripts\bootstrap5\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap5\bootstrap.esm.js.map" />
+    <Content Include="Scripts\bootstrap5\bootstrap.esm.min.js.map" />
+    <Content Include="Scripts\bootstrap5\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap5\bootstrap.min.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\bootstrap-select.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\bootstrap-select.min.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-am_ET.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-ar_AR.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-bg_BG.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-cs_CZ.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-da_DK.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-de_DE.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-en_US.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-es_CL.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-es_ES.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-et_EE.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-eu.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-fa_IR.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-fi_FI.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-fr_FR.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-hr_HR.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-hu_HU.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-id_ID.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-it_IT.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-ja_JP.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-kh_KM.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-ko_KR.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-lt_LT.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-lv_LV.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-nb_NO.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-nl_NL.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-pl_PL.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-pt_BR.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-pt_PT.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-ro_RO.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-ru_RU.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-sk_SK.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-sl_SI.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-sr_SP.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-sv_SE.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-th_TH.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-tr_TR.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-ua_UA.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-vi_VN.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-zh_CN.js.map" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-zh_TW.js.map" />
+    <Content Include="Content\extra\bootstrap-select\bootstrap-select.css.map" />
+    <Content Include="Files\Правила_прийому_рекламацій_06_05_2025.pdf" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\bootstrap5\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap5\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap5\bootstrap.esm.js" />
+    <Content Include="Scripts\bootstrap5\bootstrap.esm.min.js" />
+    <Content Include="Scripts\bootstrap5\bootstrap.js" />
+    <Content Include="Scripts\bootstrap5\bootstrap.min.js" />
+    <Content Include="Scripts\extra\bootstrap-datepicker.js" />
+    <Content Include="Scripts\extra\bootstrap-select\bootstrap-select.js" />
+    <Content Include="Scripts\extra\bootstrap-select\bootstrap-select.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-am_ET.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-am_ET.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-ar_AR.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-ar_AR.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-bg_BG.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-bg_BG.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-cs_CZ.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-cs_CZ.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-da_DK.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-da_DK.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-de_DE.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-de_DE.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-en_US.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-en_US.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-es_CL.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-es_CL.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-es_ES.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-es_ES.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-et_EE.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-et_EE.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-eu.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-eu.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-fa_IR.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-fa_IR.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-fi_FI.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-fi_FI.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-fr_FR.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-fr_FR.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-hr_HR.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-hr_HR.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-hu_HU.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-hu_HU.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-id_ID.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-id_ID.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-it_IT.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-it_IT.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-ja_JP.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-ja_JP.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-kh_KM.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-kh_KM.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-ko_KR.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-ko_KR.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-lt_LT.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-lt_LT.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-lv_LV.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-lv_LV.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-nb_NO.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-nb_NO.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-nl_NL.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-nl_NL.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-pl_PL.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-pl_PL.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-pt_BR.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-pt_BR.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-pt_PT.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-pt_PT.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-ro_RO.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-ro_RO.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-ru_RU.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-ru_RU.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-sk_SK.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-sk_SK.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-sl_SI.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-sl_SI.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-sr_SP.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-sr_SP.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-sv_SE.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-sv_SE.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-th_TH.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-th_TH.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-tr_TR.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-tr_TR.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-ua_UA.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-ua_UA.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-vi_VN.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-vi_VN.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-zh_CN.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-zh_CN.min.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-zh_TW.js" />
+    <Content Include="Scripts\extra\bootstrap-select\i18n\defaults-zh_TW.min.js" />
+    <Content Include="Scripts\extra\bootstrap-switch.js" />
+    <Content Include="Scripts\extra\bootstrap-table-uk-UA.js" />
+    <Content Include="Scripts\extra\bootstrap-table.js" />
+    <Content Include="Scripts\extra\fontawesome\all.js" />
+    <Content Include="Scripts\extra\fontawesome\all.min.js" />
+    <Content Include="Scripts\extra\jquery.radios-to-slider.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\extra\popper.js" />
+    <Content Include="Scripts\jquery-1.12.4.js" />
+    <Content Include="Scripts\jquery-1.12.4.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\site.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
+    <Content Include="Views\Account\_RemoveAccountPartial.cshtml" />
+    <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Manage.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Regions\List.cshtml" />
+    <Content Include="Views\Regions\Add.cshtml" />
+    <Content Include="Views\Regions\Edit.cshtml" />
+    <Content Include="Views\Account\UsersList.cshtml" />
+    <Content Include="Views\Orders\AddOrder.cshtml" />
+    <Content Include="Views\Orders\Index.cshtml" />
+    <Content Include="Views\Orders\UploadOrdersList.cshtml" />
+    <Content Include="Views\Account\EditUser.cshtml" />
+    <Content Include="Views\Orders\Partials\PartialsShowAllMessages.cshtml" />
+    <Content Include="Views\Account\ChangeUserPassword.cshtml" />
+    <Content Include="Views\Stats\CustomersStat.cshtml" />
+    <Content Include="Views\Stats\ManagersStat.cshtml" />
+    <Content Include="Views\Orders\Partials\PartialsChangeManager.cshtml" />
+    <Content Include="Views\Orders\Partials\PartialsShowOrderDetail.cshtml" />
+    <Content Include="Views\Stats\IpTelStat.cshtml" />
+    <Content Include="Views\Orders\ShowOrdersListByStatus.cshtml" />
+    <Content Include="Views\Complaints\ShowComplaintsListByStatus.cshtml" />
+    <Content Include="Views\Complaints\ShowComplaintsList.cshtml" />
+    <Content Include="Views\Complaints\AddComplaint.cshtml" />
+    <Content Include="Views\Complaints\EditComplaint.cshtml" />
+    <Content Include="Views\Complaints\Partials\CheckOrderBox.cshtml" />
+    <Content Include="Views\Complaints\Partials\PartialsShowComplaintDetails.cshtml" />
+    <Content Include="Views\Complaints\Partials\PartialsShowPhoto.cshtml" />
+    <Content Include="Views\Stats\Partials\PartialsShowIpTelDetail.cshtml" />
+    <Content Include="Views\HelpService\Configure.cshtml" />
+    <Content Include="Views\HelpService\CallManager.cshtml" />
+    <Content Include="Views\Stats\HelpServiceStat.cshtml" />
+    <Content Include="Views\Complaints\FillIssueSolutionList.cshtml" />
+    <Content Include="Views\Complaints\Partials\OrderSeriesBox.cshtml" />
+    <Content Include="Views\Orders\List.cshtml" />
+    <Content Include="Views\Complaints\List.cshtml" />
+    <Content Include="Views\Account\_RegisterManager.cshtml" />
+    <Content Include="Views\Account\Update1cManagers.cshtml" />
+    <Content Include="Views\Shared\_FinanceMenu.cshtml" />
+    <Content Include="Views\Finance\List.cshtml" />
+    <Content Include="Views\Finance\CashFlow.cshtml" />
+    <Content Include="Views\Finance\Reconciliation.cshtml" />
+    <Content Include="Views\CatalogPrices\Catalog2021.cshtml" />
+    <Content Include="Views\Video\List.cshtml" />
+    <Content Include="Views\Video\Add.cshtml" />
+    <Content Include="Views\Video\Edit.cshtml" />
+    <Content Include="Views\Finance\GetOrdersPayments.cshtml" />
+    <Content Include="Views\Finance\SetOrdersPayments.cshtml" />
+    <Content Include="Views\Finance\OrdersPayments.cshtml" />
+    <Content Include="Views\Finance\CreateCustomerBill.cshtml" />
+    <Content Include="Views\Finance\GetCustomerBillList.cshtml" />
+    <Content Include="Views\Finance\Create1cOrder.cshtml" />
+    <Content Include="Views\Finance\GetWdsActionCodes.cshtml" />
+    <Content Include="Views\Files\List.cshtml" />
+    <Content Include="Views\Files\UploadFile.cshtml" />
+    <Content Include="Views\Shared\_UserManagers.cshtml" />
+    <Content Include="Views\Finance\GetWdsActionRating.cshtml" />
+    <Content Include="Views\OrderParts\List.cshtml" />
+    <Content Include="Views\OrderParts\Add.cshtml" />
+    <Content Include="Views\OrderParts\Partials\PartialsShowOrderPartsDetail.cshtml" />
+    <Content Include="Views\Analytics\OrderAnalytics.cshtml" />
+    <Content Include="Views\Analytics\OrderAnalytics - Copy.cshtml" />
+    <Content Include="Views\Account\_CustomerCodesPartialForm.cshtml" />
+    <Content Include="Views\Account\_RegionManagersPartialForm.cshtml" />
+    <Content Include="Views\Account\_ManagersPartialForm.cshtml" />
+    <Content Include="Views\Account\_RegionManagers1cGuidsPartialForm.cshtml" />
+    <Content Include="Views\Account\_Managers1cGuidsPartialForm.cshtml" />
+    <Content Include="Views\Organization\List.cshtml" />
+    <Content Include="Views\Organization\Add.cshtml" />
+    <Content Include="Views\Organization\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Files\Downloads\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Media\Video\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OrdersPortal.Application\OrdersPortal.Application.csproj">
+      <Project>{f401ddf1-7951-427c-816b-eb63f83ca6d1}</Project>
+      <Name>OrdersPortal.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OrdersPortal.Domain\OrdersPortal.Domain.csproj">
+      <Project>{96ab6c29-ca83-4059-8ef5-2321fcf944ab}</Project>
+      <Name>OrdersPortal.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OrdersPortal.Infrastructure\OrdersPortal.Infrastructure.csproj">
+      <Project>{f1123bc8-097d-434c-b2b2-a6302f8fc95a}</Project>
+      <Name>OrdersPortal.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OrdersPortal.Services\OrdersPortal.Services.csproj">
+      <Project>{90a74c50-5071-42c2-9e8b-b5793ce36f30}</Project>
+      <Name>OrdersPortal.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202501222221323_InitialCreate.resx">
+      <DependentUpon>202501222221323_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202501222222154_Prod1.resx">
+      <DependentUpon>202501222222154_Prod1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202501222226078_Prod2.resx">
+      <DependentUpon>202501222226078_Prod2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202506112133557_AddOrganizationsAndUserOrganizations.resx">
+      <DependentUpon>202506112133557_AddOrganizationsAndUserOrganizations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202506122201252_AddOrganizationsAndUserOrganizations-with1S.resx">
+      <DependentUpon>202506122201252_AddOrganizationsAndUserOrganizations-with1S.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>61345</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:61345/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>
